@@ -1,0 +1,5 @@
+baseURL = "https://wuwenjunpr.site/"
+languageCode = "zh-cn"
+title = "随手记"
+theme = "LoveIt"
+publishDir = "docs"
