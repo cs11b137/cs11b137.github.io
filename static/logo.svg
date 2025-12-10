@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- 背景圆角方块 -->
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="#020617"></rect>
+  <!-- 角和头部轮廓（侧脸） -->
+  <path d="M38 12
+           C36 20, 34 26, 32 30
+           C30 34, 28 38, 26 40
+           C28 41, 30 42, 32 42
+           C36 42, 40 40, 42 36
+           C40 34, 39 32, 38 30" fill="none" stroke="#e5e7eb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+  <!-- 鼻部的下垂 -->
+  <path d="M32 30
+           C30 34, 30 38, 30 42" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"></path>
+  <!-- 眼睛点 -->
+  <circle cx="36" cy="26" r="1.5" fill="#e5e7eb"></circle>
+</svg>

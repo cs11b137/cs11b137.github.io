@@ -1,9 +1,10 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>随手记</title>
-        <link>https://wuwenjunpr.site/</link>
+        <title>Saiga</title>
+        <link>http://localhost:1313/</link>
         <description>This is my cool site</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language>
-            <atom:link href="https://wuwenjunpr.site/index.xml" rel="self" type="application/rss+xml" />
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+            <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+            <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
         </channel>
 </rss>
