@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>用大模型做一个简单「文档问答助手」 - Saiga</title><meta name="Description" content="一次从 0 到 1 的小实验：用第三方大模型 API &#43; 向量检索，把项目文档「接上」对话式问答。"><meta property="og:url" content="http://localhost:1313/posts/2022-10-30-ai-doc-assistant-v1/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="用大模型做一个简单「文档问答助手」">
+  <meta property="og:description" content="一次从 0 到 1 的小实验：用第三方大模型 API &#43; 向量检索，把项目文档「接上」对话式问答。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-10-30T00:00:00+00:00">
+    <meta property="article:modified_time" content="2022-10-30T00:00:00+00:00">
+    <meta property="article:tag" content="大模型">
+    <meta property="article:tag" content="文档问答">
+    <meta property="article:tag" content="向量检索">
+    <meta property="article:tag" content="知识库">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="用大模型做一个简单「文档问答助手」">
+  <meta name="twitter:description" content="一次从 0 到 1 的小实验：用第三方大模型 API &#43; 向量检索，把项目文档「接上」对话式问答。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2022-10-30-ai-doc-assistant-v1/" /><link rel="prev" href="http://localhost:1313/posts/2022-09-05-monitoring-and-alert/" /><link rel="next" href="http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "用大模型做一个简单「文档问答助手」",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2022-10-30-ai-doc-assistant-v1\/"
+        },"genre": "posts","keywords": "大模型, 文档问答, 向量检索, 知识库","wordcount":  264 ,
+        "url": "http:\/\/localhost:1313\/posts\/2022-10-30-ai-doc-assistant-v1\/","datePublished": "2022-10-30T00:00:00+00:00","dateModified": "2022-10-30T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "一次从 0 到 1 的小实验：用第三方大模型 API + 向量检索，把项目文档「接上」对话式问答。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">用大模型做一个简单「文档问答助手」</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/ai-%E6%8E%A2%E7%B4%A2/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 探索</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-30">2022-10-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 264 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-目标和约束">1. 目标和约束</a></li>
+    <li><a href="#2-总体架构">2. 总体架构</a></li>
+    <li><a href="#3-文档预处理从-markdown-到小段文本">3. 文档预处理：从 Markdown 到「小段文本」</a></li>
+    <li><a href="#4-向量化与存储">4. 向量化与存储</a>
+      <ul>
+        <li><a href="#41-向量化embedding">4.1 向量化（Embedding）</a></li>
+        <li><a href="#42-向量库">4.2 向量库</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-问答流程检索--生成">5. 问答流程：检索 + 生成</a>
+      <ul>
+        <li><a href="#51-把问题向量化">5.1 把问题向量化</a></li>
+        <li><a href="#52-从向量库检索相关段落">5.2 从向量库检索相关段落</a></li>
+        <li><a href="#53-构造大模型-prompt">5.3 构造大模型 Prompt</a></li>
+        <li><a href="#54-前端展示">5.4 前端展示</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-前端界面的小设计">6. 前端界面的小设计</a></li>
+    <li><a href="#7-实验中的边界和坑">7. 实验中的边界和坑</a></li>
+    <li><a href="#8-小结文档助手不替代文档但能把文档用起来">8. 小结：文档助手不替代文档，但能把文档「用起来」</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>2022 年开始，大模型 API 越来越好用，大家最直觉的一个想法就是：</p>
+<blockquote>
+<p>能不能把项目文档「喂给」模型，然后直接用自然语言问问题？</p>
+</blockquote>
+<p>这篇文章记录的是一个从 0 到 1 的小 Demo：<strong>用大模型 API + 向量检索，实现一个能回答「我们自己文档」问题的小助手。</strong></p>
+<hr>
+<h2 id="1-目标和约束">1. 目标和约束</h2>
+<p>目标很简单：</p>
+<ul>
+<li>把部分项目文档（接口说明、架构设计、规范）导入系统；</li>
+<li>在一个聊天界面里，可以问：
+<ul>
+<li>「用户登录接口的必填参数有哪些？」</li>
+<li>「私募投资人小程序的技术栈是什么？」</li>
+</ul>
+</li>
+<li>助手能基于文档给出相对准确的回答。</li>
+</ul>
+<p>约束：</p>
+<ul>
+<li>不追求「完美答案」；</li>
+<li>优先做到：<strong>能指向正确文档，并给出简洁总结</strong>。</li>
+</ul>
+<hr>
+<h2 id="2-总体架构">2. 总体架构</h2>
+<p>整体流程可以概括成：</p>
+<ol>
+<li>文档导入 &amp; 切分；</li>
+<li>向量化（Embedding）并存入向量库；</li>
+<li>用户提问 → 向量检索相关片段；</li>
+<li>把相关片段 + 问题一起发给大模型 → 生成回答；</li>
+<li>前端展示答案 + 引用片段。</li>
+</ol>
+<p>用一张简图就是所谓的：<strong>RAG（检索增强生成）</strong>。</p>
+<hr>
+<h2 id="3-文档预处理从-markdown-到小段文本">3. 文档预处理：从 Markdown 到「小段文本」</h2>
+<p>我们选用的文档源主要是：</p>
+<ul>
+<li>Git 仓库里的 Markdown（README、设计文档）；</li>
+<li>部分导出的接口文档（JSON/YAML 转文本）。</li>
+</ul>
+<p>预处理步骤：</p>
+<ol>
+<li>把 Markdown 转成纯文本（保留标题层级）；</li>
+<li>按一定策略切分成「小段文本」，比如每段 300–500 字；</li>
+<li>每段附带元信息：文档名、段落标题、在文档中的位置。</li>
+</ol>
+<p>简单示例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;docId&#34;</span>: <span style="color:#e6db74">&#34;fund-investor-miniapp&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;技术栈与整体架构&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;前端采用 Vue3 + uni-app...&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;section&#34;</span>: <span style="color:#e6db74">&#34;2.1 技术栈&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;index&#34;</span>: <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>切分策略的小经验：</p>
+<ul>
+<li>不要按固定字数「硬切」，适当按段落/标题分；</li>
+<li>避免单段太短（模型不够信息）或太长（提示超长）。</li>
+</ul>
+<hr>
+<h2 id="4-向量化与存储">4. 向量化与存储</h2>
+<h3 id="41-向量化embedding">4.1 向量化（Embedding）</h3>
+<p>选择一个支持中文的 Embedding API，调用方式类似：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">res</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">embeddingApi</span>.<span style="color:#a6e22e">embed</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">input</span>: <span style="color:#66d9ef">chunk.content</span>,
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">vector</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">vector</span>; <span style="color:#75715e">// 一串浮点数
+</span></span></span></code></pre></div><p>对每个文本块都做一次 Embedding，得到：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;docId&#34;</span>: <span style="color:#e6db74">&#34;fund-investor-miniapp&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;section&#34;</span>: <span style="color:#e6db74">&#34;2.1 技术栈&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;index&#34;</span>: <span style="color:#ae81ff">5</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;前端采用 Vue3 + uni-app...&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;vector&#34;</span>: [<span style="color:#ae81ff">0.12</span>, <span style="color:#ae81ff">-0.03</span>, <span style="color:#960050;background-color:#1e0010">...</span>]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="42-向量库">4.2 向量库</h3>
+<p>实验阶段可以简单一点：</p>
+<ul>
+<li>用 SQLite / Postgres + 向量扩展；</li>
+<li>或者用现成的向量数据库（Milvus、Pinecone 等）；</li>
+<li>甚至可以上一个简单的 in-memory 方案（样本量小时）。</li>
+</ul>
+<p>需要支持的操作只有一个：</p>
+<blockquote>
+<p>给定一个向量，查找<strong>余弦相似度最高</strong>的 Top K 条记录。</p>
+</blockquote>
+<hr>
+<h2 id="5-问答流程检索--生成">5. 问答流程：检索 + 生成</h2>
+<p>用户在前端输入问题：<code>&quot;投资人小程序支持哪些终端？&quot;</code></p>
+<h3 id="51-把问题向量化">5.1 把问题向量化</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">qEmbedding</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">embeddingApi</span>.<span style="color:#a6e22e">embed</span>({ <span style="color:#a6e22e">input</span>: <span style="color:#66d9ef">question</span> });
+</span></span></code></pre></div><h3 id="52-从向量库检索相关段落">5.2 从向量库检索相关段落</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">topChunks</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">vectorStore</span>.<span style="color:#a6e22e">search</span>(<span style="color:#a6e22e">qEmbedding</span>, { <span style="color:#a6e22e">topK</span>: <span style="color:#66d9ef">5</span> });
+</span></span></code></pre></div><p>结果类似：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;docId&#34;</span>: <span style="color:#e6db74">&#34;fund-investor-miniapp&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;section&#34;</span>: <span style="color:#e6db74">&#34;1. 概述&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;信e募投资人小程序面向私募投资人... 支持微信小程序与 H5 双端访问&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;score&#34;</span>: <span style="color:#ae81ff">0.91</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">...</span>
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><h3 id="53-构造大模型-prompt">5.3 构造大模型 Prompt</h3>
+<p>把问题 + 相关片段一起发给大模型：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>你是项目文档助手，只能根据给定的文档内容回答问题。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>【文档片段】
+</span></span><span style="display:flex;"><span>1. 信e募投资人小程序面向私募投资人... 支持微信小程序与 H5 双端访问
+</span></span><span style="display:flex;"><span>2. ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>【问题】
+</span></span><span style="display:flex;"><span>投资人小程序支持哪些终端？
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>请用简洁的方式回答，并在需要时指出是根据哪个文档片段得出的。
+</span></span></code></pre></div><p>模型返回：</p>
+<blockquote>
+<p>投资人小程序目前支持 <strong>微信小程序</strong> 和 <strong>H5 页面访问</strong>（见文档片段 1）。</p>
+</blockquote>
+<h3 id="54-前端展示">5.4 前端展示</h3>
+<ul>
+<li>上方显示自然语言回答；</li>
+<li>下方列出「参考文档」，跳转到具体文档位置。</li>
+</ul>
+<hr>
+<h2 id="6-前端界面的小设计">6. 前端界面的小设计</h2>
+<p>界面结构：</p>
+<ul>
+<li>左侧：文档问答区域（类似 Chat）；</li>
+<li>右侧：可选择切换当前知识库（如「私募项目」「运营中台」等）。</li>
+</ul>
+<p>交互重点：</p>
+<ol>
+<li>在回答里高亮「来源文档」；</li>
+<li>对于显然答不上来的问题（向量检索分数都很低），直接说「文档里没有相关信息」；</li>
+<li>提供一个「查看原文」按钮，避免用户只看总结。</li>
+</ol>
+<hr>
+<h2 id="7-实验中的边界和坑">7. 实验中的边界和坑</h2>
+<ol>
+<li>
+<p><strong>文档不规范 → 答案也不靠谱</strong></p>
+<ul>
+<li>文档内容过时或互相矛盾时，模型没有魔法，只能「合理胡说」；</li>
+<li>这个系统本质上也在倒逼我们写更结构化、更新及时的文档。</li>
+</ul>
+</li>
+<li>
+<p><strong>长文档切分不好 → 检索命中不准</strong></p>
+<ul>
+<li>有时候关键信息被拆散，落在不同段；</li>
+<li>需要平衡「切得足够细」和「上下文足够完整」。</li>
+</ul>
+</li>
+<li>
+<p><strong>权限问题</strong></p>
+<ul>
+<li>内部文档可能有权限划分；</li>
+<li>需要在问答层面做权限控制，只在向量检索时检索用户有权限的文档。</li>
+</ul>
+</li>
+<li>
+<p><strong>延迟与成本</strong></p>
+<ul>
+<li>Embedding + 检索 + 大模型推理，整体延迟要控制在可接受范围；</li>
+<li>请求频率高时要考虑缓存热门问题/结果。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="8-小结文档助手不替代文档但能把文档用起来">8. 小结：文档助手不替代文档，但能把文档「用起来」</h2>
+<p>这个小 Demo 做完之后的几个感受：</p>
+<ol>
+<li>大模型 + 向量检索并没有想象中复杂，<strong>工程实现是完全可控的</strong>；</li>
+<li>它不会替代文档本身，反而会暴露文档结构与质量问题；</li>
+<li>在团队内部，它是一个很好的「知识入口」，新同学可以更自然地问问题。</li>
+</ol>
+<p>未来可以继续演进：</p>
+<ul>
+<li>接入更多数据源（接口日志、监控告警说明等）；</li>
+<li>支持在回答中「生成操作指南」；</li>
+<li>为特定角色（测试、运营）定制不同视图。</li>
+</ul>
+<p>但即便只停留在这个 V1 的程度，它已经是一个<strong>挺实用的内部工具</strong>了。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-10-30</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2022-10-30-ai-doc-assistant-v1/" data-title="用大模型做一个简单「文档问答助手」" data-via="https://github.com/cs11b137" data-hashtags="大模型,文档问答,向量检索,知识库"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2022-10-30-ai-doc-assistant-v1/" data-hashtag="大模型"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2022-10-30-ai-doc-assistant-v1/" data-title="用大模型做一个简单「文档问答助手」"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2022-10-30-ai-doc-assistant-v1/" data-title="用大模型做一个简单「文档问答助手」"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2022-10-30-ai-doc-assistant-v1/" data-title="用大模型做一个简单「文档问答助手」"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>,&nbsp;<a href="/tags/%E6%96%87%E6%A1%A3%E9%97%AE%E7%AD%94/">文档问答</a>,&nbsp;<a href="/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/">向量检索</a>,&nbsp;<a href="/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/">知识库</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2022-09-05-monitoring-and-alert/" class="prev" rel="prev" title="前端监控闭环：采集、告警到问题跟踪"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>前端监控闭环：采集、告警到问题跟踪</a>
+            <a href="/posts/2022-12-18-ai-code-helper-experiment/" class="next" rel="next" title="第一次用 AI 写前端代码：哪些好用，哪些坑">第一次用 AI 写前端代码：哪些好用，哪些坑<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

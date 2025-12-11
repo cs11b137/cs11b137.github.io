@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>写几个小脚本帮自己省时间：前端 CLI / 脚手架实践 - Saiga</title><meta name="Description" content="分享几个日常使用的小 CLI / 脚手架：自动生成页面、接口封装和业务模块，让那些重复到麻木的工作变成一条命令。"><meta property="og:url" content="http://localhost:1313/posts/2024-09-28-cli-and-scaffolding-tools/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="写几个小脚本帮自己省时间：前端 CLI / 脚手架实践">
+  <meta property="og:description" content="分享几个日常使用的小 CLI / 脚手架：自动生成页面、接口封装和业务模块，让那些重复到麻木的工作变成一条命令。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-09-28T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-09-28T00:00:00+00:00">
+    <meta property="article:tag" content="CLI">
+    <meta property="article:tag" content="脚手架">
+    <meta property="article:tag" content="自动化">
+    <meta property="article:tag" content="Node.js">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="写几个小脚本帮自己省时间：前端 CLI / 脚手架实践">
+  <meta name="twitter:description" content="分享几个日常使用的小 CLI / 脚手架：自动生成页面、接口封装和业务模块，让那些重复到麻木的工作变成一条命令。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2024-09-28-cli-and-scaffolding-tools/" /><link rel="prev" href="http://localhost:1313/posts/2024-08-10-personal-knowledge-base-with-ai/" /><link rel="next" href="http://localhost:1313/posts/2024-11-05-financial-system-governance/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "写几个小脚本帮自己省时间：前端 CLI / 脚手架实践",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2024-09-28-cli-and-scaffolding-tools\/"
+        },"genre": "posts","keywords": "CLI, 脚手架, 自动化, Node.js","wordcount":  310 ,
+        "url": "http:\/\/localhost:1313\/posts\/2024-09-28-cli-and-scaffolding-tools\/","datePublished": "2024-09-28T00:00:00+00:00","dateModified": "2024-09-28T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "分享几个日常使用的小 CLI / 脚手架：自动生成页面、接口封装和业务模块，让那些重复到麻木的工作变成一条命令。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">写几个小脚本帮自己省时间：前端 CLI / 脚手架实践</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>工程化</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-09-28">2024-09-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 310 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-create-page新页面一条命令">1. <code>create-page</code>：新页面一条命令</a></li>
+    <li><a href="#2-create-api接口封装生成器">2. <code>create-api</code>：接口封装生成器</a></li>
+    <li><a href="#3-create-module常规-crud-模块一键生成">3. <code>create-module</code>：常规 CRUD 模块一键生成</a></li>
+    <li><a href="#4-技术实现cli-的几个常用积木">4. 技术实现：CLI 的几个常用积木</a></li>
+    <li><a href="#5-使用体验与小结">5. 使用体验与小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>有段时间我发现自己经常在做几件很机械的事：</p>
+<ul>
+<li>新建一个页面：建目录、复制模板、改标题、改路由</li>
+<li>加一个接口：建 service 文件、写类型、写请求封装</li>
+<li>搭一个模块：列表页 + 详情页 + 编辑页，一遍遍重复</li>
+</ul>
+<p>于是索性写了一组小 CLI 工具，把这些动作变成命令行：</p>
+<blockquote>
+<p><code>npx fe-tools create-page</code><br>
+<code>npx fe-tools create-api</code><br>
+<code>npx fe-tools create-module</code></p>
+</blockquote>
+<p>这篇文章就简单记录一下这几个脚本的思路。</p>
+<hr>
+<h2 id="1-create-page新页面一条命令">1. <code>create-page</code>：新页面一条命令</h2>
+<p>很多中台项目新增页面的套路都差不多：</p>
+<ol>
+<li>在 <code>views</code> 下建目录</li>
+<li>填一个基础骨架组件</li>
+<li>在路由里挂载</li>
+<li>有的还要加到菜单配置里</li>
+</ol>
+<p>用 Node.js 写了一个 <code>create-page</code> 命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx fe-tools create-page
+</span></span></code></pre></div><p>命令执行后，做几件事：</p>
+<ol>
+<li>
+<p>命令行交互询问：</p>
+<ul>
+<li>页面英文名（路由 path）</li>
+<li>页面中文标题</li>
+<li>页面类型：列表 / 表单 / 详情 / 组合</li>
+</ul>
+</li>
+<li>
+<p>基于模板生成对应文件，例如：</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">PageWrapper</span> <span style="color:#a6e22e">title</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;投资人概览&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">TODO</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">填充页面内容</span> <span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">PageWrapper</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">setup</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ts&#34;</span>&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 预留接口调用和状态管理位置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><ol start="3">
+<li>自动往某个路由模块里追加配置</li>
+</ol>
+<p>这样新页面出现的那一刻就已经可以访问，只需要填内容。</p>
+<hr>
+<h2 id="2-create-api接口封装生成器">2. <code>create-api</code>：接口封装生成器</h2>
+<p>写接口封装时经常要做：</p>
+<ul>
+<li>定义请求参数类型</li>
+<li>定义响应数据类型</li>
+<li>封装 <code>request</code> 函数</li>
+</ul>
+<p>这些都是套路，于是又写了一个 <code>create-api</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx fe-tools create-api
+</span></span></code></pre></div><p>约定输入可以是一个简单 JSON：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsonc" data-lang="jsonc"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;getInvestorList&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;url&#34;</span>: <span style="color:#e6db74">&#34;/api/investor/list&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;method&#34;</span>: <span style="color:#e6db74">&#34;POST&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;request&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;page&#34;</span>: <span style="color:#e6db74">&#34;number&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;pageSize&#34;</span>: <span style="color:#e6db74">&#34;number&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;keyword?&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;response&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;total&#34;</span>: <span style="color:#e6db74">&#34;number&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;list&#34;</span>: <span style="color:#e6db74">&#34;Investor[]&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>脚本生成的代码大致是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">GetInvestorListReq</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">page</span>: <span style="color:#66d9ef">number</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">pageSize</span>: <span style="color:#66d9ef">number</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">keyword?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Investor</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// TODO: 补全字段
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">GetInvestorListRes</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">total</span>: <span style="color:#66d9ef">number</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">list</span>: <span style="color:#66d9ef">Investor</span>[]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getInvestorList</span>(<span style="color:#a6e22e">params</span>: <span style="color:#66d9ef">GetInvestorListReq</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">request</span>&lt;<span style="color:#f92672">GetInvestorListRes</span>&gt;({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/api/investor/list&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;POST&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">data</span>: <span style="color:#66d9ef">params</span>
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>后续只需要补充 <code>Investor</code> 的字段即可。</p>
+<hr>
+<h2 id="3-create-module常规-crud-模块一键生成">3. <code>create-module</code>：常规 CRUD 模块一键生成</h2>
+<p>很多中台模块的形态都是：</p>
+<ul>
+<li>列表 + 搜索</li>
+<li>新建 / 编辑弹窗</li>
+<li>行操作（启用/禁用等）</li>
+</ul>
+<p>所以又抽了一层「模块脚手架」：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx fe-tools create-module
+</span></span></code></pre></div><p>交互时会问：</p>
+<ul>
+<li>模块英文名：<code>risk-rule</code></li>
+<li>模块中文名：<code>风控规则</code></li>
+<li>需要哪些能力：列表 / 表单 / 详情 / 导出 等</li>
+</ul>
+<p>生成内容包括：</p>
+<ul>
+<li>列表页 + 弹窗组件骨架</li>
+<li>对应路由配置</li>
+<li>初始 API 文件</li>
+<li>列定义、搜索表单配置等模板</li>
+</ul>
+<p>这些模板代码并不追求极致抽象，核心原则是：</p>
+<blockquote>
+<p>生成出来的东西要「看得懂、愿意改」，而不是一堆黑魔法。</p>
+</blockquote>
+<hr>
+<h2 id="4-技术实现cli-的几个常用积木">4. 技术实现：CLI 的几个常用积木</h2>
+<p>几个常用库：</p>
+<ul>
+<li><code>commander</code>：命令解析</li>
+<li><code>inquirer</code>：命令行交互</li>
+<li>模板引擎（ejs/handlebars）或者简单模板字符串</li>
+<li><code>fs</code> / <code>path</code>：读写文件</li>
+</ul>
+<p>一个极简例子：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">Command</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;commander&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">inquirer</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;inquirer&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">fs</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;fs&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">path</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;path&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">program</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Command</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">program</span>
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">command</span>(<span style="color:#e6db74">&#39;create-page&#39;</span>)
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">action</span>(<span style="color:#66d9ef">async</span> () <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">answers</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">inquirer</span>.<span style="color:#a6e22e">prompt</span>([
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;name&#39;</span>, <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;页面英文名（用于路径）&#39;</span> },
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;title&#39;</span>, <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;页面中文标题&#39;</span> }
+</span></span><span style="display:flex;"><span>    ])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">dir</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">cwd</span>(), <span style="color:#e6db74">&#39;src/views&#39;</span>, <span style="color:#a6e22e">answers</span>.<span style="color:#a6e22e">name</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">mkdirSync</span>(<span style="color:#a6e22e">dir</span>, { <span style="color:#a6e22e">recursive</span>: <span style="color:#66d9ef">true</span> })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">content</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`&lt;template&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;PageWrapper title=&#34;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">answers</span>.<span style="color:#a6e22e">title</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  &lt;/PageWrapper&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/template&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;script setup lang=&#34;ts&#34;&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&lt;/script&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">writeFileSync</span>(<span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">dir</span>, <span style="color:#e6db74">&#39;index.vue&#39;</span>), <span style="color:#a6e22e">content</span>, <span style="color:#e6db74">&#39;utf-8&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;页面已生成：&#39;</span>, <span style="color:#a6e22e">dir</span>)
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">program</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">argv</span>)
+</span></span></code></pre></div><p>再逐步演化出模板系统和配置。</p>
+<hr>
+<h2 id="5-使用体验与小结">5. 使用体验与小结</h2>
+<p>这些 CLI 带来的直接收益：</p>
+<ol>
+<li>
+<p><strong>减少重复劳动</strong></p>
+<ul>
+<li>新页面/新模块的「机械工作量」明显下降</li>
+<li>人更多在想业务结构和交互</li>
+</ul>
+</li>
+<li>
+<p><strong>统一工程结构</strong></p>
+<ul>
+<li>新人跟着模板写，很自然地保持一致结构</li>
+<li>换项目迁移成本变低</li>
+</ul>
+</li>
+<li>
+<p><strong>方便与 AI 结合</strong></p>
+<ul>
+<li>CLI 负责生成骨架</li>
+<li>AI 可以帮忙填充接口调用、状态管理、甚至部分页面逻辑</li>
+</ul>
+</li>
+</ol>
+<p>写 CLI 本身也没什么神秘的，本质就是：</p>
+<blockquote>
+<p>把自己已经做过很多次、模式比较稳定的事情，封装成一套脚本。</p>
+</blockquote>
+<p>如果你也想写，可以先从一个问题开始：</p>
+<blockquote>
+<p>「这三个月里，哪件事我重复做得最多？」</p>
+</blockquote>
+<p>从那里切入，做一个小脚本，很快就能尝到甜头。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-09-28</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2024-09-28-cli-and-scaffolding-tools/" data-title="写几个小脚本帮自己省时间：前端 CLI / 脚手架实践" data-via="https://github.com/cs11b137" data-hashtags="CLI,脚手架,自动化,Node.js"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2024-09-28-cli-and-scaffolding-tools/" data-hashtag="CLI"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2024-09-28-cli-and-scaffolding-tools/" data-title="写几个小脚本帮自己省时间：前端 CLI / 脚手架实践"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2024-09-28-cli-and-scaffolding-tools/" data-title="写几个小脚本帮自己省时间：前端 CLI / 脚手架实践"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2024-09-28-cli-and-scaffolding-tools/" data-title="写几个小脚本帮自己省时间：前端 CLI / 脚手架实践"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/cli/">CLI</a>,&nbsp;<a href="/tags/%E8%84%9A%E6%89%8B%E6%9E%B6/">脚手架</a>,&nbsp;<a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a>,&nbsp;<a href="/tags/node.js/">Node.js</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2024-08-10-personal-knowledge-base-with-ai/" class="prev" rel="prev" title="用 Hugo &#43; 向量库搭一个个人知识库 &#43; AI 搜索"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>用 Hugo + 向量库搭一个个人知识库 + AI 搜索</a>
+            <a href="/posts/2024-11-05-financial-system-governance/" class="next" rel="next" title="维护一套「金融级」系统的日常：技术债与治理">维护一套「金融级」系统的日常：技术债与治理<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

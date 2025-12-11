@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>从写业务到做架构：我自己的前端方法论 - Saiga</title><meta name="Description" content="从长期负责中大型 B 端系统的经验里，抽离出一套属于自己的前端架构方法论：从问题出发，而不是从技术出发。"><meta property="og:url" content="http://localhost:1313/posts/2025-09-20-front-end-architecture-methodology/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="从写业务到做架构：我自己的前端方法论">
+  <meta property="og:description" content="从长期负责中大型 B 端系统的经验里，抽离出一套属于自己的前端架构方法论：从问题出发，而不是从技术出发。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-09-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-09-20T00:00:00+00:00">
+    <meta property="article:tag" content="架构方法论">
+    <meta property="article:tag" content="中台">
+    <meta property="article:tag" content="工程实践">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="从写业务到做架构：我自己的前端方法论">
+  <meta name="twitter:description" content="从长期负责中大型 B 端系统的经验里，抽离出一套属于自己的前端架构方法论：从问题出发，而不是从技术出发。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2025-09-20-front-end-architecture-methodology/" /><link rel="prev" href="http://localhost:1313/posts/2025-08-03-ai-side-project-review/" /><link rel="next" href="http://localhost:1313/posts/2025-11-05-career-and-ai-path/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "从写业务到做架构：我自己的前端方法论",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2025-09-20-front-end-architecture-methodology\/"
+        },"genre": "posts","keywords": "架构方法论, 中台, 工程实践","wordcount":  164 ,
+        "url": "http:\/\/localhost:1313\/posts\/2025-09-20-front-end-architecture-methodology\/","datePublished": "2025-09-20T00:00:00+00:00","dateModified": "2025-09-20T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "从长期负责中大型 B 端系统的经验里，抽离出一套属于自己的前端架构方法论：从问题出发，而不是从技术出发。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">从写业务到做架构：我自己的前端方法论</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>前端架构</a>&nbsp;<a href="/categories/%E6%80%9D%E8%80%83/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>思考</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-09-20">2025-09-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 164 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-架构的起点不是技术栈而是这系统要活多久">1. 架构的起点：不是技术栈，而是「这系统要活多久」</a></li>
+    <li><a href="#2-分层先把不会变的东西和经常变的东西拆开">2. 分层：先把「不会变的东西」和「经常变的东西」拆开</a></li>
+    <li><a href="#3-通用组件的边界只抽重复的不强行统一一切">3. 「通用组件」的边界：只抽重复的，不强行统一一切</a></li>
+    <li><a href="#4-配置化与半低代码在可控范围内偷懒">4. 配置化与「半低代码」：在可控范围内偷懒</a></li>
+    <li><a href="#5-权限--路由体系一定要想清楚的基础设施">5. 权限 / 路由体系：一定要想清楚的「基础设施」</a></li>
+    <li><a href="#6-监控与可观测性不要等出问题才想起来">6. 监控与可观测性：不要等出问题才想起来</a></li>
+    <li><a href="#7-关于-ai它在架构里的位置">7. 关于 AI：它在架构里的位置</a></li>
+    <li><a href="#8-小结">8. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>做前端这几年，角色在慢慢变化：</p>
+<ul>
+<li>从「实现页面的人」，变成「搭框架的人」</li>
+<li>从「写功能」，变成「为一整个系统的演进负责」</li>
+</ul>
+<p>这篇就试着把自己这几年在前端架构上的一些思路整理一下。<br>
+不敢说是「最佳实践」，更像是「个人使用手册」。</p>
+<hr>
+<h2 id="1-架构的起点不是技术栈而是这系统要活多久">1. 架构的起点：不是技术栈，而是「这系统要活多久」</h2>
+<p>每次开始新项目，我会先问三个问题：</p>
+<ol>
+<li>这个系统预期会存在几年？</li>
+<li>未来功能是「每年一点小改」还是「不断叠加」？</li>
+<li>有多少团队/多少人会长期在上面开发？</li>
+</ol>
+<p>举两个极端：</p>
+<ul>
+<li>如果只是一个活动页系统，生命周期很短，技术方案可以大胆一点嗨一点，重构成本低；</li>
+<li>如果是一个核心中台系统，预期要活 5 年以上，那一开始就要考虑：模块边界、扩展点、权限体系、配置能力。</li>
+</ul>
+<p>所以在我这里，<strong>技术栈是一个很靠后的决策</strong>，<br>
+前面更重要的是把「生命周期」和「变化模式」看清楚。</p>
+<hr>
+<h2 id="2-分层先把不会变的东西和经常变的东西拆开">2. 分层：先把「不会变的东西」和「经常变的东西」拆开</h2>
+<p>我习惯从一个简单的三层心智模型开始：</p>
+<ol>
+<li>
+<p><strong>基础设施层</strong></p>
+<ul>
+<li>构建工具、路由、状态管理、请求封装、错误处理、监控埋点</li>
+<li>这些东西一旦选定，最好不要频繁更换</li>
+</ul>
+</li>
+<li>
+<p><strong>领域组件层 / 业务抽象层</strong></p>
+<ul>
+<li>列表页骨架、表单渲染器、查询面板、权限指令、图表组件</li>
+<li>把高频但模式稳定的 UI / 交互抽象出来</li>
+</ul>
+</li>
+<li>
+<p><strong>业务编排层</strong></p>
+<ul>
+<li>具体的页面和流程：KYC 流程、电子合同签署、申购流程等</li>
+<li>这里是需求变化最频繁的地方</li>
+</ul>
+</li>
+</ol>
+<p>核心思路是：</p>
+<blockquote>
+<p>把那些「经常变动的业务逻辑」，尽量放到最上层；<br>
+下面两层尽量保持稳定，通过配置和扩展点来适应变化。</p>
+</blockquote>
+<hr>
+<h2 id="3-通用组件的边界只抽重复的不强行统一一切">3. 「通用组件」的边界：只抽重复的，不强行统一一切</h2>
+<p>刚开始做中台的时候，很容易掉进一个坑：</p>
+<blockquote>
+<p>「我要做一套能适用于所有项目的超级组件库！」</p>
+</blockquote>
+<p>实践下来发现，很多时候这会变成：</p>
+<ul>
+<li>组件越来越复杂、配置项越来越多</li>
+<li>真到业务里使用时，各种 override，各种「特别 case」</li>
+</ul>
+<p>我现在给自己的一个约束是：</p>
+<ul>
+<li><strong>只有在 3 个以上业务场景里出现高度相似需求时，才考虑抽成通用组件</strong></li>
+<li>抽象时优先保留可读性和可维护性，而不是极端通用</li>
+</ul>
+<p>举个例子：</p>
+<ul>
+<li>「带分页的表格 + 查询」这种，在中台项目里 100% 会反复出现，值得抽</li>
+<li>某个业务特有的「图表 + 复杂交互」，就没必要强行做成「通用图表组件」</li>
+</ul>
+<hr>
+<h2 id="4-配置化与半低代码在可控范围内偷懒">4. 配置化与「半低代码」：在可控范围内偷懒</h2>
+<p>对于 B 端系统，页面很多时候是「类似但不完全一样」的：</p>
+<ul>
+<li>都有搜索条件、结果表格、一些按钮操作</li>
+<li>但字段、条件、接口都不一样</li>
+</ul>
+<p>我比较认同的做法是「半低代码」：</p>
+<ul>
+<li>用 JSON 等形式描述表单、表格、按钮集合</li>
+<li>前端有一个比较稳定的渲染引擎</li>
+<li>配置可以来源于数据库、配置中心，或者代码里的常量</li>
+</ul>
+<p>但有几个前提：</p>
+<ol>
+<li>配置能力只覆盖 80% 高频场景</li>
+<li>对于复杂/非常个性化的页面，仍然允许「脱离配置，手写页面」</li>
+<li>业务可编辑配置的能力，要有严格的权限和审计</li>
+</ol>
+<p>核心不是追求「什么都配置化」，<br>
+而是优先把高频、变化但模式稳定的部分配置化。</p>
+<hr>
+<h2 id="5-权限--路由体系一定要想清楚的基础设施">5. 权限 / 路由体系：一定要想清楚的「基础设施」</h2>
+<p>在金融类系统里，权限是一个很重的话题。</p>
+<p>前端这边，一套相对靠谱的「菜单 - 路由 - 权限点」体系，可以解决很多问题：</p>
+<ol>
+<li><strong>菜单与路由绑定</strong>：菜单配置里包含路由信息和权限码</li>
+<li><strong>按钮级权限控制</strong>：通过自定义指令或组件，根据权限码控制显隐</li>
+<li><strong>接口权限校验</strong>：前端拦截响应码，配合后端的权限设计做友好提示</li>
+</ol>
+<p>做这块时，我会刻意注意：</p>
+<ul>
+<li>前端不要自行「发明一套权限体系」</li>
+<li>尽量和后端 / 网关 / IAM 系统一致</li>
+</ul>
+<p>否则前后端权限模型不一致，迟早会踩坑。</p>
+<hr>
+<h2 id="6-监控与可观测性不要等出问题才想起来">6. 监控与可观测性：不要等出问题才想起来</h2>
+<p>一个前端架构如果没有监控、埋点、日志，只能算半套。</p>
+<p>我会优先做的几件事：</p>
+<ol>
+<li>
+<p><strong>基础监控</strong></p>
+<ul>
+<li>JS 错误采集</li>
+<li>接口错误率 / 耗时统计</li>
+<li>页面加载性能指标（FCP/LCP 等）</li>
+</ul>
+</li>
+<li>
+<p><strong>关键路径埋点</strong></p>
+<ul>
+<li>比如电子合同签署流程，从「发起」到「完成」的每一步</li>
+<li>有问题时能快速知道卡在哪个环节</li>
+</ul>
+</li>
+<li>
+<p><strong>埋点数据可视化</strong></p>
+<ul>
+<li>有一个简单的看板可以随时看，而不是只是把数据丢到某个系统里</li>
+</ul>
+</li>
+</ol>
+<p>监控的意义不只是「出事时定位」，<br>
+还有一个很重要的是：<strong>为后续优化提供基线。</strong></p>
+<hr>
+<h2 id="7-关于-ai它在架构里的位置">7. 关于 AI：它在架构里的位置</h2>
+<p>这两年 AI 进来了之后，我对前端架构的看法也有点变化。</p>
+<p>AI 在这里对我来说主要起三个作用：</p>
+<ol>
+<li>
+<p><strong>开发效率提升</strong></p>
+<ul>
+<li>辅助写代码、生成脚手架、改写重复逻辑</li>
+<li>对架构本身影响不大，但能加速落地</li>
+</ul>
+</li>
+<li>
+<p><strong>智能化能力注入</strong></p>
+<ul>
+<li>在中台内加入一些 AI 功能，比如智能搜索、智能推荐、智能摘要</li>
+<li>这些可以看作新的「后端服务能力」，前端架构更多是要留好扩展点</li>
+</ul>
+</li>
+<li>
+<p><strong>辅助决策</strong></p>
+<ul>
+<li>利用 AI 帮忙看报表、看日志、写分析报告</li>
+<li>对于「系统治理」和「架构演进」的决策有帮助</li>
+</ul>
+</li>
+</ol>
+<p>换句话说：</p>
+<blockquote>
+<p>我不会为了「AI 化」而推翻现有架构，<br>
+而是让架构对「新增 AI 能力」保持开放。</p>
+</blockquote>
+<hr>
+<h2 id="8-小结">8. 小结</h2>
+<p>如果要用几条话概括我现在的前端架构方法论，大概是：</p>
+<ol>
+<li>从系统生命周期和变化模式出发，而不是先拍板技术栈</li>
+<li>先把「不该变」的基础设施打好，再考虑「可配置」和「通用组件」</li>
+<li>通用组件只为解决高频问题服务，不追求一套吃遍天下</li>
+<li>权限、监控、埋点，是架构的一部分，不是事后补丁</li>
+<li>AI 是增压器，不是方向盘：把它放在「提升效率」和「增强能力」的位置</li>
+</ol>
+<p>这些都不是一开始就想明白的，<br>
+更多是一路踩坑、修路修出来的。</p>
+<p>也许再过几年回头看，这些想法还会继续变化，<br>
+但至少在现在，这是我比较舒服的一套答案。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-09-20</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2025-09-20-front-end-architecture-methodology/" data-title="从写业务到做架构：我自己的前端方法论" data-via="https://github.com/cs11b137" data-hashtags="架构方法论,中台,工程实践"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2025-09-20-front-end-architecture-methodology/" data-hashtag="架构方法论"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2025-09-20-front-end-architecture-methodology/" data-title="从写业务到做架构：我自己的前端方法论"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2025-09-20-front-end-architecture-methodology/" data-title="从写业务到做架构：我自己的前端方法论"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2025-09-20-front-end-architecture-methodology/" data-title="从写业务到做架构：我自己的前端方法论"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E6%9E%B6%E6%9E%84%E6%96%B9%E6%B3%95%E8%AE%BA/">架构方法论</a>,&nbsp;<a href="/tags/%E4%B8%AD%E5%8F%B0/">中台</a>,&nbsp;<a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">工程实践</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2025-08-03-ai-side-project-review/" class="prev" rel="prev" title="几个 AI 小项目的复盘：什么值得长期维护"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>几个 AI 小项目的复盘：什么值得长期维护</a>
+            <a href="/posts/2025-11-05-career-and-ai-path/" class="next" rel="next" title="AI 时代的前端工程师：我的路线选择">AI 时代的前端工程师：我的路线选择<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

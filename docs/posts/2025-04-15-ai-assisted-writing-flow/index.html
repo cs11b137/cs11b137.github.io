@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>我现在写一篇技术博客的 AI 协作流程 - Saiga</title><meta name="Description" content="记录目前写一篇技术博客时，如何在不同阶段使用 AI：选题、大纲、草稿、重构、校对和发布前检查。"><meta property="og:url" content="http://localhost:1313/posts/2025-04-15-ai-assisted-writing-flow/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="我现在写一篇技术博客的 AI 协作流程">
+  <meta property="og:description" content="记录目前写一篇技术博客时，如何在不同阶段使用 AI：选题、大纲、草稿、重构、校对和发布前检查。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-04-15T00:00:00+00:00">
+    <meta property="article:tag" content="写作流程">
+    <meta property="article:tag" content="大模型">
+    <meta property="article:tag" content="技术博客">
+    <meta property="article:tag" content="效率">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="我现在写一篇技术博客的 AI 协作流程">
+  <meta name="twitter:description" content="记录目前写一篇技术博客时，如何在不同阶段使用 AI：选题、大纲、草稿、重构、校对和发布前检查。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2025-04-15-ai-assisted-writing-flow/" /><link rel="prev" href="http://localhost:1313/posts/2025-03-01-ai-recommendation-for-posts/" /><link rel="next" href="http://localhost:1313/posts/2025-06-10-ai-sales-helper-architecture/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "我现在写一篇技术博客的 AI 协作流程",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2025-04-15-ai-assisted-writing-flow\/"
+        },"genre": "posts","keywords": "写作流程, 大模型, 技术博客, 效率","wordcount":  177 ,
+        "url": "http:\/\/localhost:1313\/posts\/2025-04-15-ai-assisted-writing-flow\/","datePublished": "2025-04-15T00:00:00+00:00","dateModified": "2025-04-15T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "记录目前写一篇技术博客时，如何在不同阶段使用 AI：选题、大纲、草稿、重构、校对和发布前检查。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">我现在写一篇技术博客的 AI 协作流程</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%86%99%E4%BD%9C/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>写作</a>&nbsp;<a href="/categories/ai-%E5%BA%94%E7%94%A8/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 应用</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-15">2025-04-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 177 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-选题从零到写哪几个点">1. 选题：从零到「写哪几个点」</a></li>
+    <li><a href="#2-大纲阶段确定文章结构而不是让-ai-代写">2. 大纲阶段：确定文章结构，而不是让 AI 代写</a></li>
+    <li><a href="#3-草稿阶段辅助展开而不是从-0-到-1-代写">3. 草稿阶段：辅助展开，而不是从 0 到 1 代写</a></li>
+    <li><a href="#4-重写与裁剪让文章符合自己的口气">4. 重写与裁剪：让文章符合「自己的口气」</a></li>
+    <li><a href="#5-代码与示例用-ai-帮忙查漏补缺">5. 代码与示例：用 AI 帮忙查漏补缺</a></li>
+    <li><a href="#6-校对与结构检查请-ai-当认真一点的编辑">6. 校对与结构检查：请 AI 当「认真一点的编辑」</a></li>
+    <li><a href="#7-元信息与-seo交给-ai-做一个摘要师">7. 元信息与 SEO：交给 AI 做一个「摘要师」</a></li>
+    <li><a href="#8-整体感受效率提升和风险">8. 整体感受：效率提升和风险</a></li>
+    <li><a href="#9-小结">9. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>以前写一篇技术博客，经常是：</p>
+<blockquote>
+<p>打开编辑器 → 发呆半小时 → 终于写两段 → 忙别的去了。</p>
+</blockquote>
+<p>这两年逐渐把 AI 融入写作流程之后，写作变得轻松了不少。<br>
+这篇就简单记录一下我现在写一篇技术文时，会怎么用 AI 来协作。</p>
+<hr>
+<h2 id="1-选题从零到写哪几个点">1. 选题：从零到「写哪几个点」</h2>
+<p>通常起点是一个很模糊的念头，比如：</p>
+<ul>
+<li>「最近在搞 AI Review，好像有点东西可以写」</li>
+<li>「个人知识库做完了，想记录一下实践」</li>
+</ul>
+<p>我会先把这个念头直接扔给 AI：</p>
+<blockquote>
+<p>「我想写一篇面向前端工程师的博客，主题是 XXX，对象是有 3～5 年经验的人，帮我列 5～8 个可写的角度。」</p>
+</blockquote>
+<p>从返回的角度里，挑 2～3 个自己最有感觉的，作为候选方向。<br>
+很多时候 AI 给的那个「结构化视角」，能帮自己把脑子理顺。</p>
+<hr>
+<h2 id="2-大纲阶段确定文章结构而不是让-ai-代写">2. 大纲阶段：确定文章结构，而不是让 AI 代写</h2>
+<p>确定方向之后，第二步才是大纲。<br>
+这里我会比较主动，把自己的想法写出来：</p>
+<ul>
+<li>我想讲哪些实践</li>
+<li>哪些坑一定要写进去</li>
+<li>哪些是背景、不想展开</li>
+</ul>
+<p>然后让 AI 来「帮我补齐」：</p>
+<blockquote>
+<p>「这是我的大致大纲，你帮我看看有没有明显缺的部分，顺便按阅读顺序帮我调整一下结构。」</p>
+</blockquote>
+<p>AI 常给出的价值在于：</p>
+<ul>
+<li>提醒我「可以加一个问题背景或动机」</li>
+<li>把顺序改得更平滑，比如先讲问题再讲方案</li>
+</ul>
+<p>但最后定稿仍然是我自己拍板。</p>
+<hr>
+<h2 id="3-草稿阶段辅助展开而不是从-0-到-1-代写">3. 草稿阶段：辅助展开，而不是从 0 到 1 代写</h2>
+<p>大纲确定后，每一小节，我会采用一种「半手动」方式：</p>
+<ol>
+<li>先用要点列出我想说的内容：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>- 技术现状：目前项目里怎么做的
+</span></span><span style="display:flex;"><span>- 痛点：哪些地方做起来很别扭
+</span></span><span style="display:flex;"><span>- 尝试方案：试过什么，失败在哪
+</span></span><span style="display:flex;"><span>- 最后采用的方案：为什么选择它
+</span></span></code></pre></div><ol start="2">
+<li>然后请 AI 基于要点帮我扩写成一段自然语言草稿。</li>
+</ol>
+<p>这样做有几个好处：</p>
+<ul>
+<li>草稿不会离我的真实思路太远</li>
+<li>扩写后的句子更「顺滑」，不用自己纠结措辞</li>
+<li>自己的角色更像是「导演 + 编剧」，AI 只是「文案助手」</li>
+</ul>
+<p>有时也会直接手写某些更个人的段落，比如自嘲、感想，这类交给模型往往味道不对。</p>
+<hr>
+<h2 id="4-重写与裁剪让文章符合自己的口气">4. 重写与裁剪：让文章符合「自己的口气」</h2>
+<p>扩写出来的东西，第一版通常都太「工整」了。<br>
+我会做一轮比较粗暴的处理：</p>
+<ol>
+<li>删掉所有套话、空话</li>
+<li>把口吻改回「我平时在聊天时会用的说法」</li>
+<li>把句子剪短，尤其是技术细节部分</li>
+</ol>
+<p>这一步不怎么用 AI，基本靠自己读一遍。<br>
+因为「口气」这件事，目前还是自己最敏感。</p>
+<hr>
+<h2 id="5-代码与示例用-ai-帮忙查漏补缺">5. 代码与示例：用 AI 帮忙查漏补缺</h2>
+<p>文章里涉及代码时，我会这样用 AI：</p>
+<ol>
+<li>
+<p>把现有代码片段贴给 AI，让它帮忙检查：</p>
+<ul>
+<li>有没有明显 bug</li>
+<li>是否有更简洁的写法</li>
+</ul>
+</li>
+<li>
+<p>让它帮忙生成一两个简单的输入/输出示例，用于说明场景。</p>
+</li>
+</ol>
+<p>但最终贴进文章的代码，一定会自己在本地跑一遍。<br>
+不信任任何「只出现在对话框里的代码」。</p>
+<hr>
+<h2 id="6-校对与结构检查请-ai-当认真一点的编辑">6. 校对与结构检查：请 AI 当「认真一点的编辑」</h2>
+<p>在文章基本成形之后，会再用 AI 做两件事：</p>
+<ol>
+<li>
+<p><strong>逻辑与结构检查</strong></p>
+<p>提示词类似：</p>
+<blockquote>
+<p>「帮我检查这篇文章的结构和逻辑，有没有明显跳跃，或前后自相矛盾的地方，只给出你认为最重要的 3～5 条建议。」</p>
+</blockquote>
+</li>
+<li>
+<p><strong>读者视角的可读性</strong></p>
+<blockquote>
+<p>「假设你是一个有 3 年经验的前端工程师，来读这篇文章，你会在哪些地方觉得太抽象或难懂？帮我指出 3 个需要补充解释的点。」</p>
+</blockquote>
+</li>
+</ol>
+<p>这一步经常能挖出一些「自己理所当然，但对读者未必好懂」的地方。</p>
+<hr>
+<h2 id="7-元信息与-seo交给-ai-做一个摘要师">7. 元信息与 SEO：交给 AI 做一个「摘要师」</h2>
+<p>最后，还会让 AI 帮忙生成：</p>
+<ul>
+<li>一句 40～60 字左右的 <strong>描述（description）</strong></li>
+<li>3～6 个合适的 <strong>标签（tags）</strong></li>
+<li>一版更「标题党一点」和一版更「中性」的标题版本，做取舍</li>
+</ul>
+<p>提示词会说清楚：</p>
+<blockquote>
+<p>「帮我生成一段适合博客 Front matter 使用的摘要，要求：简短、具体，不要夸张形容词。」</p>
+</blockquote>
+<p>这样做能节省不少反复修改的小时间。</p>
+<hr>
+<h2 id="8-整体感受效率提升和风险">8. 整体感受：效率提升和风险</h2>
+<p>这套流程用下来，几个直观感受：</p>
+<ol>
+<li>
+<p><strong>最明显的提升在「从 0 到 0.5」这段路</strong></p>
+<ul>
+<li>选题和大纲阶段，不再那么容易卡壳</li>
+<li>草稿阶段也不太会被语句卡住</li>
+</ul>
+</li>
+<li>
+<p><strong>真正有门槛的仍然是「内容本身」</strong></p>
+<ul>
+<li>AI 再强，也不能替你踩坑、做实验、写代码</li>
+<li>技术文章写得值不值，看的是你有没有真东西可写</li>
+</ul>
+</li>
+<li>
+<p><strong>要一直提醒自己：别变成「模型的传声筒」</strong></p>
+<ul>
+<li>能从个人经历/实践出发的地方，一定自己写</li>
+<li>模型只负责润色、补充和辅助</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="9-小结">9. 小结</h2>
+<p>我现在写一篇技术博客，大致会这样用 AI：</p>
+<ol>
+<li>选题阶段：帮忙发散角度</li>
+<li>大纲阶段：帮忙补齐结构</li>
+<li>草稿阶段：根据要点扩写，再由自己改口吻</li>
+<li>代码与示例：帮忙找坑、给输入输出举例</li>
+<li>校对和结构调整：当一个挑错的编辑</li>
+<li>摘要和标签：当一个省心的「元信息生成器」</li>
+</ol>
+<p>它不会让你立刻变成更厉害的工程师，<br>
+但会让「把东西写出来」这件事，没那么痛苦。</p>
+<p>对我来说，更大的意义是：</p>
+<blockquote>
+<p>写作从消耗变成了「整理和复盘」的过程。<br>
+而 AI，只是在旁边帮我把这件事做得更顺一点。</p>
+</blockquote>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-04-15</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2025-04-15-ai-assisted-writing-flow/" data-title="我现在写一篇技术博客的 AI 协作流程" data-via="https://github.com/cs11b137" data-hashtags="写作流程,大模型,技术博客,效率"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2025-04-15-ai-assisted-writing-flow/" data-hashtag="写作流程"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2025-04-15-ai-assisted-writing-flow/" data-title="我现在写一篇技术博客的 AI 协作流程"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2025-04-15-ai-assisted-writing-flow/" data-title="我现在写一篇技术博客的 AI 协作流程"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2025-04-15-ai-assisted-writing-flow/" data-title="我现在写一篇技术博客的 AI 协作流程"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%86%99%E4%BD%9C%E6%B5%81%E7%A8%8B/">写作流程</a>,&nbsp;<a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>,&nbsp;<a href="/tags/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>,&nbsp;<a href="/tags/%E6%95%88%E7%8E%87/">效率</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2025-03-01-ai-recommendation-for-posts/" class="prev" rel="prev" title="用简单推荐算法 &#43; AI 做「你可能还想看」"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>用简单推荐算法 + AI 做「你可能还想看」</a>
+            <a href="/posts/2025-06-10-ai-sales-helper-architecture/" class="next" rel="next" title="一个「销售漏斗 &#43; AI 推荐系统」的架构草图">一个「销售漏斗 + AI 推荐系统」的架构草图<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

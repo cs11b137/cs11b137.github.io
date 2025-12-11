@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>一次代码，多端运行：H5 &#43; 小程序的复用实践 - Saiga</title><meta name="Description" content="结合实际项目，聊聊如何抽象业务核心、隔离端能力差异，让一套代码尽可能在 H5 和小程序之间复用。"><meta property="og:url" content="http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="一次代码，多端运行：H5 &#43; 小程序的复用实践">
+  <meta property="og:description" content="结合实际项目，聊聊如何抽象业务核心、隔离端能力差异，让一套代码尽可能在 H5 和小程序之间复用。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-01-23T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-01-23T00:00:00+00:00">
+    <meta property="article:tag" content="代码复用">
+    <meta property="article:tag" content="小程序">
+    <meta property="article:tag" content="H5">
+    <meta property="article:tag" content="多端架构">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="一次代码，多端运行：H5 &#43; 小程序的复用实践">
+  <meta name="twitter:description" content="结合实际项目，聊聊如何抽象业务核心、隔离端能力差异，让一套代码尽可能在 H5 和小程序之间复用。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/" /><link rel="prev" href="http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/" /><link rel="next" href="http://localhost:1313/posts/2021-04-02-permission-system-design/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "一次代码，多端运行：H5 + 小程序的复用实践",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2021-01-23-multi-end-code-sharing\/"
+        },"genre": "posts","keywords": "代码复用, 小程序, H5, 多端架构","wordcount":  464 ,
+        "url": "http:\/\/localhost:1313\/posts\/2021-01-23-multi-end-code-sharing\/","datePublished": "2021-01-23T00:00:00+00:00","dateModified": "2021-01-23T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "结合实际项目，聊聊如何抽象业务核心、隔离端能力差异，让一套代码尽可能在 H5 和小程序之间复用。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">一次代码，多端运行：H5 + 小程序的复用实践</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%A4%9A%E7%AB%AF%E5%BC%80%E5%8F%91/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>多端开发</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2021-01-23">2021-01-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 464 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-能复用和不能复用的先分清">1. 能复用和不能复用的先分清</a></li>
+    <li><a href="#2-目录与分层core--adapters">2. 目录与分层：core + adapters</a>
+      <ul>
+        <li><a href="#21-core-里放什么">2.1 <code>core</code> 里放什么？</a></li>
+        <li><a href="#22-请求与存储用接口抽象">2.2 请求与存储用「接口」抽象</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-业务服务如何做薄-ui厚-service">3. 业务服务如何做「薄 UI，厚 Service」</a></li>
+    <li><a href="#4-多端差异的几个典型适配点">4. 多端差异的几个典型适配点</a>
+      <ul>
+        <li><a href="#41-路由与跳转">4.1 路由与跳转</a></li>
+        <li><a href="#42-环境信息--存储">4.2 环境信息 &amp; 存储</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-踩过的坑和经验">5. 踩过的坑和经验</a></li>
+    <li><a href="#6-小结">6. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>多端已经是老话题了：</p>
+<ul>
+<li>产品想要 <strong>H5 + 小程序 + 后面可能再来个 App</strong>；</li>
+<li>但人手并不会随平台数量线性增加。</li>
+</ul>
+<p>所以问题就变成了：</p>
+<blockquote>
+<p><strong>能不能尽量做到：一套业务逻辑，多端复用，只在各端做少量适配？</strong></p>
+</blockquote>
+<p>这篇文章从一个实际项目出发，聊聊我是怎么拆分层次、抽象业务核心、隔离端能力差异，让 H5 和小程序在同一套代码下运行得比较舒服。</p>
+<hr>
+<h2 id="1-能复用和不能复用的先分清">1. 能复用和不能复用的先分清</h2>
+<p>先别谈框架，先想清楚几件事：</p>
+<p><strong>通常可以复用的：</strong></p>
+<ul>
+<li>业务模型：订单、用户、商品这些核心数据结构；</li>
+<li>领域逻辑：状态流转、金额计算、表单校验等纯逻辑；</li>
+<li>接口层：请求参数组装、响应数据提取、错误码处理；</li>
+<li>公共工具：日期、金额、校验、格式化等。</li>
+</ul>
+<p><strong>通常不能直接复用的：</strong></p>
+<ul>
+<li>UI 组件和布局（DOM vs 小程序组件）；</li>
+<li>路由与页面生命周期；</li>
+<li>存储层（<code>localStorage</code> vs <code>wx.setStorage</code> 等）；</li>
+<li>原生能力（扫码、相册、位置等）。</li>
+</ul>
+<p>所以设计时的目标是：</p>
+<blockquote>
+<p><strong>把「业务核心」从这些平台差异里剥离出来，用一层「适配器」去对接不同端能力。</strong></p>
+</blockquote>
+<hr>
+<h2 id="2-目录与分层core--adapters">2. 目录与分层：core + adapters</h2>
+<p>我们当时的多端项目采用的是类似 Monorepo 的结构：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>project-root
+</span></span><span style="display:flex;"><span>├── packages
+</span></span><span style="display:flex;"><span>│   ├── core          <span style="color:#75715e"># 端无关的业务核心（可被多端复用）</span>
+</span></span><span style="display:flex;"><span>│   ├── h5            <span style="color:#75715e"># H5 端工程（Vue/React 等）</span>
+</span></span><span style="display:flex;"><span>│   └── miniapp       <span style="color:#75715e"># 小程序端工程（uni-app / Taro / 原生）</span>
+</span></span><span style="display:flex;"><span>└── package.json
+</span></span></code></pre></div><h3 id="21-core-里放什么">2.1 <code>core</code> 里放什么？</h3>
+<p>核心模块大致有：</p>
+<ul>
+<li><code>models/</code> —— 订单、用户等类型定义和基础逻辑；</li>
+<li><code>services/</code> —— 业务服务，比如下单、取消订单、查询列表；</li>
+<li><code>apis/</code> —— 针对后端的 API 封装（不依赖具体请求实现）；</li>
+<li><code>utils/</code> —— 工具方法。</li>
+</ul>
+<p>关键点是：<strong><code>core</code> 不能直接用浏览器 API 或小程序 API</strong>，一旦用了就失去可复用性。</p>
+<h3 id="22-请求与存储用接口抽象">2.2 请求与存储用「接口」抽象</h3>
+<p>举个例子，<code>core/apis/httpClient</code> 不直接 new Axios 或调用 <code>wx.request</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// packages/core/apis/http.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">HttpClient</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">get</span>&lt;<span style="color:#f92672">T</span>&gt;(<span style="color:#a6e22e">url</span>: <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">config?</span>: <span style="color:#66d9ef">any</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Promise</span>&lt;<span style="color:#f92672">T</span>&gt;;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">post</span>&lt;<span style="color:#f92672">T</span>&gt;(<span style="color:#a6e22e">url</span>: <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">data?</span>: <span style="color:#66d9ef">any</span>, <span style="color:#a6e22e">config?</span>: <span style="color:#66d9ef">any</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Promise</span>&lt;<span style="color:#f92672">T</span>&gt;;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">client</span>: <span style="color:#66d9ef">HttpClient</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">setHttpClient</span>(<span style="color:#a6e22e">c</span>: <span style="color:#66d9ef">HttpClient</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">client</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getHttpClient() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">client</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#39;HttpClient not set&#39;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">client</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在 H5 端：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// packages/h5/src/bootstrap.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">axios</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;axios&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">setHttpClient</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;@project/core/apis/http&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">setHttpClient</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">get</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">config</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">axios</span>.<span style="color:#66d9ef">get</span>(<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">config</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">res</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">data</span>),
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">post</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">config</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">post</span>(<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">config</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">res</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">data</span>),
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>在小程序端：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// packages/miniapp/src/bootstrap.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">setHttpClient</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;@project/core/apis/http&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">setHttpClient</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">get</span>(<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">config</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Promise</span>((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">wx</span>.<span style="color:#a6e22e">request</span>({
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">url</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;GET&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">data</span>: <span style="color:#66d9ef">config?.params</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">success</span>(<span style="color:#a6e22e">res</span>) { <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">data</span>); },
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fail</span>(<span style="color:#a6e22e">err</span>) { <span style="color:#a6e22e">reject</span>(<span style="color:#a6e22e">err</span>); },
+</span></span><span style="display:flex;"><span>      });
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">post</span>(<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Promise</span>((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">wx</span>.<span style="color:#a6e22e">request</span>({
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">url</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;POST&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">data</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">success</span>(<span style="color:#a6e22e">res</span>) { <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">data</span>); },
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fail</span>(<span style="color:#a6e22e">err</span>) { <span style="color:#a6e22e">reject</span>(<span style="color:#a6e22e">err</span>); },
+</span></span><span style="display:flex;"><span>      });
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>业务代码只关心：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">getHttpClient</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;./http&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">fetchOrderList</span>(<span style="color:#a6e22e">params</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">getHttpClient</span>().<span style="color:#66d9ef">get</span>(<span style="color:#e6db74">&#39;/order/list&#39;</span>, { <span style="color:#a6e22e">params</span> });
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样就实现了真正的「多端同一份业务逻辑」。</p>
+<hr>
+<h2 id="3-业务服务如何做薄-ui厚-service">3. 业务服务如何做「薄 UI，厚 Service」</h2>
+<p>在 <code>core/services</code> 里，我习惯把业务串起来：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// packages/core/services/orderService.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">fetchOrderList</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;../apis/order&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#66d9ef">type</span> { <span style="color:#a6e22e">Order</span>, <span style="color:#a6e22e">OrderQueryParams</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;../models/order&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">queryOrders</span>(<span style="color:#a6e22e">params</span>: <span style="color:#66d9ef">OrderQueryParams</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Promise</span>&lt;<span style="color:#f92672">Order</span><span style="color:#960050;background-color:#1e0010">[]</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">res</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetchOrderList</span>(<span style="color:#a6e22e">params</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 这里可以做一些统一的转换、排序、过滤
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">list</span> <span style="color:#f92672">||</span> [];
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">canCancel</span>(<span style="color:#a6e22e">order</span>: <span style="color:#66d9ef">Order</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">boolean</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;CREATED&#39;</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;PENDING&#39;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getOrderStatusText</span>(<span style="color:#a6e22e">order</span>: <span style="color:#66d9ef">Order</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;已支付&#39;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在 H5 端和小程序端页面里直接用这些 service：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// H5 / 小程序 里都是类似的调用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">list</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">queryOrders</span>({ <span style="color:#a6e22e">page</span>: <span style="color:#66d9ef">1</span>, <span style="color:#a6e22e">pageSize</span>: <span style="color:#66d9ef">10</span> });
+</span></span></code></pre></div><p>UI 差异就留在端内处理，比如表格渲染样式、列表滚动加载等。</p>
+<hr>
+<h2 id="4-多端差异的几个典型适配点">4. 多端差异的几个典型适配点</h2>
+<h3 id="41-路由与跳转">4.1 路由与跳转</h3>
+<ul>
+<li>H5：<code>router.push({ name: 'OrderDetail', params: { id } })</code></li>
+<li>小程序：<code>wx.navigateTo({ url: '/pages/order-detail/index?id=' + id })</code></li>
+</ul>
+<p>做法是也抽象成一个 <code>Navigator</code> 接口：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// core/router/navigator.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Navigator</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">goOrderDetail</span>(<span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">goOrderList</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">void</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">navigator</span>: <span style="color:#66d9ef">Navigator</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">setNavigator</span>(<span style="color:#a6e22e">n</span>: <span style="color:#66d9ef">Navigator</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">navigator</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">n</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">useNavigator() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">navigator</span>) <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#39;Navigator not set&#39;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">navigator</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>H5 和小程序各自实现一套 <code>Navigator</code>，业务逻辑只关心 <code>useNavigator().goOrderDetail(id)</code>。</p>
+<h3 id="42-环境信息--存储">4.2 环境信息 &amp; 存储</h3>
+<ul>
+<li>token、本地缓存、当前环境（dev/stage/prod）等等，也可以抽象成一组 Env / Storage 接口；</li>
+<li><code>core</code> 中只通过这些接口获取信息。</li>
+</ul>
+<hr>
+<h2 id="5-踩过的坑和经验">5. 踩过的坑和经验</h2>
+<ol>
+<li>
+<p><strong>不要一开始就追求「所有代码都完全共用」</strong></p>
+<ul>
+<li>一些强 UI 相关的东西（组件、页面布局）放在各端自己实现维度更合理；</li>
+<li>共用优先放在：数据结构、业务规则、接口封装。</li>
+</ul>
+</li>
+<li>
+<p><strong>记得为「以后要支持新端」预留空间</strong></p>
+<ul>
+<li>不要在 <code>core</code> 里写 <code>if (isMiniapp) { ... }</code> 这种判断；</li>
+<li>用「接口 + 端内适配」的方式更可扩展。</li>
+</ul>
+</li>
+<li>
+<p><strong>类型定义越早统一越好</strong></p>
+<ul>
+<li>特别是使用 TypeScript 时，共享 <code>models</code> 可以避免端内字段名乱飞；</li>
+<li>同时也让多端改动时更有边界感。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="6-小结">6. 小结</h2>
+<p>多端复用的关键不是某个框架，而是：</p>
+<ol>
+<li><strong>先把「和端无关的业务逻辑」揪出来；</strong></li>
+<li>用一层稳定的接口把它们和「端能力」隔开；</li>
+<li>在各端实现自己的适配层。</li>
+</ol>
+<p>当业务迭代变快、端数变多时，这套分层会真正体现价值：</p>
+<ul>
+<li>新增一个端，多数情况下只需要实现一套适配；</li>
+<li>需求逻辑变化，多端只改 <code>core</code> 里的一份代码。</li>
+</ul>
+<p>这才是真正意义上的「一次代码，多端运行」。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-01-23</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/" data-title="一次代码，多端运行：H5 &#43; 小程序的复用实践" data-via="https://github.com/cs11b137" data-hashtags="代码复用,小程序,H5,多端架构"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/" data-hashtag="代码复用"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/" data-title="一次代码，多端运行：H5 &#43; 小程序的复用实践"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/" data-title="一次代码，多端运行：H5 &#43; 小程序的复用实践"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/" data-title="一次代码，多端运行：H5 &#43; 小程序的复用实践"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8/">代码复用</a>,&nbsp;<a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/">小程序</a>,&nbsp;<a href="/tags/h5/">H5</a>,&nbsp;<a href="/tags/%E5%A4%9A%E7%AB%AF%E6%9E%B6%E6%9E%84/">多端架构</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2020-12-12-workflow-and-tools-2020/" class="prev" rel="prev" title="2019–2020 我的前端工作流与常用工具清单"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>2019–2020 我的前端工作流与常用工具清单</a>
+            <a href="/posts/2021-04-02-permission-system-design/" class="next" rel="next" title="菜单、按钮、接口：一套权限系统怎么落地到前端">菜单、按钮、接口：一套权限系统怎么落地到前端<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

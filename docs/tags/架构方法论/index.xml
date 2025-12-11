@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>架构方法论 on Saiga</title>
+    <link>http://localhost:1313/tags/%E6%9E%B6%E6%9E%84%E6%96%B9%E6%B3%95%E8%AE%BA/</link>
+    <description>Recent content in 架构方法论 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Sat, 20 Sep 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%9E%B6%E6%9E%84%E6%96%B9%E6%B3%95%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从写业务到做架构：我自己的前端方法论</title>
+      <link>http://localhost:1313/posts/2025-09-20-front-end-architecture-methodology/</link>
+      <pubDate>Sat, 20 Sep 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2025-09-20-front-end-architecture-methodology/</guid>
+      <description>&lt;p&gt;做前端这几年，角色在慢慢变化：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;从「实现页面的人」，变成「搭框架的人」&lt;/li&gt;&#xA;&lt;li&gt;从「写功能」，变成「为一整个系统的演进负责」&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这篇就试着把自己这几年在前端架构上的一些思路整理一下。&lt;br&gt;&#xA;不敢说是「最佳实践」，更像是「个人使用手册」。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-架构的起点不是技术栈而是这系统要活多久&#34;&gt;1. 架构的起点：不是技术栈，而是「这系统要活多久」&lt;/h2&gt;&#xA;&lt;p&gt;每次开始新项目，我会先问三个问题：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;这个系统预期会存在几年？&lt;/li&gt;&#xA;&lt;li&gt;未来功能是「每年一点小改」还是「不断叠加」？&lt;/li&gt;&#xA;&lt;li&gt;有多少团队/多少人会长期在上面开发？&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;举两个极端：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;如果只是一个活动页系统，生命周期很短，技术方案可以大胆一点嗨一点，重构成本低；&lt;/li&gt;&#xA;&lt;li&gt;如果是一个核心中台系统，预期要活 5 年以上，那一开始就要考虑：模块边界、扩展点、权限体系、配置能力。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;所以在我这里，&lt;strong&gt;技术栈是一个很靠后的决策&lt;/strong&gt;，&lt;br&gt;&#xA;前面更重要的是把「生命周期」和「变化模式」看清楚。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-分层先把不会变的东西和经常变的东西拆开&#34;&gt;2. 分层：先把「不会变的东西」和「经常变的东西」拆开&lt;/h2&gt;&#xA;&lt;p&gt;我习惯从一个简单的三层心智模型开始：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;基础设施层&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;构建工具、路由、状态管理、请求封装、错误处理、监控埋点&lt;/li&gt;&#xA;&lt;li&gt;这些东西一旦选定，最好不要频繁更换&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;领域组件层 / 业务抽象层&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;列表页骨架、表单渲染器、查询面板、权限指令、图表组件&lt;/li&gt;&#xA;&lt;li&gt;把高频但模式稳定的 UI / 交互抽象出来&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;业务编排层&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;具体的页面和流程：KYC 流程、电子合同签署、申购流程等&lt;/li&gt;&#xA;&lt;li&gt;这里是需求变化最频繁的地方&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;核心思路是：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;把那些「经常变动的业务逻辑」，尽量放到最上层；&lt;br&gt;&#xA;下面两层尽量保持稳定，通过配置和扩展点来适应变化。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;3-通用组件的边界只抽重复的不强行统一一切&#34;&gt;3. 「通用组件」的边界：只抽重复的，不强行统一一切&lt;/h2&gt;&#xA;&lt;p&gt;刚开始做中台的时候，很容易掉进一个坑：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;「我要做一套能适用于所有项目的超级组件库！」&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;实践下来发现，很多时候这会变成：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;组件越来越复杂、配置项越来越多&lt;/li&gt;&#xA;&lt;li&gt;真到业务里使用时，各种 override，各种「特别 case」&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;我现在给自己的一个约束是：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;只有在 3 个以上业务场景里出现高度相似需求时，才考虑抽成通用组件&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;抽象时优先保留可读性和可维护性，而不是极端通用&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;举个例子：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;「带分页的表格 + 查询」这种，在中台项目里 100% 会反复出现，值得抽&lt;/li&gt;&#xA;&lt;li&gt;某个业务特有的「图表 + 复杂交互」，就没必要强行做成「通用图表组件」&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;4-配置化与半低代码在可控范围内偷懒&#34;&gt;4. 配置化与「半低代码」：在可控范围内偷懒&lt;/h2&gt;&#xA;&lt;p&gt;对于 B 端系统，页面很多时候是「类似但不完全一样」的：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;都有搜索条件、结果表格、一些按钮操作&lt;/li&gt;&#xA;&lt;li&gt;但字段、条件、接口都不一样&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;我比较认同的做法是「半低代码」：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

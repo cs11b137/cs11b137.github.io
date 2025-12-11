@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>给自己搭一个「AI 助理」开发流程 - Saiga</title><meta name="Description" content="不只是在编辑器里装一个 Copilot，而是把 Prompt 模板、代码补全、重构建议、单测生成等能力系统地接入自己的日常开发流程。"><meta property="og:url" content="http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="给自己搭一个「AI 助理」开发流程">
+  <meta property="og:description" content="不只是在编辑器里装一个 Copilot，而是把 Prompt 模板、代码补全、重构建议、单测生成等能力系统地接入自己的日常开发流程。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2023-07-22T00:00:00+00:00">
+    <meta property="article:modified_time" content="2023-07-22T00:00:00+00:00">
+    <meta property="article:tag" content="开发流程">
+    <meta property="article:tag" content="AI 助手">
+    <meta property="article:tag" content="Prompt 模板">
+    <meta property="article:tag" content="测试与 Lint">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="给自己搭一个「AI 助理」开发流程">
+  <meta name="twitter:description" content="不只是在编辑器里装一个 Copilot，而是把 Prompt 模板、代码补全、重构建议、单测生成等能力系统地接入自己的日常开发流程。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/" /><link rel="prev" href="http://localhost:1313/posts/2023-06-05-ai-api-best-practices/" /><link rel="next" href="http://localhost:1313/posts/2023-09-10-rag-for-project-docs/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "给自己搭一个「AI 助理」开发流程",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2023-07-22-ai-assistant-for-dev\/"
+        },"genre": "posts","keywords": "开发流程, AI 助手, Prompt 模板, 测试与 Lint","wordcount":  237 ,
+        "url": "http:\/\/localhost:1313\/posts\/2023-07-22-ai-assistant-for-dev\/","datePublished": "2023-07-22T00:00:00+00:00","dateModified": "2023-07-22T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "不只是在编辑器里装一个 Copilot，而是把 Prompt 模板、代码补全、重构建议、单测生成等能力系统地接入自己的日常开发流程。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">给自己搭一个「AI 助理」开发流程</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/ai-%E4%B8%8E%E5%BC%80%E5%8F%91%E8%80%85%E4%BD%93%E9%AA%8C/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 与开发者体验</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-07-22">2023-07-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 237 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-先想清楚希望-ai-在开发中帮我做什么">1. 先想清楚：希望 AI 在开发中帮我做什么？</a></li>
+    <li><a href="#2-prompt-模板把怎么问提前想好">2. Prompt 模板：把「怎么问」提前想好</a>
+      <ul>
+        <li><a href="#21-重构模板">2.1 重构模板</a></li>
+        <li><a href="#22-单测生成模板">2.2 单测生成模板</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-编辑器内的-ai使用边界和习惯">3. 编辑器内的 AI：使用边界和习惯</a></li>
+    <li><a href="#4-把-ai-拉进本地工具链lint--测试--脚本">4. 把 AI 拉进「本地工具链」：Lint / 测试 / 脚本</a></li>
+    <li><a href="#5-与团队规范对齐别让-ai-变成风格污染源">5. 与团队规范对齐：别让 AI 变成「风格污染源」</a></li>
+    <li><a href="#6-让-ai-参与需求澄清与设计讨论">6. 让 AI 参与需求澄清与设计讨论</a></li>
+    <li><a href="#7-几个踩坑瞬间">7. 几个踩坑瞬间</a></li>
+    <li><a href="#8-小结把-ai-当开发环境的一部分">8. 小结：把 AI 当「开发环境的一部分」</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>2023 年对我来说有一个明显变化：</p>
+<blockquote>
+<p>编辑器不再是一个「孤立工具」，而是被各种 AI 助手包围。</p>
+</blockquote>
+<p>从简单的代码补全，到用大模型参与需求理解、方案推演、重构、写单测……<br>
+这篇文章就讲讲我是怎么给自己搭一套「AI 助理」开发流程的。</p>
+<hr>
+<h2 id="1-先想清楚希望-ai-在开发中帮我做什么">1. 先想清楚：希望 AI 在开发中帮我做什么？</h2>
+<p>我给自己列了一个清单：</p>
+<ol>
+<li><strong>样板代码生成</strong>：页面骨架、接口封装、组件模板；</li>
+<li><strong>复杂逻辑解释/重构</strong>：老代码梳理、新方案对比；</li>
+<li><strong>单测生成</strong>：尤其是工具函数、纯逻辑模块；</li>
+<li><strong>文档和注释</strong>：根据代码生成合适的注释、接口说明；</li>
+<li><strong>代码 Review 辅助</strong>：帮我发现一些潜在问题或改进点。</li>
+</ol>
+<p>工具上则主要依赖：</p>
+<ul>
+<li>编辑器内的代码补全（Copilot 类）；</li>
+<li>Chat 类大模型（ChatGPT 等）；</li>
+<li>自己整理的一些 Prompt 模板。</li>
+</ul>
+<hr>
+<h2 id="2-prompt-模板把怎么问提前想好">2. Prompt 模板：把「怎么问」提前想好</h2>
+<p>很快会发现：随便问一句「帮我优化这段代码」效果参差不齐。<br>
+于是我开始为不同场景整理<strong>固定 Prompt 模板</strong>。</p>
+<h3 id="21-重构模板">2.1 重构模板</h3>
+<blockquote>
+<p>请作为资深前端工程师，帮我重构下面这段代码：</p>
+<ol>
+<li>目标是提高可读性和可维护性，而不是追求最短写法；</li>
+<li>如果有明显的边界情况，请指出并补上处理；</li>
+<li>给出重构后的代码，并用要点列出你做了哪些调整和原因。</li>
+</ol>
+<p>代码如下：<br>
+```ts<br>
+// code here<br>
+```</p>
+</blockquote>
+<h3 id="22-单测生成模板">2.2 单测生成模板</h3>
+<blockquote>
+<p>帮我为下面这个纯函数生成单元测试用例：</p>
+<ol>
+<li>使用 Jest 语法；</li>
+<li>覆盖常见正常输入和几种边界情况；</li>
+<li>简要说明每个测试用例要验证的点。</li>
+</ol>
+<p>代码如下：<br>
+```ts<br>
+// code here<br>
+```</p>
+</blockquote>
+<p>我会把这些模板存成 Snippet 或者存在笔记里，方便复用。</p>
+<hr>
+<h2 id="3-编辑器内的-ai使用边界和习惯">3. 编辑器内的 AI：使用边界和习惯</h2>
+<p>装上 Copilot 类插件之后，一开始很容易「啥都接」。<br>
+用了一段时间，我给自己定了几个使用习惯：</p>
+<ol>
+<li>
+<p><strong>让它写样板，不让它写业务决策</strong></p>
+<ul>
+<li>例如：生成组件结构、接口调用骨架；</li>
+<li>业务规则、金额计算、权限判断等还是自己写。</li>
+</ul>
+</li>
+<li>
+<p><strong>接受补全前，先用眼睛过一遍</strong></p>
+<ul>
+<li>就像在 Review 别人的代码，而不是自动点回车。</li>
+</ul>
+</li>
+<li>
+<p><strong>善用「用注释驱动生成」</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// TODO: 根据后端返回的订单列表，按状态分组并排序
+</span></span></span></code></pre></div><p>写完注释再停顿一下，让 AI 给实现建议，再按需修改。</p>
+</li>
+<li>
+<p><strong>遇到不明白的代码，直接让它解释</strong></p>
+<ul>
+<li>比如选中一段正则 / 算法，让 AI 用中文解释含义。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="4-把-ai-拉进本地工具链lint--测试--脚本">4. 把 AI 拉进「本地工具链」：Lint / 测试 / 脚本</h2>
+<p>除了编辑器内的代码补全，我也尝试让 AI 参与：</p>
+<ol>
+<li>
+<p><strong>Lint 规则讨论</strong></p>
+<ul>
+<li>把「我们想要的编码规范」描述给大模型，让它帮忙生成 ESLint 规则配置草稿；</li>
+<li>再由团队一起审阅、微调。</li>
+</ul>
+</li>
+<li>
+<p><strong>测试用例设计</strong></p>
+<ul>
+<li>对某个关键模块，先用自然语言描述期望行为；</li>
+<li>让 AI 帮忙列出可能的测试维度（正常 / 边界 / 异常场景）；</li>
+<li>再基于这些维度补写具体测试。</li>
+</ul>
+</li>
+<li>
+<p><strong>脚本生成</strong></p>
+<ul>
+<li>比如写一个解析日志的小脚本、一个批量改名脚本，把需求直接用中文写出来，让 AI 给 Node/TS 实现。</li>
+</ul>
+</li>
+</ol>
+<p>这些东西都不直接进线上逻辑，但在开发效率上帮助很大。</p>
+<hr>
+<h2 id="5-与团队规范对齐别让-ai-变成风格污染源">5. 与团队规范对齐：别让 AI 变成「风格污染源」</h2>
+<p>如果只有你一个人用 AI，问题不大；<br>
+一旦团队里多人开始用，很容易出现：</p>
+<ul>
+<li>不同人生成的代码风格完全不同；</li>
+<li>和既有项目规范不一致。</li>
+</ul>
+<p>几条实践：</p>
+<ol>
+<li>
+<p><strong>把项目的代码规范告诉 AI</strong></p>
+<ul>
+<li>例如：我们使用 Vue3 + <code>&lt;script setup&gt;</code> + Composition API；</li>
+<li>把目录结构、状态管理方式、常用工具抽象一并给它。</li>
+</ul>
+</li>
+<li>
+<p><strong>生成代码后必须过 ESLint/Prettier</strong></p>
+<ul>
+<li>用工具兜底，让风格收敛。</li>
+</ul>
+</li>
+<li>
+<p><strong>Review 时允许指出「AI 味太重」</strong></p>
+<ul>
+<li>比如变量名过于抽象、过度封装、隐含逻辑不清楚；</li>
+<li>鼓励作者自己重写或精简。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="6-让-ai-参与需求澄清与设计讨论">6. 让 AI 参与需求澄清与设计讨论</h2>
+<p>除了写代码，我也开始在更前面一环使用 AI：</p>
+<ol>
+<li>
+<p><strong>需求澄清</strong></p>
+<ul>
+<li>把产品文档贴给 AI，让它帮忙总结关键功能点、边界情况；</li>
+<li>甚至让它列出你应该向产品/后端继续追问的问题。</li>
+</ul>
+</li>
+<li>
+<p><strong>方案对比</strong></p>
+<ul>
+<li>描述两种前端实现方案，让 AI 帮忙对比优缺点：
+<ul>
+<li>例如「用微前端 vs 单仓多项目」；</li>
+<li>「用配置驱动表单 vs 手写组件」。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>生成技术方案初稿</strong></p>
+<ul>
+<li>你先写一个提纲，让 AI 帮你填充结构化内容（背景、目标、方案、风险点）；</li>
+<li>再自己修改成团队风格。</li>
+</ul>
+</li>
+</ol>
+<p>这类工作本质上还是要自己做判断，但 AI 非常适合作为「思路激发器」。</p>
+<hr>
+<h2 id="7-几个踩坑瞬间">7. 几个踩坑瞬间</h2>
+<ol>
+<li>
+<p><strong>盲目相信生成的代码</strong></p>
+<ul>
+<li>一开始图省事，把一大段生成的逻辑直接上了；</li>
+<li>结果边界条件有坑，线上暴露问题。</li>
+<li>教训：AI 写的代码必须像严格 Code Review 一样过一遍。</li>
+</ul>
+</li>
+<li>
+<p><strong>把项目上下文给少了</strong></p>
+<ul>
+<li>AI 不知道你用了哪个状态管理、不知道既有工具函数；</li>
+<li>生成的方案与项目风格完全不搭。</li>
+<li>解决：每次提问之前，先给必要上下文（项目技术栈、相关文件片段）。</li>
+</ul>
+</li>
+<li>
+<p><strong>让 AI 写太长的文件</strong></p>
+<ul>
+<li>一次性生成几百行组件，阅读成本非常高；</li>
+<li>更难自己掌控结构。</li>
+<li>现在更倾向于：分模块、分步骤生成。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="8-小结把-ai-当开发环境的一部分">8. 小结：把 AI 当「开发环境的一部分」</h2>
+<p>搭完这套流程之后，我对「AI + 开发」这件事有几个新的认识：</p>
+<ol>
+<li>它不是单点工具，而是可以贯穿 <strong>需求 → 设计 → 编码 → 测试 → 文档</strong> 的全链路；</li>
+<li>最适合交给它的，是重复度高、结构清晰、容易验证对错的工作；</li>
+<li>最不能丢给它不管的，是涉及业务核心逻辑、钱、权限、安全的部分。</li>
+</ol>
+<p>如果你也想给自己搭一个「AI 助理」开发流程，可以从三步走：</p>
+<ol>
+<li>装一个你顺手的代码补全工具；</li>
+<li>整理几条适合自己常用场景的 Prompt 模板；</li>
+<li>选择一个小模块，从需求→实现→单测，全程让 AI 参与一次。</li>
+</ol>
+<p>用完一段时间，你大概率会发现：<br>
+<strong>不是 AI 取代了你，而是你有了一个新的超强外挂。</strong></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2023-07-22</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/" data-title="给自己搭一个「AI 助理」开发流程" data-via="https://github.com/cs11b137" data-hashtags="开发流程,AI 助手,Prompt 模板,测试与 Lint"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/" data-hashtag="开发流程"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/" data-title="给自己搭一个「AI 助理」开发流程"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/" data-title="给自己搭一个「AI 助理」开发流程"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/" data-title="给自己搭一个「AI 助理」开发流程"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/">开发流程</a>,&nbsp;<a href="/tags/ai-%E5%8A%A9%E6%89%8B/">AI 助手</a>,&nbsp;<a href="/tags/prompt-%E6%A8%A1%E6%9D%BF/">Prompt 模板</a>,&nbsp;<a href="/tags/%E6%B5%8B%E8%AF%95%E4%B8%8E-lint/">测试与 Lint</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2023-06-05-ai-api-best-practices/" class="prev" rel="prev" title="调用大模型 API 的几个最佳实践：重试、降级与审计"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>调用大模型 API 的几个最佳实践：重试、降级与审计</a>
+            <a href="/posts/2023-09-10-rag-for-project-docs/" class="next" rel="next" title="用 RAG 做项目文档问答：从零搭一个 Demo">用 RAG 做项目文档问答：从零搭一个 Demo<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

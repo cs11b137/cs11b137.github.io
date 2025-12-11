@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>第一次用 AI 写前端代码：哪些好用，哪些坑 - Saiga</title><meta name="Description" content="把 AI 当成「会写代码的实习生」：记录第一次把大模型用在前端开发中的体验——它在哪些场景很好用，又在哪里容易踩坑。"><meta property="og:url" content="http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="第一次用 AI 写前端代码：哪些好用，哪些坑">
+  <meta property="og:description" content="把 AI 当成「会写代码的实习生」：记录第一次把大模型用在前端开发中的体验——它在哪些场景很好用，又在哪里容易踩坑。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-12-18T00:00:00+00:00">
+    <meta property="article:modified_time" content="2022-12-18T00:00:00+00:00">
+    <meta property="article:tag" content="AI 编码助手">
+    <meta property="article:tag" content="前端开发">
+    <meta property="article:tag" content="代码生成">
+    <meta property="article:tag" content="重构">
+    <meta property="article:tag" content="单测">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="第一次用 AI 写前端代码：哪些好用，哪些坑">
+  <meta name="twitter:description" content="把 AI 当成「会写代码的实习生」：记录第一次把大模型用在前端开发中的体验——它在哪些场景很好用，又在哪里容易踩坑。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/" /><link rel="prev" href="http://localhost:1313/posts/2022-10-30-ai-doc-assistant-v1/" /><link rel="next" href="http://localhost:1313/posts/2023-01-15-monorepo-migration/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "第一次用 AI 写前端代码：哪些好用，哪些坑",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2022-12-18-ai-code-helper-experiment\/"
+        },"genre": "posts","keywords": "AI 编码助手, 前端开发, 代码生成, 重构, 单测","wordcount":  208 ,
+        "url": "http:\/\/localhost:1313\/posts\/2022-12-18-ai-code-helper-experiment\/","datePublished": "2022-12-18T00:00:00+00:00","dateModified": "2022-12-18T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "把 AI 当成「会写代码的实习生」：记录第一次把大模型用在前端开发中的体验——它在哪些场景很好用，又在哪里容易踩坑。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">第一次用 AI 写前端代码：哪些好用，哪些坑</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/ai-%E6%8E%A2%E7%B4%A2/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 探索</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-12-18">2022-12-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 208 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-几个惊艳到的使用场景">1. 几个「惊艳到」的使用场景</a>
+      <ul>
+        <li><a href="#11-写样板代码boilerplate">1.1 写样板代码（boilerplate）</a></li>
+        <li><a href="#12-写简单的工具函数">1.2 写简单的工具函数</a></li>
+        <li><a href="#13-帮忙翻译老代码">1.3 帮忙「翻译」老代码</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-重构和单测ai-很适合当助手">2. 重构和单测：AI 很适合当助手</a>
+      <ul>
+        <li><a href="#21-帮忙拆函数--命名">2.1 帮忙拆函数 / 命名</a></li>
+        <li><a href="#22-自动生成单元测试草稿">2.2 自动生成单元测试草稿</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-哪些地方容易踩坑">3. 哪些地方容易踩坑？</a>
+      <ul>
+        <li><a href="#31-杜撰-api--配置">3.1 杜撰 API / 配置</a></li>
+        <li><a href="#32-忽略项目上下文">3.2 忽略项目上下文</a></li>
+        <li><a href="#33-隐性-bug-不容易被看出来">3.3 隐性 bug 不容易被看出来</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-我最后形成的一些使用习惯">4. 我最后形成的一些使用习惯</a>
+      <ul>
+        <li><a href="#41-把需求描述清楚">4.1 把需求描述清楚</a></li>
+        <li><a href="#42-小步用它而不是一口气生成一大段">4.2 小步用它，而不是一口气生成一大段</a></li>
+        <li><a href="#43-善用对比和解释">4.3 善用「对比」和「解释」</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-团队协作视角怎么避免风格四分五裂">5. 团队协作视角：怎么避免「风格四分五裂」？</a></li>
+    <li><a href="#6-小结把-ai-当辅助开发环境的一部分">6. 小结：把 AI 当「辅助开发环境」的一部分</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>2022 年我开始把 AI 编码助手真正用在日常开发里，体验可以用一句话概括：</p>
+<blockquote>
+<p><strong>它不是银弹，但如果用得好，很像一个永远不喊累的实习生。</strong></p>
+</blockquote>
+<p>这篇文章主要记录几个方面：</p>
+<ul>
+<li>它在哪些场景明显好用；</li>
+<li>哪些地方容易翻车；</li>
+<li>我最后形成的一些使用习惯。</li>
+</ul>
+<hr>
+<h2 id="1-几个惊艳到的使用场景">1. 几个「惊艳到」的使用场景</h2>
+<h3 id="11-写样板代码boilerplate">1.1 写样板代码（boilerplate）</h3>
+<p>比如：</p>
+<ul>
+<li>新建一个 Vue 3 组合式组件；</li>
+<li>写一个标准的 Axios 封装；</li>
+<li>初始化一个简单的 React 页面结构。</li>
+</ul>
+<p>以前要么复制项目里旧代码改，要么从 CLI 模板改；<br>
+现在直接丢一句：</p>
+<blockquote>
+<p>「写一个 Vue3 + TypeScript 的表格组件，支持分页、排序，props 包含 xxx。」</p>
+</blockquote>
+<p>然后拿到一个 70% 可用的版本，再按自己习惯调整。</p>
+<h3 id="12-写简单的工具函数">1.2 写简单的工具函数</h3>
+<p>例如：</p>
+<ul>
+<li>将后端分页结果转换为前端表格数据；</li>
+<li>格式化日期/金额；</li>
+<li>从树结构中找到某个节点路径。</li>
+</ul>
+<p>用自然语言描述需求 + 给一两个例子，AI 通常能给出还不错的实现。<br>
+有时候还能顺带推荐几种写法，帮你对比。</p>
+<h3 id="13-帮忙翻译老代码">1.3 帮忙「翻译」老代码</h3>
+<p>面对一些古早 jQuery/复杂 if-else 的老代码，直接让 AI：</p>
+<blockquote>
+<p>「帮我解释这段代码在干嘛，并用更现代的写法重构。」</p>
+</blockquote>
+<p>得到的是：</p>
+<ul>
+<li>一段自然语言解释（方便确认理解）；</li>
+<li>一版初步的重构实现（不一定完美，但至少是个起点）。</li>
+</ul>
+<hr>
+<h2 id="2-重构和单测ai-很适合当助手">2. 重构和单测：AI 很适合当助手</h2>
+<h3 id="21-帮忙拆函数--命名">2.1 帮忙拆函数 / 命名</h3>
+<p>长函数重构时，让 AI：</p>
+<blockquote>
+<p>「这段函数太长了，帮我按逻辑拆成几个小函数，顺带起一些更好的函数名。」</p>
+</blockquote>
+<p>它会：</p>
+<ul>
+<li>识别一些相对独立的小块逻辑；</li>
+<li>给出更语义化的函数名（比如 <code>validateParams</code>, <code>buildRequestPayload</code>）；</li>
+<li>你再按实际业务做微调。</li>
+</ul>
+<h3 id="22-自动生成单元测试草稿">2.2 自动生成单元测试草稿</h3>
+<p>给一段纯函数代码，让 AI：</p>
+<blockquote>
+<p>「用 Jest 为这个函数生成单元测试，覆盖几种正常和异常场景。」</p>
+</blockquote>
+<p>可以快速拿到：</p>
+<ul>
+<li>基本测试骨架；</li>
+<li>多组输入输出样例。</li>
+</ul>
+<p>你需要做的是：</p>
+<ul>
+<li>检查每个期望是否符合真实业务；</li>
+<li>补充边界条件；</li>
+<li>和项目里的测试工具函数对齐。</li>
+</ul>
+<hr>
+<h2 id="3-哪些地方容易踩坑">3. 哪些地方容易踩坑？</h2>
+<h3 id="31-杜撰-api--配置">3.1 杜撰 API / 配置</h3>
+<p>AI 非常擅长「一本正经地胡说」，尤其是：</p>
+<ul>
+<li>某些库的最新 API；</li>
+<li>某些框架的配置项。</li>
+</ul>
+<p>典型翻车案例：</p>
+<ul>
+<li>给出的 Vue Router 用法和当前版本不兼容；</li>
+<li>提到一个压根不存在的配置字段。</li>
+</ul>
+<p>解决方法只有一个：<strong>对照官方文档核实</strong>。<br>
+我一般把它当成「先给我一个大致方向」，细节自己查文档。</p>
+<h3 id="32-忽略项目上下文">3.2 忽略项目上下文</h3>
+<p>AI 不知道你项目里：</p>
+<ul>
+<li>已经有一套封装好的请求工具；</li>
+<li>约定的错误处理、日志规范；</li>
+<li>自己定义的组件/Hook。</li>
+</ul>
+<p>它给出的代码往往是「一个脱离上下文的理想例子」。<br>
+需要你主动告诉它：</p>
+<blockquote>
+<p>「我们项目里用的是 xxx 封装，请按这个风格重写。」</p>
+</blockquote>
+<p>并且时不时把<strong>相关文件</strong>一起贴给它看。</p>
+<h3 id="33-隐性-bug-不容易被看出来">3.3 隐性 bug 不容易被看出来</h3>
+<p>AI 写的代码看起来「很对」，但真的对不对，需要：</p>
+<ul>
+<li>你理解逻辑本身；</li>
+<li>你去跑单测或真机验证。</li>
+</ul>
+<p>如果一味「无脑粘贴」，会把一些小坑带进代码库。<br>
+所以我给自己的原则是：</p>
+<blockquote>
+<p><strong>AI 写的代码，一定要像「别人写的 PR」那样认真审。</strong></p>
+</blockquote>
+<hr>
+<h2 id="4-我最后形成的一些使用习惯">4. 我最后形成的一些使用习惯</h2>
+<h3 id="41-把需求描述清楚">4.1 把需求描述清楚</h3>
+<p>相比「写这个组件」，更好的 prompt 是：</p>
+<blockquote>
+<p>「写一个使用 Vue3 + TS 的表格组件，要求：</p>
+<ol>
+<li>通过 <code>columns</code> 配置表头；</li>
+<li>支持服务端分页，请求函数通过 props 传入；</li>
+<li>需要有 loading 和空状态展示；<br>
+输出完整组件代码。」</li>
+</ol>
+</blockquote>
+<p>需求越清楚，返工越少。</p>
+<h3 id="42-小步用它而不是一口气生成一大段">4.2 小步用它，而不是一口气生成一大段</h3>
+<ul>
+<li>让它分次帮你「搞定几个小点」，比如先生成接口层，再生成组件；</li>
+<li>而不是一句话让它「写完整管理后台」。</li>
+</ul>
+<p>这样你可以在每个小步骤中及时纠正方向。</p>
+<h3 id="43-善用对比和解释">4.3 善用「对比」和「解释」</h3>
+<ul>
+<li>「帮我对比这两种写法的优缺点」；</li>
+<li>「解释这段正则表达式的含义，并提供更易读写法」。</li>
+</ul>
+<p>这些任务很适合 AI，能帮你节省大量心智负担。</p>
+<hr>
+<h2 id="5-团队协作视角怎么避免风格四分五裂">5. 团队协作视角：怎么避免「风格四分五裂」？</h2>
+<p>如果团队里有人重度用 AI，有人不用，很容易出现：</p>
+<ul>
+<li>代码风格忽然变了；</li>
+<li>不符合团队既有规范；</li>
+<li>出现一些「AI 风味」强的代码。</li>
+</ul>
+<p>几个建议：</p>
+<ol>
+<li>把团队已有的 ESLint/Prettier/架构规范告诉 AI，让它按这个来；</li>
+<li>所有 AI 生成的代码仍然要走正常 Code Review；</li>
+<li>在 Review 时，要求提 PR 的同学解释关键逻辑，而不是「AI 说的就是对的」。</li>
+</ol>
+<hr>
+<h2 id="6-小结把-ai-当辅助开发环境的一部分">6. 小结：把 AI 当「辅助开发环境」的一部分</h2>
+<p>第一次尝试用 AI 写前端代码之后，我的感受是：</p>
+<ol>
+<li>它非常适合做：样板代码、工具函数、初次重构、单测草稿、代码解释；</li>
+<li>不太适合完全托管复杂业务逻辑，尤其是涉及钱、风控、权限的地方；</li>
+<li>它的价值很大一部分在于：<strong>降低「开始写」和「开始改」的阻力</strong>。</li>
+</ol>
+<p>我现在更习惯把它看成：</p>
+<blockquote>
+<p>一个永远在线的「会写代码的搜索引擎 + 实习生」，<br>
+好用，但需要你有足够判断力，知道哪些可以放心交给它，哪些必须自己亲自来。</p>
+</blockquote>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-12-18</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/" data-title="第一次用 AI 写前端代码：哪些好用，哪些坑" data-via="https://github.com/cs11b137" data-hashtags="AI 编码助手,前端开发,代码生成,重构,单测"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/" data-hashtag="AI 编码助手"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/" data-title="第一次用 AI 写前端代码：哪些好用，哪些坑"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/" data-title="第一次用 AI 写前端代码：哪些好用，哪些坑"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/" data-title="第一次用 AI 写前端代码：哪些好用，哪些坑"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/ai-%E7%BC%96%E7%A0%81%E5%8A%A9%E6%89%8B/">AI 编码助手</a>,&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/">前端开发</a>,&nbsp;<a href="/tags/%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/">代码生成</a>,&nbsp;<a href="/tags/%E9%87%8D%E6%9E%84/">重构</a>,&nbsp;<a href="/tags/%E5%8D%95%E6%B5%8B/">单测</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2022-10-30-ai-doc-assistant-v1/" class="prev" rel="prev" title="用大模型做一个简单「文档问答助手」"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>用大模型做一个简单「文档问答助手」</a>
+            <a href="/posts/2023-01-15-monorepo-migration/" class="next" rel="next" title="把多个前端项目合进一个 Monorepo 是怎样的体验">把多个前端项目合进一个 Monorepo 是怎样的体验<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

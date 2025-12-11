@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>JavaScript 模块化那些事：从 IIFE 到 ES Modules - Saiga</title><meta name="Description" content="回顾从 jQuery 时代到 ES Modules 的模块化演变，以及现在更推荐的写法。"><meta property="og:url" content="http://localhost:1313/posts/2019-03-10-js-module-patterns/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="JavaScript 模块化那些事：从 IIFE 到 ES Modules">
+  <meta property="og:description" content="回顾从 jQuery 时代到 ES Modules 的模块化演变，以及现在更推荐的写法。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2019-03-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2019-03-10T00:00:00+00:00">
+    <meta property="article:tag" content="JavaScript">
+    <meta property="article:tag" content="模块化">
+    <meta property="article:tag" content="ESModules">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JavaScript 模块化那些事：从 IIFE 到 ES Modules">
+  <meta name="twitter:description" content="回顾从 jQuery 时代到 ES Modules 的模块化演变，以及现在更推荐的写法。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2019-03-10-js-module-patterns/" /><link rel="next" href="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "JavaScript 模块化那些事：从 IIFE 到 ES Modules",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2019-03-10-js-module-patterns\/"
+        },"genre": "posts","keywords": "JavaScript, 模块化, ESModules","wordcount":  397 ,
+        "url": "http:\/\/localhost:1313\/posts\/2019-03-10-js-module-patterns\/","datePublished": "2019-03-10T00:00:00+00:00","dateModified": "2019-03-10T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "回顾从 jQuery 时代到 ES Modules 的模块化演变，以及现在更推荐的写法。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">JavaScript 模块化那些事：从 IIFE 到 ES Modules</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>前端基础</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2019-03-10">2019-03-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 397 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#为什么要模块化">为什么要模块化？</a></li>
+    <li><a href="#第一阶段iife-模式自执行函数">第一阶段：IIFE 模式（自执行函数）</a></li>
+    <li><a href="#第二阶段amd--requirejs">第二阶段：AMD / RequireJS</a></li>
+    <li><a href="#第三阶段commonjsnodejs-世界">第三阶段：CommonJS（Node.js 世界）</a></li>
+    <li><a href="#第四阶段es-modules现在推荐的主角">第四阶段：ES Modules（现在推荐的主角）</a></li>
+    <li><a href="#es-modules-的几种用法小结">ES Modules 的几种用法小结</a>
+      <ul>
+        <li><a href="#命名导出">命名导出</a></li>
+        <li><a href="#默认导出">默认导出</a></li>
+        <li><a href="#组合使用">组合使用</a></li>
+      </ul>
+    </li>
+    <li><a href="#模块拆分的几个实用建议">模块拆分的几个实用建议</a></li>
+    <li><a href="#总结现在怎么写比较稳妥">总结：现在怎么写比较稳妥？</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>最早写前端的时候，经常是一个 <code>index.html</code> 里塞一大坨 <code>&lt;script&gt;</code>，变量到处飞，函数名一改项目全崩。后来慢慢开始接触各种「模块化方案」，从 IIFE、AMD、CommonJS 一路走到 ES Modules，心态也经历了从「凑合能用」到「必须有规范」。</p>
+<p>这篇就当是给自己的一个小总结：<strong>为什么需要模块化、几种常见写法的区别、现在应该怎么写。</strong></p>
+<hr>
+<h2 id="为什么要模块化">为什么要模块化？</h2>
+<p>几个非常现实的问题：</p>
+<ul>
+<li>全局变量名冲突：不同文件里不小心定义了同名变量/函数。</li>
+<li>依赖关系混乱：这个文件依赖谁？要先引哪个 <code>&lt;script&gt;</code>？</li>
+<li>代码难以拆分复用：逻辑越写越大，一改就牵一大片。</li>
+<li>测试困难：无法只「拿出一小块」单独测试。</li>
+</ul>
+<p>所以模块化要解决的就是：</p>
+<blockquote>
+<p><strong>把代码按职责拆成「小块」 + 明确每块对外暴露什么 + 明确依赖关系。</strong></p>
+</blockquote>
+<hr>
+<h2 id="第一阶段iife-模式自执行函数">第一阶段：IIFE 模式（自执行函数）</h2>
+<p>当时 jQuery 时代最常见的一种写法，就是用自执行函数「造一个自己的小世界」。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>(<span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">API_URL</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/api/todos&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">fetchTodos</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#a6e22e">API_URL</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">res</span> =&gt; <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">json</span>());
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">renderTodos</span>(<span style="color:#a6e22e">list</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 渲染逻辑...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  window.<span style="color:#a6e22e">todoApp</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">init</span>() {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">fetchTodos</span>().<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">renderTodos</span>);
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>})();
+</span></span></code></pre></div><p>特点：</p>
+<ul>
+<li>用 IIFE 隔离出一个作用域，避免变量污染全局。</li>
+<li>需要暴露给外面的东西挂在 <code>window.todoApp</code> 上。</li>
+<li>所有代码其实还是在一个文件里，<strong>没有真正意义上的「依赖管理」</strong>。</li>
+</ul>
+<p>适合：<strong>小项目 / 简单封装</strong>。<br>
+不适合：多页面、多模块的大型项目。</p>
+<hr>
+<h2 id="第二阶段amd--requirejs">第二阶段：AMD / RequireJS</h2>
+<p>再往后，就出现了 AMD（Asynchronous Module Definition），代表是 RequireJS。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// math.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">define</span>(<span style="color:#e6db74">&#39;math&#39;</span>, [], <span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">mul</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">b</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">add</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">mul</span>,
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// main.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">define</span>([<span style="color:#e6db74">&#39;math&#39;</span>], <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">math</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">add</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>));
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>特点：</p>
+<ul>
+<li>使用 <code>define</code> 定义模块，使用 <code>require</code>/依赖数组引入。</li>
+<li>支持浏览器端异步加载脚本。</li>
+<li>写法偏重「框架约定」，不够自然。</li>
+</ul>
+<p>现在很少再新项目用 AMD 了，主要在一些老项目或旧库里还能见到。</p>
+<hr>
+<h2 id="第三阶段commonjsnodejs-世界">第三阶段：CommonJS（Node.js 世界）</h2>
+<p>Node.js 出现之后，前端第一次大规模接触到「真正的模块」——CommonJS。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// math.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">mul</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">b</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">add</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">mul</span>,
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// main.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">math</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./math&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">add</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>));
+</span></span></code></pre></div><p>特点：</p>
+<ul>
+<li><code>require</code> + <code>module.exports</code> / <code>exports</code>。</li>
+<li>模块是 <strong>同步加载</strong> 的，天然适合在服务器端使用。</li>
+<li>在前端想用 CommonJS，通常要借助打包工具（Browserify / Webpack 等）。</li>
+</ul>
+<p>优势：</p>
+<ul>
+<li>写法简单清晰。</li>
+<li>非常适合 Node 端和工具链代码。</li>
+</ul>
+<hr>
+<h2 id="第四阶段es-modules现在推荐的主角">第四阶段：ES Modules（现在推荐的主角）</h2>
+<p>ES6 正式引入了 ES Modules 语法，浏览器和打包工具都已经支持得非常好。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// math.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">mul</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">b</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 默认导出
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">PI</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">3.14</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">PI</span>;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// main.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">PI</span>, { <span style="color:#a6e22e">add</span>, <span style="color:#a6e22e">mul</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./math.js&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">add</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>));
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">PI</span>);
+</span></span></code></pre></div><p>特点：</p>
+<ul>
+<li>语法层面原生支持：<code>import</code> / <code>export</code>。</li>
+<li>静态分析友好：打包工具可以基于静态导入做 Tree Shaking。</li>
+<li>规范统一：前端、Node（在 ESM 模式下）、工具链趋向统一。</li>
+</ul>
+<p>浏览器原生支持 <code>&lt;script type=&quot;module&quot;&gt;</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;module&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">add</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./math.js&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">add</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>));
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><hr>
+<h2 id="es-modules-的几种用法小结">ES Modules 的几种用法小结</h2>
+<h3 id="命名导出">命名导出</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// utils.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">formatDate</span>(<span style="color:#a6e22e">date</span>) {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">formatMoney</span>(<span style="color:#a6e22e">num</span>) {}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">formatDate</span>, <span style="color:#a6e22e">formatMoney</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./utils&#39;</span>;
+</span></span></code></pre></div><p>适合：<strong>导出多个工具函数或常量</strong>。</p>
+<hr>
+<h3 id="默认导出">默认导出</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// apiClient.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ApiClient</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">ApiClient</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./apiClient&#39;</span>;
+</span></span></code></pre></div><p>适合：<strong>一个模块只有一个“主要东西”时</strong>，比如一个类 / 单例对象。</p>
+<hr>
+<h3 id="组合使用">组合使用</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// math.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">mul</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">PI</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">3.14</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">PI</span>;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">PI</span>, { <span style="color:#a6e22e">add</span>, <span style="color:#a6e22e">mul</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./math&#39;</span>;
+</span></span></code></pre></div><p>建议：</p>
+<ul>
+<li>一个文件里不要默认导出太多「意义不清晰」的内容。</li>
+<li>如果模块是一个「工具集合」，更倾向只用命名导出。</li>
+</ul>
+<hr>
+<h2 id="模块拆分的几个实用建议">模块拆分的几个实用建议</h2>
+<ol>
+<li>
+<p><strong>按职责拆，不要按文件大小拆</strong></p>
+<ul>
+<li><code>utils.js</code> 太大，就拆成 <code>date.ts</code> / <code>string.ts</code> / <code>number.ts</code>。</li>
+<li>「接口 + 实现」可以放在一起，让模块自洽。</li>
+</ul>
+</li>
+<li>
+<p><strong>入口文件要「说人话」</strong></p>
+<p>做 SDK 或组件库时，通常会有一个入口：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// index.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./api/user&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./api/order&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./constants&#39;</span>;
+</span></span></code></pre></div><p>使用方只需要：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">getUserInfo</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;@my/sdk&#39;</span>;
+</span></span></code></pre></div></li>
+<li>
+<p><strong>避免循环依赖</strong></p>
+<ul>
+<li>A 引用 B，B 又引用 A，很容易在运行时出问题。</li>
+<li>一旦发现模块之间相互引用太多，可以抽一层「中间模块」出来。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="总结现在怎么写比较稳妥">总结：现在怎么写比较稳妥？</h2>
+<p>在 2019 之后的新项目里，我的默认选择基本是：</p>
+<ul>
+<li><strong>浏览器端业务代码：ES Modules</strong>（配合打包工具）。</li>
+<li><strong>Node / 工具链代码：可以根据项目统一选择 CommonJS 或 ESM</strong>，保持一致即可。</li>
+<li>尽量避免历史包袱：AMD 这类只在维护老项目时碰一下。</li>
+</ul>
+<p>一句话总结：</p>
+<blockquote>
+<p><strong>用 ES Modules 写干净的模块边界，比纠结语法更重要。模块拆得越清晰，项目越耐用。</strong></p>
+</blockquote>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-03-10</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules" data-via="https://github.com/cs11b137" data-hashtags="JavaScript,模块化,ESModules"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-hashtag="JavaScript"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/javascript/">JavaScript</a>,&nbsp;<a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/">模块化</a>,&nbsp;<a href="/tags/esmodules/">ESModules</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+            <a href="/posts/2019-06-18-vue-form-best-practices/" class="next" rel="next" title="复杂表单实战：我在项目里踩过的 Vue 坑">复杂表单实战：我在项目里踩过的 Vue 坑<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

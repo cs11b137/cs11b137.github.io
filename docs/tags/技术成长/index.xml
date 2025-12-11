@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>技术成长 on Saiga</title>
+    <link>http://localhost:1313/tags/%E6%8A%80%E6%9C%AF%E6%88%90%E9%95%BF/</link>
+    <description>Recent content in 技术成长 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Wed, 20 Dec 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%8A%80%E6%9C%AF%E6%88%90%E9%95%BF/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2023 年技术小结：从前端工程到 AI 应用</title>
+      <link>http://localhost:1313/posts/2023-12-20-2023-summary/</link>
+      <pubDate>Wed, 20 Dec 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2023-12-20-2023-summary/</guid>
+      <description>&lt;p&gt;如果用一句话概括 2023 年的技术主线，大概是：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;一边继续把前端工程体系打磨扎实，一边认真把 AI 接到「真业务」里。&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;这一年做了几件印象比较深的事情：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;把多个前端项目合到 Monorepo；&lt;/li&gt;&#xA;&lt;li&gt;尝试微前端，把老系统和新模块串起来；&lt;/li&gt;&#xA;&lt;li&gt;在中台里跑了几轮完整的 A/B 实验；&lt;/li&gt;&#xA;&lt;li&gt;接入大模型 API，做了文档问答、内部工具智能化的小应用；&lt;/li&gt;&#xA;&lt;li&gt;把 AI 真正纳入自己的日常开发流程。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这篇总结就按这两条主线——&lt;strong&gt;前端工程&lt;/strong&gt; 和 &lt;strong&gt;AI 应用&lt;/strong&gt; 来回顾一下。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-前端工程线更稳也更合在一起&#34;&gt;1. 前端工程线：更「稳」也更「合在一起」&lt;/h2&gt;&#xA;&lt;h3 id=&#34;11-monorepo-落地&#34;&gt;1.1 Monorepo 落地&lt;/h3&gt;&#xA;&lt;p&gt;年初开始，把几个关联度高的中台项目合进一个 Monorepo：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;tools：pnpm + Turborepo；&lt;/li&gt;&#xA;&lt;li&gt;结构：&lt;code&gt;apps/&lt;/code&gt; + &lt;code&gt;packages/&lt;/code&gt;；&lt;/li&gt;&#xA;&lt;li&gt;公共库：UI 组件、工具函数、统一 ESLint 配置。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;收益：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;组件库和工具修一次，多项目同步升级；&lt;/li&gt;&#xA;&lt;li&gt;工程规范「一处改，全员受益」；&lt;/li&gt;&#xA;&lt;li&gt;新项目孵化成本明显降低。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;也逼着自己思考：&lt;strong&gt;「什么才值得抽成库，什么就留在应用里？」&lt;/strong&gt;&lt;br&gt;&#xA;这对边界感的训练很有帮助。&lt;/p&gt;&#xA;&lt;h3 id=&#34;12-微前端小规模应用&#34;&gt;1.2 微前端小规模应用&lt;/h3&gt;&#xA;&lt;p&gt;不是全线切微前端，而是谨慎选择了几块：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;老 Vue2 中台 + 新 Vue3 模块；&lt;/li&gt;&#xA;&lt;li&gt;部分实验性应用用 React 写。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;用「框架型微前端」把它们挂在一个壳子下：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;主应用管登录、导航、全局样式；&lt;/li&gt;&#xA;&lt;li&gt;子应用各自管内部路由和业务。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;实践下来感受是：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;在「多团队 + 多技术栈 + 独立发布」场景下确实好用；&lt;/li&gt;&#xA;&lt;li&gt;但也确实增加了复杂度，需要配套工程规范。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;13-实验和监控让前端更可观测&#34;&gt;1.3 实验和监控：让前端更「可观测」&lt;/h3&gt;&#xA;&lt;p&gt;这一年比较系统地做了两件事：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

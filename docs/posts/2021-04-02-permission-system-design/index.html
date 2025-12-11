@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>菜单、按钮、接口：一套权限系统怎么落地到前端 - Saiga</title><meta name="Description" content="从「角色-权限-资源」模型出发，讲一讲权限从后端到前端路由、按钮显隐、接口鉴权的整体设计思路。"><meta property="og:url" content="http://localhost:1313/posts/2021-04-02-permission-system-design/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="菜单、按钮、接口：一套权限系统怎么落地到前端">
+  <meta property="og:description" content="从「角色-权限-资源」模型出发，讲一讲权限从后端到前端路由、按钮显隐、接口鉴权的整体设计思路。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-04-02T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-04-02T00:00:00+00:00">
+    <meta property="article:tag" content="权限系统">
+    <meta property="article:tag" content="RBAC">
+    <meta property="article:tag" content="前端权限">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="菜单、按钮、接口：一套权限系统怎么落地到前端">
+  <meta name="twitter:description" content="从「角色-权限-资源」模型出发，讲一讲权限从后端到前端路由、按钮显隐、接口鉴权的整体设计思路。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2021-04-02-permission-system-design/" /><link rel="prev" href="http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/" /><link rel="next" href="http://localhost:1313/posts/2021-06-15-config-driven-page/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "菜单、按钮、接口：一套权限系统怎么落地到前端",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2021-04-02-permission-system-design\/"
+        },"genre": "posts","keywords": "权限系统, RBAC, 前端权限","wordcount":  379 ,
+        "url": "http:\/\/localhost:1313\/posts\/2021-04-02-permission-system-design\/","datePublished": "2021-04-02T00:00:00+00:00","dateModified": "2021-04-02T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "从「角色-权限-资源」模型出发，讲一讲权限从后端到前端路由、按钮显隐、接口鉴权的整体设计思路。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">菜单、按钮、接口：一套权限系统怎么落地到前端</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E4%B8%AD%E5%90%8E%E5%8F%B0%E6%9E%B6%E6%9E%84/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>中后台架构</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2021-04-02">2021-04-02</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 379 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-模型角色权限点资源">1. 模型：角色、权限点、资源</a></li>
+    <li><a href="#2-权限点命名模块--资源--动作">2. 权限点命名：模块 + 资源 + 动作</a></li>
+    <li><a href="#3-菜单与路由根据权限生成">3. 菜单与路由：根据权限生成</a>
+      <ul>
+        <li><a href="#31-菜单数据从后端来">3.1 菜单数据从后端来</a></li>
+        <li><a href="#32-动态路由生成示意">3.2 动态路由生成示意</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-按钮显隐指令--工具函数">4. 按钮显隐：指令 + 工具函数</a>
+      <ul>
+        <li><a href="#41-指令控制展示">4.1 指令控制展示</a></li>
+        <li><a href="#42-逻辑层也要兜一层">4.2 逻辑层也要兜一层</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-接口鉴权真正的硬防线">5. 接口鉴权：真正的「硬防线」</a></li>
+    <li><a href="#6-一个比较完整的链路">6. 一个比较完整的链路</a></li>
+    <li><a href="#7-踩坑与经验">7. 踩坑与经验</a></li>
+    <li><a href="#8-小结">8. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>中后台项目到了一定体量之后，绕不开一个问题：<strong>权限怎么做？</strong></p>
+<ul>
+<li>不同角色看到的菜单不一样；</li>
+<li>同一个页面里，有人能点「导出」、有人只能看；</li>
+<li>接口层还要做真正的权限校验。</li>
+</ul>
+<p>这篇文章从实践角度，串一下我现在常用的一套设计：从「角色-权限-资源」模型，到前端路由、按钮显隐，再到接口鉴权。</p>
+<hr>
+<h2 id="1-模型角色权限点资源">1. 模型：角色、权限点、资源</h2>
+<p>先把概念讲清楚：</p>
+<ul>
+<li><strong>用户（User）</strong>：具体的人；</li>
+<li><strong>角色（Role）</strong>：一类权限集合，例如「运营」、「风控」、「管理员」；</li>
+<li><strong>权限点（Permission）</strong>：最小粒度的能力，比如「订单列表查看」「订单导出」；</li>
+<li><strong>资源（Resource）</strong>：被操作的对象，比如菜单、按钮、接口。</li>
+</ul>
+<p>关系一般是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>User → 多个 Role → 多个 Permission → 作用在不同 Resource 上
+</span></span></code></pre></div><p>前端最关心的其实只有一件事：</p>
+<blockquote>
+<p>登录之后，我拿到的「权限点列表」是什么？</p>
+</blockquote>
+<p>因为<strong>菜单、按钮显隐、前端路由保护</strong>，本质上都是围绕这串权限点做判断。</p>
+<hr>
+<h2 id="2-权限点命名模块--资源--动作">2. 权限点命名：模块 + 资源 + 动作</h2>
+<p>命名如果乱，后面就会非常难维护。实践中我会用统一格式：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;模块&gt;:&lt;资源&gt;:&lt;动作&gt;
+</span></span></code></pre></div><p>例如：</p>
+<ul>
+<li><code>order:list:view</code> —— 订单列表查看；</li>
+<li><code>order:list:export</code> —— 订单列表导出；</li>
+<li><code>order:detail:update</code> —— 订单详情修改；</li>
+<li><code>user:manage:create</code> —— 用户管理新增。</li>
+</ul>
+<p>在数据库或配置里，用一个简单的结构描述：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Permission</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">string</span>;      <span style="color:#75715e">// order:list:view
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">string</span>;      <span style="color:#75715e">// 订单列表-查看
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">description?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>前端拿到的就是一串 <code>code</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[<span style="color:#e6db74">&#34;order:list:view&#34;</span>, <span style="color:#e6db74">&#34;order:list:export&#34;</span>, <span style="color:#e6db74">&#34;order:detail:update&#34;</span>]
+</span></span></code></pre></div><hr>
+<h2 id="3-菜单与路由根据权限生成">3. 菜单与路由：根据权限生成</h2>
+<h3 id="31-菜单数据从后端来">3.1 菜单数据从后端来</h3>
+<p>让后端维护一份菜单树：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MenuItem</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">parentId?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">title</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">path</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">icon?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 访问该菜单需要的权限点（可以是单个或多个）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">permission?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">children?</span>: <span style="color:#66d9ef">MenuItem</span>[];
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>登录成功后，前端请求：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET /api/auth/profile
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">// 响应示例
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;user&#34;: { &#34;id&#34;: &#34;u1&#34;, &#34;name&#34;: &#34;张三&#34; },
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;menus&#34;: [/* 菜单树 */],
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;permissions&#34;: [&#34;order:list:view&#34;, &#34;order:list:export&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}
+</span></span></span></code></pre></div><p>前端：</p>
+<ol>
+<li>用 <code>menus</code> 渲染侧边栏；</li>
+<li>用 <code>permissions</code> 初始化权限 Store（Vuex / Pinia 等）；</li>
+<li>根据 <code>menus</code> 动态生成路由表。</li>
+</ol>
+<h3 id="32-动态路由生成示意">3.2 动态路由生成示意</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">generateRoutes</span>(<span style="color:#a6e22e">menus</span>: <span style="color:#66d9ef">MenuItem</span>[])<span style="color:#f92672">:</span> <span style="color:#a6e22e">RouteRecordRaw</span>[] {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">routes</span>: <span style="color:#66d9ef">RouteRecordRaw</span>[] <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">travel</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">items</span>: <span style="color:#66d9ef">MenuItem</span>[]) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">items</span>.<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">item</span> <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">route</span>: <span style="color:#66d9ef">RouteRecordRaw</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">path</span>: <span style="color:#66d9ef">item.path</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">item.id</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">component</span>: <span style="color:#66d9ef">lazyLoadView</span>(<span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">path</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">meta</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">title</span>: <span style="color:#66d9ef">item.title</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">permission</span>: <span style="color:#66d9ef">item.permission</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      };
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">routes</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">route</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">children</span>) <span style="color:#a6e22e">travel</span>(<span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">children</span>);
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">travel</span>(<span style="color:#a6e22e">menus</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">routes</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>之后在路由守卫里，结合 <code>meta.permission</code> 做一次前端校验（有权限再放行）。</p>
+<hr>
+<h2 id="4-按钮显隐指令--工具函数">4. 按钮显隐：指令 + 工具函数</h2>
+<h3 id="41-指令控制展示">4.1 指令控制展示</h3>
+<p>以 Vue 为例，封一个 <code>v-permission</code> 指令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// directives/permission.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#66d9ef">type</span> { <span style="color:#a6e22e">DirectiveBinding</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;vue&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useUserStore</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;@/store/user&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">hasPermission</span>(<span style="color:#a6e22e">code</span>: <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">store</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useUserStore</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">permissions</span>.<span style="color:#a6e22e">includes</span>(<span style="color:#a6e22e">code</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">mounted</span>(<span style="color:#a6e22e">el</span>: <span style="color:#66d9ef">HTMLElement</span>, <span style="color:#a6e22e">binding</span>: <span style="color:#66d9ef">DirectiveBinding</span>&lt;<span style="color:#f92672">string</span>&gt;) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">code</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">binding</span>.<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">code</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">hasPermission</span>(<span style="color:#a6e22e">code</span>)) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">el</span>.<span style="color:#a6e22e">parentNode</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">el</span>.<span style="color:#a6e22e">parentNode</span>.<span style="color:#a6e22e">removeChild</span>(<span style="color:#a6e22e">el</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>使用：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">el-button</span> <span style="color:#f92672">v-permission</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#39;order:list:export&#39;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">导出</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;/</span><span style="color:#a6e22e">el</span><span style="color:#f92672">-button</span>&gt;
+</span></span></code></pre></div><p>没有 <code>order:list:export</code> 权限的用户，根本看不到这个按钮。</p>
+<h3 id="42-逻辑层也要兜一层">4.2 逻辑层也要兜一层</h3>
+<p>展示控制是一层，逻辑上也要做好防御：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">hasPermission</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;@/utils/permission&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">handleExport() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">hasPermission</span>(<span style="color:#e6db74">&#39;order:list:export&#39;</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ElMessage</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#39;您没有导出权限&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 真正导出逻辑
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>双保险：既避免误操作，也兼容某些「通过接口返回权限」后再动态渲染的场景。</p>
+<hr>
+<h2 id="5-接口鉴权真正的硬防线">5. 接口鉴权：真正的「硬防线」</h2>
+<p>前端的权限控制更多是体验与引导，真正的安全一定在接口层。</p>
+<p>后端配置（简化示意）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// 后端接口与权限点绑定
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">POST</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">api</span><span style="color:#f92672">/</span><span style="color:#a6e22e">order</span><span style="color:#f92672">/</span><span style="color:#66d9ef">export</span>  <span style="color:#960050;background-color:#1e0010">→</span>  <span style="color:#a6e22e">order</span>:<span style="color:#66d9ef">list</span><span style="color:#f92672">:</span><span style="color:#66d9ef">export</span>
+</span></span></code></pre></div><p>请求到达服务端时：</p>
+<ol>
+<li>从 Token / 会话中解析出用户 ID、角色、权限点列表；</li>
+<li>判断是否包含接口所需权限点；</li>
+<li>不满足则返回统一错误码，如 <code>ACCESS_DENIED</code>。</li>
+</ol>
+<p>前端统一处理：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">code</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;ACCESS_DENIED&#39;</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ElMessage</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#39;权限不足，如有疑问请联系管理员&#39;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样即使有人用抓包工具构造请求，也会被拦在服务端。</p>
+<hr>
+<h2 id="6-一个比较完整的链路">6. 一个比较完整的链路</h2>
+<p>把上面几块串起来，会是这样一条链路：</p>
+<ol>
+<li>用户登录 → 服务端签发 Token，并返回菜单树 + 权限点列表；</li>
+<li>前端：
+<ul>
+<li>存储 Token；</li>
+<li>初始化 <code>userStore.permissions</code>；</li>
+<li>根据菜单生成路由；</li>
+</ul>
+</li>
+<li>页面渲染时：
+<ul>
+<li>菜单由后端数据 + 前端过滤生成；</li>
+<li>路由守卫根据 <code>meta.permission</code> 和 <code>permissions</code> 决定是否放行；</li>
+<li>按钮通过 <code>v-permission</code> 控制显隐；</li>
+</ul>
+</li>
+<li>触发接口调用时：
+<ul>
+<li>前端可以先用 <code>hasPermission</code> 做一次前置校验；</li>
+<li>服务端再做最终鉴权。</li>
+</ul>
+</li>
+</ol>
+<p>一句话总结：<strong>菜单、按钮和接口三层权限要互相「说得上话」。</strong></p>
+<hr>
+<h2 id="7-踩坑与经验">7. 踩坑与经验</h2>
+<ol>
+<li>
+<p><strong>权限点颗粒度不要太细</strong></p>
+<ul>
+<li>每一个按钮一个权限点看起来很安全，但维护起来会疯；</li>
+<li>建议一个功能能力对应一个权限点，比如「导出」、「审核」、「删除」。</li>
+</ul>
+</li>
+<li>
+<p><strong>菜单权限和功能权限要区分</strong></p>
+<ul>
+<li>有人可以「看到菜单但只能看数据」，有人既能看又能改；</li>
+<li>菜单本身可以一个 <code>menu:view</code> 权限，操作功能独立权限点。</li>
+</ul>
+</li>
+<li>
+<p><strong>避免在前端硬编码权限点字符串到处飞</strong></p>
+<ul>
+<li>建议集中定义枚举，例如：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">PERM</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ORDER_LIST_VIEW</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;order:list:view&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ORDER_LIST_EXPORT</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;order:list:export&#39;</span>,
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">const</span>;
+</span></span></code></pre></div><ul>
+<li>这样 refactor 和查找都容易很多。</li>
+</ul>
+</li>
+<li>
+<p><strong>权限变更的实时性要有预期</strong></p>
+<ul>
+<li>一般来说，角色权限调整后，生效时间可以设计成「下次登录」；</li>
+<li>如果要求高实时性，可以结合 WebSocket 或强制 Token 失效策略。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="8-小结">8. 小结</h2>
+<p>一套权限系统要落地到前端，核心是三件事：</p>
+<ol>
+<li>定义好统一的「权限点」编码；</li>
+<li>菜单 &amp; 路由 &amp; 按钮都围绕这套编码做展示控制；</li>
+<li>接口层做最终鉴权，前端再做一些体验上的配合。</li>
+</ol>
+<p>只要模型清晰、命名统一，后续再加页面、加按钮、加接口，都会变成一件「套路化」的事情，而不是每次都从头发明一套新的权限规则。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-04-02</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2021-04-02-permission-system-design/" data-title="菜单、按钮、接口：一套权限系统怎么落地到前端" data-via="https://github.com/cs11b137" data-hashtags="权限系统,RBAC,前端权限"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2021-04-02-permission-system-design/" data-hashtag="权限系统"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2021-04-02-permission-system-design/" data-title="菜单、按钮、接口：一套权限系统怎么落地到前端"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2021-04-02-permission-system-design/" data-title="菜单、按钮、接口：一套权限系统怎么落地到前端"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2021-04-02-permission-system-design/" data-title="菜单、按钮、接口：一套权限系统怎么落地到前端"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E6%9D%83%E9%99%90%E7%B3%BB%E7%BB%9F/">权限系统</a>,&nbsp;<a href="/tags/rbac/">RBAC</a>,&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E6%9D%83%E9%99%90/">前端权限</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2021-01-23-multi-end-code-sharing/" class="prev" rel="prev" title="一次代码，多端运行：H5 &#43; 小程序的复用实践"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>一次代码，多端运行：H5 + 小程序的复用实践</a>
+            <a href="/posts/2021-06-15-config-driven-page/" class="next" rel="next" title="配置驱动页面：表单、表格到「低代码」的第一步">配置驱动页面：表单、表格到「低代码」的第一步<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

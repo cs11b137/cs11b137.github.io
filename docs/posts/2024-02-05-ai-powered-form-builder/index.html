@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>用大模型做一个「表单配置助手」 - Saiga</title><meta name="Description" content="记录一次在中台系统里接大模型，做「表单配置助手」的实践：从自然语言生成表单配置 JSON，再落到页面渲染。"><meta property="og:url" content="http://localhost:1313/posts/2024-02-05-ai-powered-form-builder/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="用大模型做一个「表单配置助手」">
+  <meta property="og:description" content="记录一次在中台系统里接大模型，做「表单配置助手」的实践：从自然语言生成表单配置 JSON，再落到页面渲染。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-02-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-02-05T00:00:00+00:00">
+    <meta property="article:tag" content="表单配置">
+    <meta property="article:tag" content="大模型">
+    <meta property="article:tag" content="低代码">
+    <meta property="article:tag" content="配置化">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="用大模型做一个「表单配置助手」">
+  <meta name="twitter:description" content="记录一次在中台系统里接大模型，做「表单配置助手」的实践：从自然语言生成表单配置 JSON，再落到页面渲染。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2024-02-05-ai-powered-form-builder/" /><link rel="prev" href="http://localhost:1313/posts/2023-12-20-2023-summary/" /><link rel="next" href="http://localhost:1313/posts/2024-03-18-smart-code-review/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "用大模型做一个「表单配置助手」",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2024-02-05-ai-powered-form-builder\/"
+        },"genre": "posts","keywords": "表单配置, 大模型, 低代码, 配置化","wordcount":  236 ,
+        "url": "http:\/\/localhost:1313\/posts\/2024-02-05-ai-powered-form-builder\/","datePublished": "2024-02-05T00:00:00+00:00","dateModified": "2024-02-05T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "记录一次在中台系统里接大模型，做「表单配置助手」的实践：从自然语言生成表单配置 JSON，再落到页面渲染。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">用大模型做一个「表单配置助手」</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/ai-%E5%BA%94%E7%94%A8/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 应用</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-02-05">2024-02-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 236 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-目标从一句话到一份表单配置">1. 目标：从一句话到一份表单配置</a></li>
+    <li><a href="#2-配置格式先把机器读得懂定义好">2. 配置格式：先把「机器读得懂」定义好</a></li>
+    <li><a href="#3-prompt-设计教会模型怎么写配置">3. Prompt 设计：教会模型「怎么写配置」</a></li>
+    <li><a href="#4-后端校验不要全信大模型">4. 后端校验：不要全信大模型</a></li>
+    <li><a href="#5-前端渲染--人工微调">5. 前端渲染 + 人工微调</a></li>
+    <li><a href="#6-实际使用中的一些经验">6. 实际使用中的一些经验</a></li>
+    <li><a href="#7-小结">7. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>在很多中台系统里，「加一个表单页面」是非常常见的需求：</p>
+<ul>
+<li>运营要配活动</li>
+<li>风控要配规则</li>
+<li>产品要加信息收集表单</li>
+</ul>
+<p>常规流程比较重：写需求 → 画原型 → 前端实现 → 联调 → 上线。<br>
+对于那些只是字段多、变更频率高的小表单，其实有点浪费。</p>
+<p>所以我们尝试做了一个小工具：</p>
+<blockquote>
+<p>运营用自然语言描述表单，大模型帮忙产出一份「表单配置 JSON」，前端根据配置自动渲染。</p>
+</blockquote>
+<p>这篇文章就简单记录一下实现思路。</p>
+<hr>
+<h2 id="1-目标从一句话到一份表单配置">1. 目标：从一句话到一份表单配置</h2>
+<p>我们给自己的目标很克制：</p>
+<ul>
+<li><strong>输入</strong>：一段自然语言描述，例如
+<blockquote>
+<p>“做一个录入投资人基本信息的表单，需要姓名、手机号、证件类型和证件号，手机号必填要校验格式，证件类型从下拉里选身份证/护照。”</p>
+</blockquote>
+</li>
+<li><strong>输出</strong>：一份前端能直接使用的配置 JSON：
+<ul>
+<li>字段列表</li>
+<li>字段类型、标签、占位</li>
+<li>是否必填、校验规则</li>
+<li>下拉选项等</li>
+</ul>
+</li>
+</ul>
+<p>前端只负责：</p>
+<ol>
+<li>把描述提交给后端</li>
+<li>拿到配置 JSON</li>
+<li>交给通用 <code>&lt;FormRenderer :config=&quot;formConfig&quot; /&gt;</code> 渲染</li>
+</ol>
+<hr>
+<h2 id="2-配置格式先把机器读得懂定义好">2. 配置格式：先把「机器读得懂」定义好</h2>
+<p>要让大模型产出可用结果，首先要有一份清晰的配置格式。示例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsonc" data-lang="jsonc"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;投资人信息录入&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;layout&#34;</span>: <span style="color:#e6db74">&#34;vertical&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;fields&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;name&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;label&#34;</span>: <span style="color:#e6db74">&#34;姓名&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;input&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;required&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;placeholder&#34;</span>: <span style="color:#e6db74">&#34;请输入姓名&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;mobile&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;label&#34;</span>: <span style="color:#e6db74">&#34;手机号&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;input&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;required&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;rules&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;regex&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;pattern&#34;</span>: <span style="color:#e6db74">&#34;^1\\d{10}$&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;请输入 11 位手机号&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      ]
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;idType&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;label&#34;</span>: <span style="color:#e6db74">&#34;证件类型&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;select&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;required&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;options&#34;</span>: [
+</span></span><span style="display:flex;"><span>        { <span style="color:#f92672">&#34;label&#34;</span>: <span style="color:#e6db74">&#34;居民身份证&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;ID_CARD&#34;</span> },
+</span></span><span style="display:flex;"><span>        { <span style="color:#f92672">&#34;label&#34;</span>: <span style="color:#e6db74">&#34;护照&#34;</span>, <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;PASSPORT&#34;</span> }
+</span></span><span style="display:flex;"><span>      ]
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;idNo&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;label&#34;</span>: <span style="color:#e6db74">&#34;证件号码&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;input&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;required&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>前端已经有配套组件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">FormRenderer</span> <span style="color:#f92672">:config</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;formConfig&#34;</span> <span style="color:#f92672">@submit</span><span style="color:#e6db74">=&#34;onSubmit&#34;</span> /&gt;
+</span></span></code></pre></div><p>所以只要拿到符合约定的 JSON，页面就能跑起来。</p>
+<hr>
+<h2 id="3-prompt-设计教会模型怎么写配置">3. Prompt 设计：教会模型「怎么写配置」</h2>
+<p>核心工作在 Prompt 设计。一个简化版系统提示大概是：</p>
+<blockquote>
+<p>你是一个表单配置助手。<br>
+用户会用自然语言描述一个表单需求，你需要输出一段 JSON，符合下面要求：</p>
+<ul>
+<li>只输出 JSON，不要解释文字</li>
+<li>字段名用简短的英文（驼峰或下划线）</li>
+<li>标签、占位符使用中文</li>
+<li>type 只能是：input / textarea / select / date / number / checkbox / radio</li>
+<li>需要校验的字段，在 rules 里描述规则</li>
+</ul>
+<p>下面是一个示例：<br>
+……（放 1～2 个完整示例）</p>
+</blockquote>
+<p>实践里有几个坑：</p>
+<ol>
+<li><strong>没有示例时，模型很容易输出「半自然语言半 JSON」的东西</strong></li>
+<li><strong>不强调“只输出 JSON”，就会自动加解释</strong></li>
+<li><strong>不限制可选类型，它会发明很多你前端根本不支持的 type</strong></li>
+</ol>
+<p>把这些在 Prompt 里说清楚之后，稳定性会好很多。</p>
+<hr>
+<h2 id="4-后端校验不要全信大模型">4. 后端校验：不要全信大模型</h2>
+<p>拿到 JSON 之后，后端会做一层校验，而不是直接丢给前端：</p>
+<ol>
+<li>校验结构：字段是否齐全、类型是否符合约定</li>
+<li>白名单过滤：type / 规则类型是否在允许范围内</li>
+<li>安全过滤：限制正则表达式等高风险内容</li>
+</ol>
+<p>如果校验失败：</p>
+<ul>
+<li>返回一个通用提示（配置有误，请重试或联系同事）</li>
+<li>或在内部工具里展示具体错误，帮助业务侧改描述</li>
+</ul>
+<p><strong>不要</strong> 直接把模型原始输出丢给浏览器。</p>
+<hr>
+<h2 id="5-前端渲染--人工微调">5. 前端渲染 + 人工微调</h2>
+<p>即使大模型给出的配置八九不离十，业务上往往还需要微调：</p>
+<ul>
+<li>字段顺序调整</li>
+<li>文案更贴近具体业务场景</li>
+<li>某些字段默认值/交互细节修改</li>
+</ul>
+<p>所以我们做了一个简单的「配置可视化编辑」页面：</p>
+<ul>
+<li>左侧是实时预览表单</li>
+<li>右侧是字段列表 + 属性编辑</li>
+<li>支持拖拽排序、勾选必填、修改标签等</li>
+</ul>
+<p>AI 负责给一个可用的草稿，人来做最后的决定。</p>
+<hr>
+<h2 id="6-实际使用中的一些经验">6. 实际使用中的一些经验</h2>
+<ol>
+<li>
+<p><strong>描述越具体，结果越好</strong></p>
+<ul>
+<li>一开始运营只写「做个投资人表单」，模型只能瞎猜</li>
+<li>后来在输入框下面加了引导：建议写清字段、必填、校验方式等</li>
+</ul>
+</li>
+<li>
+<p><strong>复杂逻辑拆两步</strong></p>
+<ul>
+<li>比如「机构投资人与自然人字段不同」，先生成基础字段</li>
+<li>再在低代码规则里做显隐控制，而不是全靠模型推理</li>
+</ul>
+</li>
+<li>
+<p><strong>模板 + AI 的混合模式更稳</strong></p>
+<ul>
+<li>KYC、开户、地址这类高频表单先做成模板</li>
+<li>AI 在模板上做增删，而不是每次重造轮子</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="7-小结">7. 小结</h2>
+<p>这次表单配置助手的改造，让我更确认一件事：</p>
+<blockquote>
+<p>大模型最适合做的是「从 0 到 0.7」，而不是「从 0 到 1」。</p>
+</blockquote>
+<p>关键几点回顾：</p>
+<ul>
+<li>先把「机器读得懂的配置格式」设计好</li>
+<li>用 Prompt + 示例约束输出</li>
+<li>后端必须有一层校验与安全过滤</li>
+<li>前端提供可视化微调，而不是全自动生成</li>
+</ul>
+<p>这样搞下来，前端不会消失，但会少掉很多重复、机械的配置工作，把精力更多放在「交互设计」和「整体体验」上。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-02-05</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2024-02-05-ai-powered-form-builder/" data-title="用大模型做一个「表单配置助手」" data-via="https://github.com/cs11b137" data-hashtags="表单配置,大模型,低代码,配置化"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2024-02-05-ai-powered-form-builder/" data-hashtag="表单配置"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2024-02-05-ai-powered-form-builder/" data-title="用大模型做一个「表单配置助手」"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2024-02-05-ai-powered-form-builder/" data-title="用大模型做一个「表单配置助手」"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2024-02-05-ai-powered-form-builder/" data-title="用大模型做一个「表单配置助手」"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E8%A1%A8%E5%8D%95%E9%85%8D%E7%BD%AE/">表单配置</a>,&nbsp;<a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>,&nbsp;<a href="/tags/%E4%BD%8E%E4%BB%A3%E7%A0%81/">低代码</a>,&nbsp;<a href="/tags/%E9%85%8D%E7%BD%AE%E5%8C%96/">配置化</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2023-12-20-2023-summary/" class="prev" rel="prev" title="2023 年技术小结：从前端工程到 AI 应用"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>2023 年技术小结：从前端工程到 AI 应用</a>
+            <a href="/posts/2024-03-18-smart-code-review/" class="next" rel="next" title="AI Code Review 实战：规则、提示词与边界">AI Code Review 实战：规则、提示词与边界<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

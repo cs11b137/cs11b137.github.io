@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>给个人网站加一个 AI 搜索框 - Saiga</title><meta name="Description" content="基于本站内容做语义搜索 / 问答的完整流程记录，从数据准备、向量检索到前端交互和使用体验。"><meta property="og:url" content="http://localhost:1313/posts/2025-01-25-ai-powered-search-on-blog/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="给个人网站加一个 AI 搜索框">
+  <meta property="og:description" content="基于本站内容做语义搜索 / 问答的完整流程记录，从数据准备、向量检索到前端交互和使用体验。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-25T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-01-25T00:00:00+00:00">
+    <meta property="article:tag" content="博客">
+    <meta property="article:tag" content="搜索">
+    <meta property="article:tag" content="RAG">
+    <meta property="article:tag" content="向量检索">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="给个人网站加一个 AI 搜索框">
+  <meta name="twitter:description" content="基于本站内容做语义搜索 / 问答的完整流程记录，从数据准备、向量检索到前端交互和使用体验。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2025-01-25-ai-powered-search-on-blog/" /><link rel="prev" href="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/" /><link rel="next" href="http://localhost:1313/posts/2025-03-01-ai-recommendation-for-posts/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "给个人网站加一个 AI 搜索框",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2025-01-25-ai-powered-search-on-blog\/"
+        },"genre": "posts","keywords": "博客, 搜索, RAG, 向量检索","wordcount":  205 ,
+        "url": "http:\/\/localhost:1313\/posts\/2025-01-25-ai-powered-search-on-blog\/","datePublished": "2025-01-25T00:00:00+00:00","dateModified": "2025-01-25T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "基于本站内容做语义搜索 / 问答的完整流程记录，从数据准备、向量检索到前端交互和使用体验。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">给个人网站加一个 AI 搜索框</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>个人网站</a>&nbsp;<a href="/categories/ai-%E5%BA%94%E7%94%A8/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 应用</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-01-25">2025-01-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 205 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-先想清楚ai-搜索到底要搜什么">1. 先想清楚：AI 搜索到底要搜什么？</a></li>
+    <li><a href="#2-数据准备从-hugo-的-markdown-出发">2. 数据准备：从 Hugo 的 Markdown 出发</a></li>
+    <li><a href="#3-向量化与向量库把内容变成可相似度检索的形式">3. 向量化与向量库：把内容变成「可相似度检索」的形式</a>
+      <ul>
+        <li><a href="#31-嵌入embedding">3.1 嵌入（Embedding）</a></li>
+        <li><a href="#32-向量库">3.2 向量库</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-检索流程从问题到候选片段">4. 检索流程：从问题到候选片段</a></li>
+    <li><a href="#5-prompt-设计把模型当成站内问答助手">5. Prompt 设计：把模型当成「站内问答助手」</a></li>
+    <li><a href="#6-前端交互一个简单但好用的搜索框">6. 前端交互：一个简单但好用的搜索框</a></li>
+    <li><a href="#7-如何控制成本与延迟">7. 如何控制成本与延迟？</a></li>
+    <li><a href="#8-使用体验它真的有用吗">8. 使用体验：它真的有用吗？</a></li>
+    <li><a href="#9-小结">9. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>这篇算是给我自己的一份施工日志：记录我是怎么在个人网站上加一个「AI 搜索框」的。</p>
+<p>目标很简单：</p>
+<blockquote>
+<p>让搜索不再只靠关键字，而是能用自然语言问问题，基于博客内容给出回答。</p>
+</blockquote>
+<p>比如：</p>
+<ul>
+<li>「你之前是怎么做前端性能监控的？」</li>
+<li>「Monorepo 迁移里有哪些坑？」</li>
+<li>「AI 和前端结合有什么实践？」</li>
+</ul>
+<p>都可以直接问。</p>
+<hr>
+<h2 id="1-先想清楚ai-搜索到底要搜什么">1. 先想清楚：AI 搜索到底要搜什么？</h2>
+<p>我给自己的约束：<strong>只基于本站内容</strong>。</p>
+<ul>
+<li>不接入外部网络</li>
+<li>不回答「全球最佳框架是哪一个」这种问题</li>
+<li>只回答「我自己写过什么」「我自己是怎么想的」</li>
+</ul>
+<p>这样有几个好处：</p>
+<ol>
+<li>不用考虑太复杂的内容安全问题</li>
+<li>回答的质量和风格更统一</li>
+<li>搜索结果更像是「帮我找回过去的自己」</li>
+</ol>
+<hr>
+<h2 id="2-数据准备从-hugo-的-markdown-出发">2. 数据准备：从 Hugo 的 Markdown 出发</h2>
+<p>网站用的是 Hugo，文章都在 <code>content/posts</code> 中。</p>
+<p>做了一个简单的数据导出脚本：</p>
+<ol>
+<li>遍历所有 Markdown 文件</li>
+<li>解析 front matter（标题、日期、标签）</li>
+<li>提取正文内容，按标题层级切分成若干小段</li>
+<li>为每个小段生成一个唯一 ID + 一些元信息</li>
+</ol>
+<p>伪代码大概是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Chunk</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">title</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">date</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">tags</span>: <span style="color:#66d9ef">string</span>[]
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">sectionPath</span>: <span style="color:#66d9ef">string</span>[]
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">content</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">url</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这些 <code>Chunk</code> 之后会被送去做向量化。</p>
+<hr>
+<h2 id="3-向量化与向量库把内容变成可相似度检索的形式">3. 向量化与向量库：把内容变成「可相似度检索」的形式</h2>
+<h3 id="31-嵌入embedding">3.1 嵌入（Embedding）</h3>
+<p>对每个片段调用 Embedding 模型，生成一个向量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">embedding</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">embed</span>(<span style="color:#a6e22e">chunk</span>.<span style="color:#a6e22e">content</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// embedding: number[]
+</span></span></span></code></pre></div><p>向量和 metadata 一起存起来。</p>
+<h3 id="32-向量库">3.2 向量库</h3>
+<p>个人项目，我选了一个轻量的方案：</p>
+<ul>
+<li>使用托管的向量数据库（或者 SQLite + 向量扩展也行）</li>
+<li>每条记录包含：<code>id + vector + metadata</code></li>
+</ul>
+<p>需要支持的能力：</p>
+<ul>
+<li>写入 / 更新向量</li>
+<li>按相似度查询 Top K 片段</li>
+<li>基于标签 / 日期等做简单过滤（可选）</li>
+</ul>
+<hr>
+<h2 id="4-检索流程从问题到候选片段">4. 检索流程：从问题到候选片段</h2>
+<p>当有人在博客搜索框里输入：</p>
+<blockquote>
+<p>「前端项目里怎么接入 AI Review？」</p>
+</blockquote>
+<p>后台会执行：</p>
+<ol>
+<li>对问题做一次 Embedding</li>
+<li>在向量库中查 Top K 片段（比如 8～10 个）</li>
+<li>把这些片段作为上下文，发给大模型，让它基于这些内容来回答</li>
+</ol>
+<p>注意：我会在 Prompt 里反复强调：</p>
+<blockquote>
+<p>你只能根据给定片段回答问题。<br>
+如果片段里没有明确提到，就说「我好像没有在文章里具体写过这一点」。</p>
+</blockquote>
+<p>这样可以尽量降低「瞎编」风险。</p>
+<hr>
+<h2 id="5-prompt-设计把模型当成站内问答助手">5. Prompt 设计：把模型当成「站内问答助手」</h2>
+<p>系统提示类似：</p>
+<blockquote>
+<p>你是一个基于个人博客内容的问答助手。<br>
+我会提供一些文章片段，它们都来自同一个作者的博客。<br>
+你需要：</p>
+<ol>
+<li>根据片段内容回答用户问题</li>
+<li>如果片段内容不足以回答，说明「我在文章里没有写得很详细」</li>
+<li>回答风格尽量口语化、简洁，像作者在写博客一样</li>
+<li>在合适的地方提一下「相关主题可以参考 XX 文章」，但不要编造不存在的文章。</li>
+</ol>
+</blockquote>
+<p>用户输入则包含：</p>
+<ul>
+<li>问题文本</li>
+<li>命中的片段列表（标题 + 内容摘要）</li>
+</ul>
+<hr>
+<h2 id="6-前端交互一个简单但好用的搜索框">6. 前端交互：一个简单但好用的搜索框</h2>
+<p>前端部分我刻意做得很克制：</p>
+<ul>
+<li>顶部导航栏加一个搜索入口</li>
+<li>打开后是一个全屏弹层：上方输入框，下方是「对话区」</li>
+<li>支持多轮提问，保留上下文</li>
+</ul>
+<p>交互上的几个小点：</p>
+<ol>
+<li>
+<p><strong>首次提示</strong></p>
+<ul>
+<li>在输入框下方放几条示例问题</li>
+<li>降低用户不知道问什么的门槛</li>
+</ul>
+</li>
+<li>
+<p><strong>显示来源</strong></p>
+<ul>
+<li>每个回答下方附一行「参考自：XXX（2023-09-10）」</li>
+<li>点击可在新窗口打开对应文章</li>
+</ul>
+</li>
+<li>
+<p><strong>失败兜底</strong></p>
+<ul>
+<li>如果检索不到相关片段，给出友好提示：
+<blockquote>
+<p>「我好像还没写过这块，或许可以换个问法，或者哪天我写一篇 😄」</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="7-如何控制成本与延迟">7. 如何控制成本与延迟？</h2>
+<p>因为是个人博客，访问量有限，所以相对宽松。<br>
+但还是做了几件事：</p>
+<ol>
+<li>
+<p><strong>前端做简单缓存</strong></p>
+<ul>
+<li>同一个问题短时间内重复问，直接返回上次结果</li>
+</ul>
+</li>
+<li>
+<p><strong>限制问题长度和频率</strong></p>
+<ul>
+<li>超长问题先在前端提示用户缩短</li>
+<li>后端对同一 IP / 浏览器做一些频率保护</li>
+</ul>
+</li>
+<li>
+<p><strong>尽量减少每次传给模型的上下文长度</strong></p>
+<ul>
+<li>片段切短一点</li>
+<li>只传最相关的 5～8 个片段</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="8-使用体验它真的有用吗">8. 使用体验：它真的有用吗？</h2>
+<p>对我自己来说，最大的好处是：</p>
+<ol>
+<li>写过的东西更容易「被找回」</li>
+<li>写文章时可以快速查自己之前的观点和实践</li>
+<li>有时候甚至会惊讶：
+<blockquote>
+<p>「原来我当时这样想过 😂」</p>
+</blockquote>
+</li>
+</ol>
+<p>对偶然路过的访客来说：</p>
+<ul>
+<li>不需要熟悉分类 / 标签</li>
+<li>用自然语言问问题就好</li>
+</ul>
+<p>虽然现在还很简陋，但已经比「只支持标题关键字搜索」要好用很多。</p>
+<hr>
+<h2 id="9-小结">9. 小结</h2>
+<p>给个人网站加一个 AI 搜索框，其实就是三件事：</p>
+<ol>
+<li>把文章内容结构化、切分、向量化</li>
+<li>用向量检索找到相关片段，喂给大模型回答</li>
+<li>做一个顺手的前端界面，把它变成一个「对话式搜索框」</li>
+</ol>
+<p>它不是一个复杂的产品，但对个人来说已经足够有趣：<br>
+<strong>让博客从「往外写」变成「也能向里问」。</strong></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-01-25</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2025-01-25-ai-powered-search-on-blog/" data-title="给个人网站加一个 AI 搜索框" data-via="https://github.com/cs11b137" data-hashtags="博客,搜索,RAG,向量检索"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2025-01-25-ai-powered-search-on-blog/" data-hashtag="博客"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2025-01-25-ai-powered-search-on-blog/" data-title="给个人网站加一个 AI 搜索框"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2025-01-25-ai-powered-search-on-blog/" data-title="给个人网站加一个 AI 搜索框"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2025-01-25-ai-powered-search-on-blog/" data-title="给个人网站加一个 AI 搜索框"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a>,&nbsp;<a href="/tags/%E6%90%9C%E7%B4%A2/">搜索</a>,&nbsp;<a href="/tags/rag/">RAG</a>,&nbsp;<a href="/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/">向量检索</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2024-12-18-2024-ai-frontier-summary/" class="prev" rel="prev" title="2024 年 AI &#43; 前端实践复盘"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>2024 年 AI + 前端实践复盘</a>
+            <a href="/posts/2025-03-01-ai-recommendation-for-posts/" class="next" rel="next" title="用简单推荐算法 &#43; AI 做「你可能还想看」">用简单推荐算法 + AI 做「你可能还想看」<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

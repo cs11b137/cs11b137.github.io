@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>让 AI 帮我做前端性能分析报告 - Saiga</title><meta name="Description" content="把 Lighthouse 报告和性能日志交给大模型，让它生成「能看懂、可执行」的性能分析报告，工程师自己只做最后的校对和决策。"><meta property="og:url" content="http://localhost:1313/posts/2024-05-01-ai-performance-analyzer/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="让 AI 帮我做前端性能分析报告">
+  <meta property="og:description" content="把 Lighthouse 报告和性能日志交给大模型，让它生成「能看懂、可执行」的性能分析报告，工程师自己只做最后的校对和决策。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-05-01T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-05-01T00:00:00+00:00">
+    <meta property="article:tag" content="性能分析">
+    <meta property="article:tag" content="Lighthouse">
+    <meta property="article:tag" content="大模型">
+    <meta property="article:tag" content="前端优化">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="让 AI 帮我做前端性能分析报告">
+  <meta name="twitter:description" content="把 Lighthouse 报告和性能日志交给大模型，让它生成「能看懂、可执行」的性能分析报告，工程师自己只做最后的校对和决策。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2024-05-01-ai-performance-analyzer/" /><link rel="prev" href="http://localhost:1313/posts/2024-03-18-smart-code-review/" /><link rel="next" href="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "让 AI 帮我做前端性能分析报告",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2024-05-01-ai-performance-analyzer\/"
+        },"genre": "posts","keywords": "性能分析, Lighthouse, 大模型, 前端优化","wordcount":  218 ,
+        "url": "http:\/\/localhost:1313\/posts\/2024-05-01-ai-performance-analyzer\/","datePublished": "2024-05-01T00:00:00+00:00","dateModified": "2024-05-01T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "把 Lighthouse 报告和性能日志交给大模型，让它生成「能看懂、可执行」的性能分析报告，工程师自己只做最后的校对和决策。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">让 AI 帮我做前端性能分析报告</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>性能优化</a>&nbsp;<a href="/categories/ai-%E5%BA%94%E7%94%A8/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 应用</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-05-01">2024-05-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 218 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-输入与输出长啥样">1. 输入与输出长啥样？</a>
+      <ul>
+        <li><a href="#11-输入数据">1.1 输入数据</a></li>
+        <li><a href="#12-期望输出">1.2 期望输出</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-先做精简给-ai-的不是原始-json">2. 先做精简：给 AI 的不是原始 JSON</a></li>
+    <li><a href="#3-prompt让-ai-像一个性能顾问而不是老师">3. Prompt：让 AI 像一个「性能顾问」而不是老师</a></li>
+    <li><a href="#4-效果示例从报表变成能说人话的报告">4. 效果示例：从报表变成「能说人话」的报告</a></li>
+    <li><a href="#5-如何防止一本正经地瞎说">5. 如何防止「一本正经地瞎说」？</a></li>
+    <li><a href="#6-融入日常流程从一次实验到固定动作">6. 融入日常流程：从一次实验到固定动作</a></li>
+    <li><a href="#7-小结">7. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>前端做性能优化，两个常见痛点：</p>
+<ol>
+<li>报表很数据化，非技术同学看不懂</li>
+<li>每次写性能报告都很花时间：看指标 → 找问题 → 翻译成大家听得懂的结论</li>
+</ol>
+<p>于是试了一件事：</p>
+<blockquote>
+<p>我负责把数据准备好，AI 帮我写一份「结构化的性能分析报告」，我只做最后校对。</p>
+</blockquote>
+<hr>
+<h2 id="1-输入与输出长啥样">1. 输入与输出长啥样？</h2>
+<h3 id="11-输入数据">1.1 输入数据</h3>
+<p>主要有两部分：</p>
+<ol>
+<li>
+<p><strong>Lighthouse JSON 报告</strong></p>
+<ul>
+<li>性能得分</li>
+<li>LCP / CLS / TBT / TTI 等指标</li>
+<li>各种「机会」与「诊断」信息</li>
+</ul>
+</li>
+<li>
+<p><strong>真实用户监控数据（RUM）</strong>（可选）</p>
+<ul>
+<li>最近一段时间的 LCP P75、FCP P75</li>
+<li>不同地区/设备的耗时对比</li>
+</ul>
+</li>
+</ol>
+<h3 id="12-期望输出">1.2 期望输出</h3>
+<p>希望 AI 给我的报告包含：</p>
+<ol>
+<li>一段 1～2 句话的性能整体概览</li>
+<li>用人话解释关键指标的含义和当前水平</li>
+<li>列出 3～5 个主要问题（按影响排序）</li>
+<li>每个问题配上具体可执行的优化建议</li>
+<li>告诉我「先做哪几件事最划算」</li>
+</ol>
+<hr>
+<h2 id="2-先做精简给-ai-的不是原始-json">2. 先做精简：给 AI 的不是原始 JSON</h2>
+<p>原始 Lighthouse JSON 体积很大，直接给模型既浪费 Token，也容易让它迷路。<br>
+所以写了一个小脚本，把它整理成简版结构：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-jsonc" data-lang="jsonc"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;url&#34;</span>: <span style="color:#e6db74">&#34;https://example.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;score&#34;</span>: <span style="color:#ae81ff">0.72</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;metrics&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;LCP&#34;</span>: <span style="color:#ae81ff">3800</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;CLS&#34;</span>: <span style="color:#ae81ff">0.11</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;FID&#34;</span>: <span style="color:#ae81ff">25</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;TTI&#34;</span>: <span style="color:#ae81ff">4200</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;opportunities&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;减少未使用的 JavaScript&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;estimatedSavingsMs&#34;</span>: <span style="color:#ae81ff">800</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;消除阻塞渲染的资源&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;estimatedSavingsMs&#34;</span>: <span style="color:#ae81ff">600</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;diagnostics&#34;</span>: [
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;主线程工作过多&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;部分图片未压缩&#34;</span>
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;rum&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;LCP_p75&#34;</span>: <span style="color:#ae81ff">4200</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;FCP_p75&#34;</span>: <span style="color:#ae81ff">2100</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;sampleCount&#34;</span>: <span style="color:#ae81ff">120000</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样输入既足够有信息量，又相对稳定。</p>
+<hr>
+<h2 id="3-prompt让-ai-像一个性能顾问而不是老师">3. Prompt：让 AI 像一个「性能顾问」而不是老师</h2>
+<p>系统提示类似：</p>
+<blockquote>
+<p>你是一名资深前端性能工程师。<br>
+我会给你一个页面的性能数据（来自 Lighthouse + 真实用户监控），请输出一份性能分析报告。</p>
+<p>要求：</p>
+<ol>
+<li>用 1～2 句话概括整体情况</li>
+<li>用通俗语言解释 LCP、CLS 等指标的含义和当前表现</li>
+<li>按影响程度列出 3～5 个主要问题</li>
+<li>为每个问题给出可执行的优化建议</li>
+<li>分清「可以马上做」和「长期建设」两类优化</li>
+</ol>
+<p>回答尽量结合具体数字，不要给太空泛的建议。</p>
+</blockquote>
+<p>然后把上面的精简 JSON 当作用户输入。</p>
+<hr>
+<h2 id="4-效果示例从报表变成能说人话的报告">4. 效果示例：从报表变成「能说人话」的报告</h2>
+<p>一个简化版的生成结果大概是：</p>
+<ul>
+<li>整体来说当前页面性能得分约 72 分，主要瓶颈在于首屏内容出现较慢（LCP 偏高）；</li>
+<li>CLS 略高于推荐值，说明存在一定程度的布局抖动；</li>
+<li>真实用户数据表明，在真实环境下 LCP 还会再慢 400ms 左右。</li>
+</ul>
+<p>主要问题与建议例如：</p>
+<ol>
+<li>
+<p><strong>未使用的 JS 较多（预计节省约 800ms）</strong></p>
+<ul>
+<li>拆分出低频功能模块，改为按需加载</li>
+<li>清理历史遗留、已经不再使用的组件和工具</li>
+</ul>
+</li>
+<li>
+<p><strong>存在阻塞渲染的同步资源（预计节省约 600ms）</strong></p>
+<ul>
+<li>把首屏不需要的第三方脚本改为 <code>async</code> 或 <code>defer</code></li>
+<li>把大体积 CSS 拆分成「首屏关键样式 + 延迟加载样式」</li>
+</ul>
+</li>
+<li>
+<p><strong>主线程任务过重</strong></p>
+<ul>
+<li>优化初始化逻辑，拆分大任务</li>
+<li>部分逻辑可以推迟到首屏渲染之后再执行</li>
+</ul>
+</li>
+</ol>
+<p>最后再给一个优先级建议列表，方便团队排计划。</p>
+<hr>
+<h2 id="5-如何防止一本正经地瞎说">5. 如何防止「一本正经地瞎说」？</h2>
+<p>大模型有个毛病：很会编。<br>
+要减少「假分析」，主要靠两点：</p>
+<ol>
+<li><strong>输入只给真实数据，不给太多模糊描述</strong></li>
+<li><strong>输出由人类做快速审核</strong>
+<ul>
+<li>看它是否把数据理解错了</li>
+<li>建议是否可行、有无明显风险</li>
+</ul>
+</li>
+</ol>
+<p>实测下来，只要输入数据靠谱，再加上一轮人工校对，整体质量是可控的。</p>
+<hr>
+<h2 id="6-融入日常流程从一次实验到固定动作">6. 融入日常流程：从一次实验到固定动作</h2>
+<p>为了让这个工具不变成「玩一次就算」，我们做了两件事：</p>
+<ol>
+<li>
+<p><strong>接入 CI / 定时任务</strong></p>
+<ul>
+<li>对关键页面定期跑 Lighthouse</li>
+<li>自动生成 AI 分析报告，推送到监控群/周报</li>
+</ul>
+</li>
+<li>
+<p><strong>形成「性能周报」</strong></p>
+<ul>
+<li>每周总结关键页面的分数变化</li>
+<li>附带 AI 报告里的重点问题与建议</li>
+<li>方便非前端同学也能快速理解性能状态</li>
+</ul>
+</li>
+</ol>
+<p>久而久之，性能就不再是「出问题才想起来」的事情，而是一个可视、可讨论的维度。</p>
+<hr>
+<h2 id="7-小结">7. 小结</h2>
+<p>让 AI 帮忙做前端性能分析，本质上是在做：</p>
+<ol>
+<li>我们负责把数据采集、整理好</li>
+<li>AI 帮我们把数据翻译成「人看得懂的报告」</li>
+<li>再由人做判断和决策</li>
+</ol>
+<p>它替代的不是工程师的能力，而是那部分重复、机械、却又很耗时间的文字工作。</p>
+<p>如果你也想试一试，可以从一条链路开始：</p>
+<ul>
+<li>选一个重要页面</li>
+<li>导出一次 Lighthouse JSON</li>
+<li>手动走一遍「精简 → 丢给大模型 → 校对」</li>
+<li>感觉合适，再考虑接到自动化流水线上。</li>
+</ul>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-05-01</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2024-05-01-ai-performance-analyzer/" data-title="让 AI 帮我做前端性能分析报告" data-via="https://github.com/cs11b137" data-hashtags="性能分析,Lighthouse,大模型,前端优化"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2024-05-01-ai-performance-analyzer/" data-hashtag="性能分析"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2024-05-01-ai-performance-analyzer/" data-title="让 AI 帮我做前端性能分析报告"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2024-05-01-ai-performance-analyzer/" data-title="让 AI 帮我做前端性能分析报告"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2024-05-01-ai-performance-analyzer/" data-title="让 AI 帮我做前端性能分析报告"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">性能分析</a>,&nbsp;<a href="/tags/lighthouse/">Lighthouse</a>,&nbsp;<a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>,&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E4%BC%98%E5%8C%96/">前端优化</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2024-03-18-smart-code-review/" class="prev" rel="prev" title="AI Code Review 实战：规则、提示词与边界"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>AI Code Review 实战：规则、提示词与边界</a>
+            <a href="/posts/2024-06-22-ai-for-fintech-risk-hints/" class="next" rel="next" title="在金融前端里用 AI 做风险提示与文案生成">在金融前端里用 AI 做风险提示与文案生成<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

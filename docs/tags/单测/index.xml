@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>单测 on Saiga</title>
+    <link>http://localhost:1313/tags/%E5%8D%95%E6%B5%8B/</link>
+    <description>Recent content in 单测 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Sun, 18 Dec 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%8D%95%E6%B5%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>第一次用 AI 写前端代码：哪些好用，哪些坑</title>
+      <link>http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/</link>
+      <pubDate>Sun, 18 Dec 2022 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2022-12-18-ai-code-helper-experiment/</guid>
+      <description>&lt;p&gt;2022 年我开始把 AI 编码助手真正用在日常开发里，体验可以用一句话概括：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;它不是银弹，但如果用得好，很像一个永远不喊累的实习生。&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;这篇文章主要记录几个方面：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;它在哪些场景明显好用；&lt;/li&gt;&#xA;&lt;li&gt;哪些地方容易翻车；&lt;/li&gt;&#xA;&lt;li&gt;我最后形成的一些使用习惯。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-几个惊艳到的使用场景&#34;&gt;1. 几个「惊艳到」的使用场景&lt;/h2&gt;&#xA;&lt;h3 id=&#34;11-写样板代码boilerplate&#34;&gt;1.1 写样板代码（boilerplate）&lt;/h3&gt;&#xA;&lt;p&gt;比如：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;新建一个 Vue 3 组合式组件；&lt;/li&gt;&#xA;&lt;li&gt;写一个标准的 Axios 封装；&lt;/li&gt;&#xA;&lt;li&gt;初始化一个简单的 React 页面结构。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;以前要么复制项目里旧代码改，要么从 CLI 模板改；&lt;br&gt;&#xA;现在直接丢一句：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;「写一个 Vue3 + TypeScript 的表格组件，支持分页、排序，props 包含 xxx。」&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;然后拿到一个 70% 可用的版本，再按自己习惯调整。&lt;/p&gt;&#xA;&lt;h3 id=&#34;12-写简单的工具函数&#34;&gt;1.2 写简单的工具函数&lt;/h3&gt;&#xA;&lt;p&gt;例如：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;将后端分页结果转换为前端表格数据；&lt;/li&gt;&#xA;&lt;li&gt;格式化日期/金额；&lt;/li&gt;&#xA;&lt;li&gt;从树结构中找到某个节点路径。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;用自然语言描述需求 + 给一两个例子，AI 通常能给出还不错的实现。&lt;br&gt;&#xA;有时候还能顺带推荐几种写法，帮你对比。&lt;/p&gt;&#xA;&lt;h3 id=&#34;13-帮忙翻译老代码&#34;&gt;1.3 帮忙「翻译」老代码&lt;/h3&gt;&#xA;&lt;p&gt;面对一些古早 jQuery/复杂 if-else 的老代码，直接让 AI：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;「帮我解释这段代码在干嘛，并用更现代的写法重构。」&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;得到的是：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;一段自然语言解释（方便确认理解）；&lt;/li&gt;&#xA;&lt;li&gt;一版初步的重构实现（不一定完美，但至少是个起点）。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-重构和单测ai-很适合当助手&#34;&gt;2. 重构和单测：AI 很适合当助手&lt;/h2&gt;&#xA;&lt;h3 id=&#34;21-帮忙拆函数--命名&#34;&gt;2.1 帮忙拆函数 / 命名&lt;/h3&gt;&#xA;&lt;p&gt;长函数重构时，让 AI：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;「这段函数太长了，帮我按逻辑拆成几个小函数，顺带起一些更好的函数名。」&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

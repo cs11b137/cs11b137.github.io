@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>非对称加密 on Saiga</title>
+    <link>http://localhost:1313/tags/%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/</link>
+    <description>Recent content in 非对称加密 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Thu, 26 May 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前端加解密实践：从「别明文传密码」开始</title>
+      <link>http://localhost:1313/posts/2022-05-26-encryption-in-frontend/</link>
+      <pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2022-05-26-encryption-in-frontend/</guid>
+      <description>&lt;p&gt;每次提到前端加密，评论区都会有人说：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;有 HTTPS 了，还加什么密？&lt;br&gt;&#xA;前端代码都是能看到的，没意义。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;理论上没错，但在金融/政企等场景里，&lt;strong&gt;有些需求不是技术可不可行，而是「要不要多一层安全防护 + 满足合规要求」&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;p&gt;这篇文章从实战出发，聊聊：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;常见的前端加密需求；&lt;/li&gt;&#xA;&lt;li&gt;对称 / 非对称加密如何组合使用；&lt;/li&gt;&#xA;&lt;li&gt;以及实际落地时的一些坑。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-https-已经有了为啥还要前端加密&#34;&gt;1. HTTPS 已经有了，为啥还要前端加密？&lt;/h2&gt;&#xA;&lt;p&gt;先说前提：&lt;strong&gt;HTTPS 必须有&lt;/strong&gt;，这是基础。&lt;br&gt;&#xA;在这个基础上，某些场景仍然会要求：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;防止明文敏感信息出现在抓包里&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;即便是 HTTPS，有些合规要求会明确写「不得以明文形式传输密码等敏感信息」；&lt;/li&gt;&#xA;&lt;li&gt;抓包截图里看到一串密文，和直接看到手机号/密码，感受是不一样的。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;降低中间层日志泄露风险&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;有时候请求会经过网关、代理、日志系统；&lt;/li&gt;&#xA;&lt;li&gt;如果这些地方有不规范的日志记录，敏感字段加密可以降低损害。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;和现有后端架构/第三方接口对齐&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;有些历史系统已经约定「密码字段用某种算法加密再传」；&lt;/li&gt;&#xA;&lt;li&gt;前端需要遵守既有协议。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;前端加密&lt;strong&gt;不是代替 HTTPS&lt;/strong&gt;，而是多一层「&lt;strong&gt;应用层加密&lt;/strong&gt;」。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-两个基本工具对称--非对称&#34;&gt;2. 两个基本工具：对称 &amp;amp; 非对称&lt;/h2&gt;&#xA;&lt;p&gt;简单回顾一下：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;对称加密&lt;/strong&gt;（如 AES、SM4）：同一把 key 加密解密；&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;非对称加密&lt;/strong&gt;（如 RSA）：公钥加密，私钥解密（或反之）。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;特性：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;对称加密：速度快，适合加密大量数据，但&lt;strong&gt;key 如何安全分发&lt;/strong&gt;是问题；&lt;/li&gt;&#xA;&lt;li&gt;非对称加密：适合做「密钥交换」，但加密大数据性能较差。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;所以常用组合是：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;前端生成一个随机对称密钥 → 用后端公钥加密这个密钥 → 发给后端 → 后端用私钥解出密钥 → 后续用这个对称密钥加解密数据。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;前端常见实现方式：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;WebCrypto API；&lt;/li&gt;&#xA;&lt;li&gt;或成熟的 JS 加密库（CryptoJS / JSEncrypt / 国密相关库等）。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;3-一个典型的前端加密流程&#34;&gt;3. 一个典型的前端加密流程&lt;/h2&gt;&#xA;&lt;p&gt;以「登录密码不可明文传输」为例，设计一个简化流程：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

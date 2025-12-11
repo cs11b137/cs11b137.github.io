@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>用云端 NLP API 做一个简单的文本分析工具 - Saiga</title><meta name="Description" content="一次早期的 AI 尝试：用现成云端 NLP 接口，对评论/工单做情感和分类分析，并落成一个可用的小工具。"><meta property="og:url" content="http://localhost:1313/posts/2021-12-05-first-ai-touch/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="用云端 NLP API 做一个简单的文本分析工具">
+  <meta property="og:description" content="一次早期的 AI 尝试：用现成云端 NLP 接口，对评论/工单做情感和分类分析，并落成一个可用的小工具。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-12-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-12-05T00:00:00+00:00">
+    <meta property="article:tag" content="NLP">
+    <meta property="article:tag" content="文本分析">
+    <meta property="article:tag" content="云服务">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="用云端 NLP API 做一个简单的文本分析工具">
+  <meta name="twitter:description" content="一次早期的 AI 尝试：用现成云端 NLP 接口，对评论/工单做情感和分类分析，并落成一个可用的小工具。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2021-12-05-first-ai-touch/" /><link rel="prev" href="http://localhost:1313/posts/2021-10-20-ci-cd-for-frontend/" /><link rel="next" href="http://localhost:1313/posts/2022-02-10-fintech-form-design/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "用云端 NLP API 做一个简单的文本分析工具",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2021-12-05-first-ai-touch\/"
+        },"genre": "posts","keywords": "NLP, 文本分析, 云服务","wordcount":  261 ,
+        "url": "http:\/\/localhost:1313\/posts\/2021-12-05-first-ai-touch\/","datePublished": "2021-12-05T00:00:00+00:00","dateModified": "2021-12-05T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "一次早期的 AI 尝试：用现成云端 NLP 接口，对评论/工单做情感和分类分析，并落成一个可用的小工具。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">用云端 NLP API 做一个简单的文本分析工具</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/ai-%E6%8E%A2%E7%B4%A2/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 探索</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2021-12-05">2021-12-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 261 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-想做一个什么样的小工具">1. 想做一个什么样的小工具？</a></li>
+    <li><a href="#2-挑选一个云-nlp-服务">2. 挑选一个云 NLP 服务</a></li>
+    <li><a href="#3-在前端简单封一层">3. 在前端简单封一层</a></li>
+    <li><a href="#4-页面交互尽量可视化一点">4. 页面交互：尽量「可视化」一点</a></li>
+    <li><a href="#5-它到底准不准">5. 它到底准不准？</a></li>
+    <li><a href="#6-一点点工程化考虑">6. 一点点工程化考虑</a></li>
+    <li><a href="#7-小结早期-ai-尝试的意义">7. 小结：早期 AI 尝试的意义</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>很早之前就对「AI 能不能帮忙看评论、看工单」这件事好奇过，但自己训模型门槛挺高，于是先选了条<strong>最省事的路</strong>：</p>
+<blockquote>
+<p>找一个云厂商提供的 NLP API，用 HTTP 请求的方式做一层简单封装，做一个「文本分析小工具」。</p>
+</blockquote>
+<p>这篇文章记录的是那次尝试的过程。</p>
+<blockquote>
+<p>注：下面不强调具体厂商名字，主线思路在于「怎么用」，而不是「用谁」。</p>
+</blockquote>
+<hr>
+<h2 id="1-想做一个什么样的小工具">1. 想做一个什么样的小工具？</h2>
+<p>需求非常朴素：</p>
+<ul>
+<li>输入一段文本（比如用户评论、客服工单）；</li>
+<li>自动判断它是「正向 / 负向 / 中性」；</li>
+<li>选做：给出一个大致类别，比如「产品问题 / 物流问题 / 售后问题」。</li>
+</ul>
+<p>最终希望变成一个简单的 Web 页面：</p>
+<ul>
+<li>左边输入框；</li>
+<li>右边展示：情感结果、类别标签、关键句/关键词。</li>
+</ul>
+<hr>
+<h2 id="2-挑选一个云-nlp-服务">2. 挑选一个云 NLP 服务</h2>
+<p>大部分云厂商都会提供类似能力：</p>
+<ul>
+<li>情感分析（Sentiment Analysis）；</li>
+<li>文本分类（Text Classification）；</li>
+<li>关键词提取、实体识别等。</li>
+</ul>
+<p>通常接入步骤类似：</p>
+<ol>
+<li>注册账号；</li>
+<li>在控制台创建一个 NLP 应用 / 项目；</li>
+<li>拿到 API Key / Secret / Endpoint；</li>
+<li>看一眼文档里示例请求。</li>
+</ol>
+<p>示例请求（伪代码）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST /nlp/sentiment
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Authorization: Bearer &lt;API_KEY&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">Content-Type: application/json
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">{
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  &#34;text&#34;: &#34;这次发货太慢了，等了一个星期才收到。&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">}
+</span></span></span></code></pre></div><p>响应大概会是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sentiment&#34;</span>: <span style="color:#e6db74">&#34;negative&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;confidence&#34;</span>: <span style="color:#ae81ff">0.94</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>或者更细一些：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;positive&#34;</span>: <span style="color:#ae81ff">0.02</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;neutral&#34;</span>: <span style="color:#ae81ff">0.04</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;negative&#34;</span>: <span style="color:#ae81ff">0.94</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="3-在前端简单封一层">3. 在前端简单封一层</h2>
+<p>用最熟悉的方式来就好，比如 Vue + Axios：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// api/nlp.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">axios</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;axios&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">client</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">create</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">baseURL</span>: <span style="color:#66d9ef">import.meta.env.VITE_NLP_BASE_URL</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">headers</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Authorization&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`Bearer </span><span style="color:#e6db74">${</span><span style="color:#66d9ef">import</span>.<span style="color:#a6e22e">meta</span>.<span style="color:#a6e22e">env</span>.<span style="color:#a6e22e">VITE_NLP_KEY</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">analyzeText</span>(<span style="color:#a6e22e">text</span>: <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">sentRes</span>, <span style="color:#a6e22e">classifyRes</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">Promise</span>.<span style="color:#a6e22e">all</span>([
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/nlp/sentiment&#39;</span>, { <span style="color:#a6e22e">text</span> }),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/nlp/classify&#39;</span>, { <span style="color:#a6e22e">text</span> }),
+</span></span><span style="display:flex;"><span>  ]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sentiment</span>: <span style="color:#66d9ef">sentRes.data</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">categories</span>: <span style="color:#66d9ef">classifyRes.data</span>,
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在 <code>.env</code> 里配置好：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>VITE_NLP_BASE_URL<span style="color:#f92672">=</span>https://nlp-api.example.com
+</span></span><span style="display:flex;"><span>VITE_NLP_KEY<span style="color:#f92672">=</span>xxxxx
+</span></span></code></pre></div><p>这样可以避免把 key 写死在代码里。</p>
+<blockquote>
+<p>实际生产环境建议把调用放到后端/BFF 层，再提供一个安全的前端接口，这里为了演示只在前端直连。</p>
+</blockquote>
+<hr>
+<h2 id="4-页面交互尽量可视化一点">4. 页面交互：尽量「可视化」一点</h2>
+<p>页面结构大致是：</p>
+<ul>
+<li>上半部分：输入框 + 分析按钮；</li>
+<li>下半部分：结果卡片。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nlp-tool&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">el-input</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">v-model</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;textarea&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">:rows</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">placeholder</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;粘贴一段用户评论或工单内容试试&#34;</span>
+</span></span><span style="display:flex;"><span>    /&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">el-button</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;primary&#34;</span> <span style="color:#f92672">:loading</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;loading&#34;</span> <span style="color:#f92672">@click</span><span style="color:#e6db74">=&#34;onAnalyze&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">分析文本</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">&lt;/</span><span style="color:#a6e22e">el</span><span style="color:#f92672">-button</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#f92672">v-if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;result&#34; class=&#34;result-panel&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">ResultSentiment</span> <span style="color:#f92672">:sentiment</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;result.sentiment&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">ResultCategories</span> <span style="color:#f92672">:categories</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;result.categories&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">template</span>&gt;
+</span></span></code></pre></div><p><code>ResultSentiment</code> 组件可以把结果做得好玩一点：</p>
+<ul>
+<li>负向：红色表情 + 建议优先处理；</li>
+<li>正向：绿色表情 + 简短总结；</li>
+<li>中性：灰色。</li>
+</ul>
+<p>这样这个小工具不仅能输出「机器结果」，也能给人类一点直觉上的感受。</p>
+<hr>
+<h2 id="5-它到底准不准">5. 它到底准不准？</h2>
+<p>做完之后，最有趣的部分其实是：</p>
+<blockquote>
+<p>拿真实的评论/工单数据来试，看看机器和你的直觉差异在哪。</p>
+</blockquote>
+<p>大概有几种情况：</p>
+<ol>
+<li>
+<p>机器判断得挺准</p>
+<ul>
+<li>比如「这次发货太慢了」→ 负向；</li>
+<li>「客服态度很好」→ 正向。</li>
+</ul>
+</li>
+<li>
+<p>机器有点「过于乐观」或「过于悲观」</p>
+<ul>
+<li>带有一些委婉抱怨的句子，有时候会被识别成中性；</li>
+<li>含有否定语气结构时，模型不一定理解上下文。</li>
+</ul>
+</li>
+<li>
+<p>机器看不懂行业黑话</p>
+<ul>
+<li>很多垂直行业有自己的术语和表达；</li>
+<li>通用模型在这块容易翻车。</li>
+</ul>
+</li>
+</ol>
+<p>但即便不完美，它已经有一个非常实用的用途：</p>
+<blockquote>
+<p><strong>帮你快速「筛」出高风险或高价值的文本，让人力聚焦在更重要的部分。</strong></p>
+</blockquote>
+<p>比如：</p>
+<ul>
+<li>先用情感分析把负向/极端负向的找出来；</li>
+<li>再用分类结果 roughly 看看主要集中在哪几类问题上。</li>
+</ul>
+<hr>
+<h2 id="6-一点点工程化考虑">6. 一点点工程化考虑</h2>
+<p>哪怕只是一个「玩具项目」，我也顺手做了几件事：</p>
+<ol>
+<li>把 NLP 调用封在一个单独模块，而不是在组件里直接写 <code>axios.post</code>；</li>
+<li>给返回结果定义了 TS 类型，避免到处都是 <code>any</code>；</li>
+<li>简单加了错误提示：接口出错时用 Message 提示，避免静默失败。</li>
+</ol>
+<p>这样如果以后要：</p>
+<ul>
+<li>换一家云厂商；</li>
+<li>把调用移到服务端；</li>
+<li>增加比如关键词提取、实体识别；</li>
+</ul>
+<p>也不会推翻整个页面，只需要改调用层和类型定义。</p>
+<hr>
+<h2 id="7-小结早期-ai-尝试的意义">7. 小结：早期 AI 尝试的意义</h2>
+<p>这次用云端 NLP API 做的小工具，说实话：</p>
+<ul>
+<li>不算「高深技术」，基本没有自己训模型；</li>
+<li>效果也达不到严肃场景直接上线的程度。</li>
+</ul>
+<p>但它给我的感觉是：</p>
+<ol>
+<li>把「AI 能力」当成一个服务去消费，其实门槛并不高；</li>
+<li>作为前端/全栈，可以先从 <strong>「把 AI 接进业务」</strong> 这一步开始，而不是一开始就钻研各种模型细节；</li>
+<li>哪怕只是一个内部小工具，能让团队直观感受到：「原来我们已经可以这么用 AI 了」。</li>
+</ol>
+<p>等未来有更成熟的场景和数据，再考虑：</p>
+<ul>
+<li>用更适配领域的模型；</li>
+<li>自己搭一层 BFF 做统一的 AI 能力接入；</li>
+<li>把这些能力真正织入现有系统的业务流里。</li>
+</ul>
+<p>这次尝试，就当是那个「第一块乐高」吧。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-12-05</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2021-12-05-first-ai-touch/" data-title="用云端 NLP API 做一个简单的文本分析工具" data-via="https://github.com/cs11b137" data-hashtags="NLP,文本分析,云服务"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2021-12-05-first-ai-touch/" data-hashtag="NLP"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2021-12-05-first-ai-touch/" data-title="用云端 NLP API 做一个简单的文本分析工具"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2021-12-05-first-ai-touch/" data-title="用云端 NLP API 做一个简单的文本分析工具"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2021-12-05-first-ai-touch/" data-title="用云端 NLP API 做一个简单的文本分析工具"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/nlp/">NLP</a>,&nbsp;<a href="/tags/%E6%96%87%E6%9C%AC%E5%88%86%E6%9E%90/">文本分析</a>,&nbsp;<a href="/tags/%E4%BA%91%E6%9C%8D%E5%8A%A1/">云服务</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2021-10-20-ci-cd-for-frontend/" class="prev" rel="prev" title="给前端项目接上 CI/CD：自动构建与预发布环境"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>给前端项目接上 CI/CD：自动构建与预发布环境</a>
+            <a href="/posts/2022-02-10-fintech-form-design/" class="next" rel="next" title="金融场景下的表单设计：KYC、合规与用户体验">金融场景下的表单设计：KYC、合规与用户体验<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

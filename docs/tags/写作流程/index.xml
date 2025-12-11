@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>写作流程 on Saiga</title>
+    <link>http://localhost:1313/tags/%E5%86%99%E4%BD%9C%E6%B5%81%E7%A8%8B/</link>
+    <description>Recent content in 写作流程 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Tue, 15 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%86%99%E4%BD%9C%E6%B5%81%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我现在写一篇技术博客的 AI 协作流程</title>
+      <link>http://localhost:1313/posts/2025-04-15-ai-assisted-writing-flow/</link>
+      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2025-04-15-ai-assisted-writing-flow/</guid>
+      <description>&lt;p&gt;以前写一篇技术博客，经常是：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;打开编辑器 → 发呆半小时 → 终于写两段 → 忙别的去了。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;这两年逐渐把 AI 融入写作流程之后，写作变得轻松了不少。&lt;br&gt;&#xA;这篇就简单记录一下我现在写一篇技术文时，会怎么用 AI 来协作。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-选题从零到写哪几个点&#34;&gt;1. 选题：从零到「写哪几个点」&lt;/h2&gt;&#xA;&lt;p&gt;通常起点是一个很模糊的念头，比如：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;「最近在搞 AI Review，好像有点东西可以写」&lt;/li&gt;&#xA;&lt;li&gt;「个人知识库做完了，想记录一下实践」&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;我会先把这个念头直接扔给 AI：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;「我想写一篇面向前端工程师的博客，主题是 XXX，对象是有 3～5 年经验的人，帮我列 5～8 个可写的角度。」&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;从返回的角度里，挑 2～3 个自己最有感觉的，作为候选方向。&lt;br&gt;&#xA;很多时候 AI 给的那个「结构化视角」，能帮自己把脑子理顺。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-大纲阶段确定文章结构而不是让-ai-代写&#34;&gt;2. 大纲阶段：确定文章结构，而不是让 AI 代写&lt;/h2&gt;&#xA;&lt;p&gt;确定方向之后，第二步才是大纲。&lt;br&gt;&#xA;这里我会比较主动，把自己的想法写出来：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;我想讲哪些实践&lt;/li&gt;&#xA;&lt;li&gt;哪些坑一定要写进去&lt;/li&gt;&#xA;&lt;li&gt;哪些是背景、不想展开&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;然后让 AI 来「帮我补齐」：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;「这是我的大致大纲，你帮我看看有没有明显缺的部分，顺便按阅读顺序帮我调整一下结构。」&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;AI 常给出的价值在于：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;提醒我「可以加一个问题背景或动机」&lt;/li&gt;&#xA;&lt;li&gt;把顺序改得更平滑，比如先讲问题再讲方案&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;但最后定稿仍然是我自己拍板。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;3-草稿阶段辅助展开而不是从-0-到-1-代写&#34;&gt;3. 草稿阶段：辅助展开，而不是从 0 到 1 代写&lt;/h2&gt;&#xA;&lt;p&gt;大纲确定后，每一小节，我会采用一种「半手动」方式：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;先用要点列出我想说的内容：&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- 技术现状：目前项目里怎么做的&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- 痛点：哪些地方做起来很别扭&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- 尝试方案：试过什么，失败在哪&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;- 最后采用的方案：为什么选择它&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;&#xA;&lt;li&gt;然后请 AI 基于要点帮我扩写成一段自然语言草稿。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;这样做有几个好处：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

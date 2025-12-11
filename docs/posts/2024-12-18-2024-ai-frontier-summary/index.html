@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>2024 年 AI &#43; 前端实践复盘 - Saiga</title><meta name="Description" content="回顾 2024 年在 AI &#43; 前端方向做过的几件事：表单助手、AI Review、性能分析、金融风险文案、个人知识库、CLI 工具，并顺带展望下一步的方向。"><meta property="og:url" content="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="2024 年 AI &#43; 前端实践复盘">
+  <meta property="og:description" content="回顾 2024 年在 AI &#43; 前端方向做过的几件事：表单助手、AI Review、性能分析、金融风险文案、个人知识库、CLI 工具，并顺带展望下一步的方向。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-12-18T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-12-18T00:00:00+00:00">
+    <meta property="article:tag" content="年度总结">
+    <meta property="article:tag" content="AI 应用">
+    <meta property="article:tag" content="前端工程化">
+    <meta property="article:tag" content="开发体验">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="2024 年 AI &#43; 前端实践复盘">
+  <meta name="twitter:description" content="回顾 2024 年在 AI &#43; 前端方向做过的几件事：表单助手、AI Review、性能分析、金融风险文案、个人知识库、CLI 工具，并顺带展望下一步的方向。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/" /><link rel="prev" href="http://localhost:1313/posts/2024-11-05-financial-system-governance/" /><link rel="next" href="http://localhost:1313/posts/2025-01-25-ai-powered-search-on-blog/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "2024 年 AI + 前端实践复盘",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2024-12-18-2024-ai-frontier-summary\/"
+        },"genre": "posts","keywords": "年度总结, AI 应用, 前端工程化, 开发体验","wordcount":  192 ,
+        "url": "http:\/\/localhost:1313\/posts\/2024-12-18-2024-ai-frontier-summary\/","datePublished": "2024-12-18T00:00:00+00:00","dateModified": "2024-12-18T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "回顾 2024 年在 AI + 前端方向做过的几件事：表单助手、AI Review、性能分析、金融风险文案、个人知识库、CLI 工具，并顺带展望下一步的方向。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">2024 年 AI + 前端实践复盘</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>年度总结</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-12-18">2024-12-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 192 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-表单配置助手从工程抽象走向业务可用">1. 表单配置助手：从「工程抽象」走向「业务可用」</a></li>
+    <li><a href="#2-ai-参与-code-review放大镜而不是裁判">2. AI 参与 Code Review：放大镜，而不是裁判</a></li>
+    <li><a href="#3-ai-性能分析报告减少翻译工作">3. AI 性能分析报告：减少「翻译工作」</a></li>
+    <li><a href="#4-金融场景里的风险提示--ai保守一点才安全">4. 金融场景里的风险提示 + AI：保守一点才安全</a></li>
+    <li><a href="#5-个人知识库--ai-搜索让写过的东西真正活起来">5. 个人知识库 + AI 搜索：让写过的东西真正「活」起来</a></li>
+    <li><a href="#6-cli--脚手架ai-不是全部工程基础仍然重要">6. CLI / 脚手架：AI 不是全部，工程基础仍然重要</a></li>
+    <li><a href="#7-一些认知变化">7. 一些认知变化</a></li>
+    <li><a href="#8-给未来埋几个小-flag">8. 给未来埋几个小 Flag</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>对我来说，2024 年有一个很明显的主题：</p>
+<blockquote>
+<p>不再只是「尝试 AI」，而是认真把 AI 当成日常工程工具。</p>
+</blockquote>
+<p>这一年在 AI + 前端方向上做了几件事：</p>
+<ul>
+<li>表单配置助手</li>
+<li>AI 参与 Code Review</li>
+<li>AI 性能分析报告</li>
+<li>金融前端里的风险提示与文案生成</li>
+<li>Hugo + 向量库的个人知识库 + AI 搜索</li>
+<li>一些配套的 CLI / 脚手架工具</li>
+</ul>
+<p>这篇文章算是对这一年的一个小复盘。</p>
+<hr>
+<h2 id="1-表单配置助手从工程抽象走向业务可用">1. 表单配置助手：从「工程抽象」走向「业务可用」</h2>
+<p>之前做配置化表单，主要是为了让前端自己少写表单代码。<br>
+今年把它接上大模型之后，价值有点变味了：</p>
+<ul>
+<li>运营/产品可以用自然语言描述表单需求</li>
+<li>大模型生成表单配置草稿</li>
+<li>前端做最后的结构调整和交互优化</li>
+</ul>
+<p>这件事让我意识到：</p>
+<blockquote>
+<p>以前很多工程抽象，只在前端团队内部复用；接上 AI 之后，它们可以被更多角色用起来。</p>
+</blockquote>
+<p>抽象层从「给自己省事」，变成了「把前端能力开放给整个团队」。</p>
+<hr>
+<h2 id="2-ai-参与-code-review放大镜而不是裁判">2. AI 参与 Code Review：放大镜，而不是裁判</h2>
+<p>今年的另一块重点是 AI Review。</p>
+<p>最后比较满意的状态是：</p>
+<ul>
+<li>人类 Reviewer：关注业务逻辑、架构、长期演进</li>
+<li>AI Reviewer：关注边界情况、异常处理、潜在 bug</li>
+</ul>
+<p>如果用一个比喻：</p>
+<blockquote>
+<p>人类在画设计蓝图，AI 在拿放大镜看有没漏掉螺丝。</p>
+</blockquote>
+<p>前提是要在 Prompt 和流程上画清边界——AI 不能决定 PR 是否通过，只能给建议。</p>
+<hr>
+<h2 id="3-ai-性能分析报告减少翻译工作">3. AI 性能分析报告：减少「翻译工作」</h2>
+<p>性能优化里最花时间的一件事，是把那些指标和图表翻译成所有人都看得懂的报告。</p>
+<p>今年做的 AI 性能报告本质上就是：</p>
+<ul>
+<li>用脚本整理 Lighthouse + RUM 数据</li>
+<li>交给 AI 写一份「概览 + 问题列表 + 优先级 + 建议」的报告</li>
+<li>自己做最后校对</li>
+</ul>
+<p>工程师的时间更多用在「决定做什么」上，而不是「解释指标是什么」。</p>
+<hr>
+<h2 id="4-金融场景里的风险提示--ai保守一点才安全">4. 金融场景里的风险提示 + AI：保守一点才安全</h2>
+<p>在金融业务里引入 AI，需要加倍小心。</p>
+<p>今年的策略：</p>
+<ul>
+<li>所有生成文案都基于已经过审的条款</li>
+<li>AI 只做「简化表达」「不同用户画像下的语气调整」</li>
+<li>严格走人工审核与敏感词过滤</li>
+<li>不允许 AI 修改任何关键事实或做投资建议</li>
+</ul>
+<p>另一方面，用 AI 帮工程师和产品解释条款、提炼实现要点，体验非常好。<br>
+这块属于<strong>低风险、高收益</strong>的使用场景。</p>
+<hr>
+<h2 id="5-个人知识库--ai-搜索让写过的东西真正活起来">5. 个人知识库 + AI 搜索：让写过的东西真正「活」起来</h2>
+<p>今年做的最爽的一件「给自己用」的东西，就是 Hugo + 向量库的个人知识库。</p>
+<ul>
+<li>文章写完后自动切分、向量化入库</li>
+<li>问题通过 Embedding 检索相关文章</li>
+<li>用 AI 帮忙把片段整理成答案，并给出原文引用</li>
+</ul>
+<p>这件事带来了两个变化：</p>
+<ol>
+<li>更愿意写长一点、结构清晰一点的文章，因为知道以后会被「复用」</li>
+<li>再遇到老问题时，能快速看到自己当年的想法，挺有意思</li>
+</ol>
+<hr>
+<h2 id="6-cli--脚手架ai-不是全部工程基础仍然重要">6. CLI / 脚手架：AI 不是全部，工程基础仍然重要</h2>
+<p>除了 AI，这一年也写了不少传统意义上的工程工具：</p>
+<ul>
+<li>页面 / 模块生成 CLI</li>
+<li>接口封装生成器</li>
+<li>各种小脚本工具</li>
+</ul>
+<p>这些东西有了之后，再结合 AI，会更好玩：</p>
+<ul>
+<li>CLI 生成代码骨架，AI 帮忙补细节</li>
+<li>AI 帮重构和文档化脚手架本身</li>
+<li>甚至可以让 AI 根据项目情况给出「要不要用脚手架」的建议</li>
+</ul>
+<p>感觉是：<strong>AI 放大了工程工具的价值，而不是取代它们。</strong></p>
+<hr>
+<h2 id="7-一些认知变化">7. 一些认知变化</h2>
+<p>今年有几条认知慢慢变得清晰：</p>
+<ol>
+<li>
+<p><strong>AI 不是一个「单独的项目」，而是一种能力，应该渗透到各种老问题里。</strong></p>
+</li>
+<li>
+<p><strong>前端的边界在变宽，但工程基础不会过时。</strong></p>
+<ul>
+<li>Monorepo、自动化、监控、测试，这些东西原来也该做好</li>
+<li>做好了之后接 AI，才不会变成「高配玄学」</li>
+</ul>
+</li>
+<li>
+<p><strong>团队需要自己的「AI 使用规范」。</strong></p>
+<ul>
+<li>哪些场景可以用，哪些必须禁用</li>
+<li>数据和日志如何处理</li>
+<li>输出如何审查</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="8-给未来埋几个小-flag">8. 给未来埋几个小 Flag</h2>
+<p>按惯例给未来挖几个坑：</p>
+<ol>
+<li>把今年零散的 AI 工具，整理成一套更完整的「前端 AI 工程实践」方案</li>
+<li>在一条真正高流量的业务链路上，跑通「监控 → 分析 → AI 报告 → 任务拆解」的闭环</li>
+<li>继续打磨个人知识库，让它从纯搜索，升级到「主动提醒 + 长期记忆」</li>
+</ol>
+<p>回头看，2024 年比较大的收获是：</p>
+<blockquote>
+<p>真正接受了「AI 会长期存在，并且会越来越融入工程实践」这件事。</p>
+</blockquote>
+<p>前端慢慢从「纯页面实现」变成「体验工程 + 工具工程」，<br>
+而 AI，很可能是接下来几年里最重要的一把工具之一。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-12-18</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/" data-title="2024 年 AI &#43; 前端实践复盘" data-via="https://github.com/cs11b137" data-hashtags="年度总结,AI 应用,前端工程化,开发体验"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/" data-hashtag="年度总结"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/" data-title="2024 年 AI &#43; 前端实践复盘"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/" data-title="2024 年 AI &#43; 前端实践复盘"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/" data-title="2024 年 AI &#43; 前端实践复盘"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/">年度总结</a>,&nbsp;<a href="/tags/ai-%E5%BA%94%E7%94%A8/">AI 应用</a>,&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/">前端工程化</a>,&nbsp;<a href="/tags/%E5%BC%80%E5%8F%91%E4%BD%93%E9%AA%8C/">开发体验</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2024-11-05-financial-system-governance/" class="prev" rel="prev" title="维护一套「金融级」系统的日常：技术债与治理"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>维护一套「金融级」系统的日常：技术债与治理</a>
+            <a href="/posts/2025-01-25-ai-powered-search-on-blog/" class="next" rel="next" title="给个人网站加一个 AI 搜索框">给个人网站加一个 AI 搜索框<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

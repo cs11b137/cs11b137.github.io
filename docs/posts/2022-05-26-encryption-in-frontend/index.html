@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>前端加解密实践：从「别明文传密码」开始 - Saiga</title><meta name="Description" content="从实战视角聊聊前端加解密：在已经有 HTTPS 的前提下，为什么有时还要多加一层？对称/非对称加密怎么用？会踩哪些坑？"><meta property="og:url" content="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="前端加解密实践：从「别明文传密码」开始">
+  <meta property="og:description" content="从实战视角聊聊前端加解密：在已经有 HTTPS 的前提下，为什么有时还要多加一层？对称/非对称加密怎么用？会踩哪些坑？">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-05-26T00:00:00+00:00">
+    <meta property="article:modified_time" content="2022-05-26T00:00:00+00:00">
+    <meta property="article:tag" content="前端安全">
+    <meta property="article:tag" content="加密">
+    <meta property="article:tag" content="HTTPS">
+    <meta property="article:tag" content="对称加密">
+    <meta property="article:tag" content="非对称加密">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="前端加解密实践：从「别明文传密码」开始">
+  <meta name="twitter:description" content="从实战视角聊聊前端加解密：在已经有 HTTPS 的前提下，为什么有时还要多加一层？对称/非对称加密怎么用？会踩哪些坑？">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" /><link rel="prev" href="http://localhost:1313/posts/2022-04-01-e-contract-frontend-architecture/" /><link rel="next" href="http://localhost:1313/posts/2022-07-14-performance-optimization-case/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "前端加解密实践：从「别明文传密码」开始",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2022-05-26-encryption-in-frontend\/"
+        },"genre": "posts","keywords": "前端安全, 加密, HTTPS, 对称加密, 非对称加密","wordcount":  246 ,
+        "url": "http:\/\/localhost:1313\/posts\/2022-05-26-encryption-in-frontend\/","datePublished": "2022-05-26T00:00:00+00:00","dateModified": "2022-05-26T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "从实战视角聊聊前端加解密：在已经有 HTTPS 的前提下，为什么有时还要多加一层？对称/非对称加密怎么用？会踩哪些坑？"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">前端加解密实践：从「别明文传密码」开始</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%AE%89%E5%85%A8%E4%B8%8E%E5%8A%A0%E5%AF%86/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>安全与加密</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-05-26">2022-05-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 246 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-https-已经有了为啥还要前端加密">1. HTTPS 已经有了，为啥还要前端加密？</a></li>
+    <li><a href="#2-两个基本工具对称--非对称">2. 两个基本工具：对称 &amp; 非对称</a></li>
+    <li><a href="#3-一个典型的前端加密流程">3. 一个典型的前端加密流程</a>
+      <ul>
+        <li><a href="#31-拉取公钥">3.1 拉取公钥</a></li>
+        <li><a href="#32-构造待加密数据">3.2 构造待加密数据</a></li>
+        <li><a href="#33-使用公钥加密">3.3 使用公钥加密</a></li>
+        <li><a href="#34-携带-keyid-与密文">3.4 携带 keyId 与密文</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-实战中的几个常见坑">4. 实战中的几个常见坑</a>
+      <ul>
+        <li><a href="#41-字符编码和长度">4.1 字符编码和长度</a></li>
+        <li><a href="#42-性能问题">4.2 性能问题</a></li>
+        <li><a href="#43-密钥轮换">4.3 密钥轮换</a></li>
+        <li><a href="#44-别把私钥对称密钥塞前端">4.4 别把私钥/对称密钥塞前端</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-https--前端加密的边界">5. HTTPS + 前端加密的边界</a></li>
+    <li><a href="#6-实战小-checklist">6. 实战小 Checklist</a></li>
+    <li><a href="#7-总结">7. 总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>每次提到前端加密，评论区都会有人说：</p>
+<blockquote>
+<p>有 HTTPS 了，还加什么密？<br>
+前端代码都是能看到的，没意义。</p>
+</blockquote>
+<p>理论上没错，但在金融/政企等场景里，<strong>有些需求不是技术可不可行，而是「要不要多一层安全防护 + 满足合规要求」</strong>。</p>
+<p>这篇文章从实战出发，聊聊：</p>
+<ul>
+<li>常见的前端加密需求；</li>
+<li>对称 / 非对称加密如何组合使用；</li>
+<li>以及实际落地时的一些坑。</li>
+</ul>
+<hr>
+<h2 id="1-https-已经有了为啥还要前端加密">1. HTTPS 已经有了，为啥还要前端加密？</h2>
+<p>先说前提：<strong>HTTPS 必须有</strong>，这是基础。<br>
+在这个基础上，某些场景仍然会要求：</p>
+<ol>
+<li>
+<p><strong>防止明文敏感信息出现在抓包里</strong></p>
+<ul>
+<li>即便是 HTTPS，有些合规要求会明确写「不得以明文形式传输密码等敏感信息」；</li>
+<li>抓包截图里看到一串密文，和直接看到手机号/密码，感受是不一样的。</li>
+</ul>
+</li>
+<li>
+<p><strong>降低中间层日志泄露风险</strong></p>
+<ul>
+<li>有时候请求会经过网关、代理、日志系统；</li>
+<li>如果这些地方有不规范的日志记录，敏感字段加密可以降低损害。</li>
+</ul>
+</li>
+<li>
+<p><strong>和现有后端架构/第三方接口对齐</strong></p>
+<ul>
+<li>有些历史系统已经约定「密码字段用某种算法加密再传」；</li>
+<li>前端需要遵守既有协议。</li>
+</ul>
+</li>
+</ol>
+<p>前端加密<strong>不是代替 HTTPS</strong>，而是多一层「<strong>应用层加密</strong>」。</p>
+<hr>
+<h2 id="2-两个基本工具对称--非对称">2. 两个基本工具：对称 &amp; 非对称</h2>
+<p>简单回顾一下：</p>
+<ul>
+<li><strong>对称加密</strong>（如 AES、SM4）：同一把 key 加密解密；</li>
+<li><strong>非对称加密</strong>（如 RSA）：公钥加密，私钥解密（或反之）。</li>
+</ul>
+<p>特性：</p>
+<ul>
+<li>对称加密：速度快，适合加密大量数据，但<strong>key 如何安全分发</strong>是问题；</li>
+<li>非对称加密：适合做「密钥交换」，但加密大数据性能较差。</li>
+</ul>
+<p>所以常用组合是：</p>
+<blockquote>
+<p>前端生成一个随机对称密钥 → 用后端公钥加密这个密钥 → 发给后端 → 后端用私钥解出密钥 → 后续用这个对称密钥加解密数据。</p>
+</blockquote>
+<p>前端常见实现方式：</p>
+<ul>
+<li>WebCrypto API；</li>
+<li>或成熟的 JS 加密库（CryptoJS / JSEncrypt / 国密相关库等）。</li>
+</ul>
+<hr>
+<h2 id="3-一个典型的前端加密流程">3. 一个典型的前端加密流程</h2>
+<p>以「登录密码不可明文传输」为例，设计一个简化流程：</p>
+<h3 id="31-拉取公钥">3.1 拉取公钥</h3>
+<p>在进入登录页或打开系统时：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">resp</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">getEncryptConfig</span>();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// resp.publicKey / resp.keyId
+</span></span></span></code></pre></div><p>接口返回：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;keyId&#34;</span>: <span style="color:#e6db74">&#34;20220526&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;publicKey&#34;</span>: <span style="color:#e6db74">&#34;-----BEGIN PUBLIC KEY-----...&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;algorithm&#34;</span>: <span style="color:#e6db74">&#34;RSA&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>前端缓存 <code>publicKey</code> 和 <code>keyId</code>。</p>
+<h3 id="32-构造待加密数据">3.2 构造待加密数据</h3>
+<p>用户提交表单时，把密码打包：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">payload</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">password</span>: <span style="color:#66d9ef">plainPassword</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">timestamp</span>: <span style="color:#66d9ef">Date.now</span>(),
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h3 id="33-使用公钥加密">3.3 使用公钥加密</h3>
+<p>借助加密库，例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">JSEncrypt</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;jsencrypt&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">encryptor</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">JSEncrypt</span>();
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">encryptor</span>.<span style="color:#a6e22e">setPublicKey</span>(<span style="color:#a6e22e">publicKey</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cipher</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">encryptor</span>.<span style="color:#a6e22e">encrypt</span>(<span style="color:#a6e22e">payload</span>);
+</span></span></code></pre></div><h3 id="34-携带-keyid-与密文">3.4 携带 keyId 与密文</h3>
+<p>请求参数变为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;username&#34;</span>: <span style="color:#e6db74">&#34;test-user&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;password&#34;</span>: <span style="color:#e6db74">&#34;Base64EncodedCipher&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;keyId&#34;</span>: <span style="color:#e6db74">&#34;20220526&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>后端据此：</p>
+<ul>
+<li>通过 <code>keyId</code> 找到对应私钥；</li>
+<li>解密出原始 <code>payload</code>；</li>
+<li>再继续后续登录逻辑。</li>
+</ul>
+<blockquote>
+<p>更高级一点的做法是上面提到的「前端用公钥加密对称密钥，再用对称密钥加密密码」，这里就不展开。</p>
+</blockquote>
+<hr>
+<h2 id="4-实战中的几个常见坑">4. 实战中的几个常见坑</h2>
+<h3 id="41-字符编码和长度">4.1 字符编码和长度</h3>
+<p>非对称加密（比如 RSA）对加密数据长度有限制：</p>
+<ul>
+<li>与 key 长度、填充方式有关；</li>
+<li>明文过长会导致加密失败。</li>
+</ul>
+<p>解决方式：</p>
+<ul>
+<li>密码这种短字符串直接 RSA 问题不大；</li>
+<li>大字段（如 JSON 整包）用对称加密，再用 RSA 保护对称密钥。</li>
+</ul>
+<p>同时注意：</p>
+<ul>
+<li>使用统一的编码（UTF-8）；</li>
+<li>加密后用 Base64 进行传输。</li>
+</ul>
+<h3 id="42-性能问题">4.2 性能问题</h3>
+<ul>
+<li>加密/解密是 CPU 密集型操作；</li>
+<li>手机低端机上做多次 RSA 运算会有明显卡顿。</li>
+</ul>
+<p>经验：</p>
+<ul>
+<li>只加密真正敏感的小字段（密码、交易 PIN 等）；</li>
+<li>不要整页所有字段都做复杂加密；</li>
+<li>可以在「点击提交」时再进行加密，避免输入过程中阻塞。</li>
+</ul>
+<h3 id="43-密钥轮换">4.3 密钥轮换</h3>
+<ul>
+<li>公钥/私钥不可能永久不变；</li>
+<li>需要支持「新老 key 并存一段时间」。</li>
+</ul>
+<p>前端配合方式：</p>
+<ul>
+<li>每次从服务端获取最新加密配置（可能包含多个 key）；</li>
+<li>请求里带上 <code>keyId</code>，后端据此选用对应私钥解密；</li>
+<li>一段时间后下线老 key。</li>
+</ul>
+<h3 id="44-别把私钥对称密钥塞前端">4.4 别把私钥/对称密钥塞前端</h3>
+<p>看似废话，但现实中真的有人这么干：</p>
+<ul>
+<li>在前端写死一个对称密钥；</li>
+<li>或者把私钥打进前端代码。</li>
+</ul>
+<p>这两种做法都等于「没加密」，只会增加维护成本。<br>
+<strong>对称密钥和私钥都应该只存在于受控后端环境里。</strong></p>
+<hr>
+<h2 id="5-https--前端加密的边界">5. HTTPS + 前端加密的边界</h2>
+<p>前端加密能防什么？</p>
+<ul>
+<li>防止敏感字段明文出现在抓包/中间日志里；</li>
+<li>满足某些「应用层加密」的合规要求；</li>
+<li>在后端内部链路转发时，即使某一环节日志没做好脱敏，也能减轻泄露影响。</li>
+</ul>
+<p>它不能防什么？</p>
+<ul>
+<li>不能防止前端代码被调试、篡改（因为代码在用户手里）；</li>
+<li>不能单独依赖它做「反爬/防脚本登录」；</li>
+<li>不能取代服务端的登录限流、风控、二次校验等安全手段。</li>
+</ul>
+<p>所以把它当成：</p>
+<blockquote>
+<p><strong>安全体系里的一个「配角」，而不是主角。</strong></p>
+</blockquote>
+<hr>
+<h2 id="6-实战小-checklist">6. 实战小 Checklist</h2>
+<p>如果你准备在前端上加一层加密，可以过一遍这个小清单：</p>
+<ol>
+<li>业务/合规到底要求保护哪些字段？</li>
+<li>是否已经有统一的「加密服务」接口（公钥下发、密钥轮换）？</li>
+<li>前端是否使用成熟的加密库，还是要考虑国密算法？</li>
+<li>是否评估过性能（尤其是移动端）？</li>
+<li>错误处理是否友好（加密失败、配置获取失败）？</li>
+<li>日志里是否避免输出密文原文、避免泄露敏感上下文？</li>
+</ol>
+<hr>
+<h2 id="7-总结">7. 总结</h2>
+<p>前端加解密这个话题很容易被走极端：要么觉得「完全没用」，要么什么都想加密。<br>
+比较理性的做法是：</p>
+<ol>
+<li>先确认业务和合规的真实诉求；</li>
+<li>在 HTTPS 的基础上，对关键敏感字段加一层应用层保护；</li>
+<li>用对称 + 非对称组合处理好「性能 vs 安全」；</li>
+<li>避免自创算法，用成熟方案 + 足够的工程防守。</li>
+</ol>
+<p>最后再强调一遍：<strong>安全永远是一个整体方案</strong>，前端加密只是其中一环，做对了能加分，做错了只能徒增复杂度。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-05-26</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始" data-via="https://github.com/cs11b137" data-hashtags="前端安全,加密,HTTPS,对称加密,非对称加密"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-hashtag="前端安全"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8/">前端安全</a>,&nbsp;<a href="/tags/%E5%8A%A0%E5%AF%86/">加密</a>,&nbsp;<a href="/tags/https/">HTTPS</a>,&nbsp;<a href="/tags/%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/">对称加密</a>,&nbsp;<a href="/tags/%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/">非对称加密</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2022-04-01-e-contract-frontend-architecture/" class="prev" rel="prev" title="电子合同前端架构：模版、签章与签署流程"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>电子合同前端架构：模版、签章与签署流程</a>
+            <a href="/posts/2022-07-14-performance-optimization-case/" class="next" rel="next" title="一次性能优化实战：从 5s 到 1.5s 的页面加载">一次性能优化实战：从 5s 到 1.5s 的页面加载<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

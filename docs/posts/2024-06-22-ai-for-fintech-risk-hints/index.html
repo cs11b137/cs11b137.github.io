@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>在金融前端里用 AI 做风险提示与文案生成 - Saiga</title><meta name="Description" content="在金融业务前端里尝试用 AI 辅助风险提示和文案生成时，需要注意的边界、流程与实践经验。"><meta property="og:url" content="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="在金融前端里用 AI 做风险提示与文案生成">
+  <meta property="og:description" content="在金融业务前端里尝试用 AI 辅助风险提示和文案生成时，需要注意的边界、流程与实践经验。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-06-22T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-06-22T00:00:00+00:00">
+    <meta property="article:tag" content="风险提示">
+    <meta property="article:tag" content="合规">
+    <meta property="article:tag" content="金融文案">
+    <meta property="article:tag" content="大模型">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="在金融前端里用 AI 做风险提示与文案生成">
+  <meta name="twitter:description" content="在金融业务前端里尝试用 AI 辅助风险提示和文案生成时，需要注意的边界、流程与实践经验。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" /><link rel="prev" href="http://localhost:1313/posts/2024-05-01-ai-performance-analyzer/" /><link rel="next" href="http://localhost:1313/posts/2024-08-10-personal-knowledge-base-with-ai/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "在金融前端里用 AI 做风险提示与文案生成",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2024-06-22-ai-for-fintech-risk-hints\/"
+        },"genre": "posts","keywords": "风险提示, 合规, 金融文案, 大模型","wordcount":  155 ,
+        "url": "http:\/\/localhost:1313\/posts\/2024-06-22-ai-for-fintech-risk-hints\/","datePublished": "2024-06-22T00:00:00+00:00","dateModified": "2024-06-22T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "在金融业务前端里尝试用 AI 辅助风险提示和文案生成时，需要注意的边界、流程与实践经验。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">在金融前端里用 AI 做风险提示与文案生成</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E9%87%91%E8%9E%8D%E5%9C%BA%E6%99%AF/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>金融场景</a>&nbsp;<a href="/categories/ai-%E5%BA%94%E7%94%A8/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 应用</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-06-22">2024-06-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 155 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-先定边界ai-能做什么不能做什么">1. 先定边界：AI 能做什么，不能做什么？</a></li>
+    <li><a href="#2-文案来源让-ai-基于权威文本工作">2. 文案来源：让 AI 基于「权威文本」工作</a></li>
+    <li><a href="#3-用法一长条款--短提示的组合">3. 用法一：长条款 + 短提示的组合</a></li>
+    <li><a href="#4-用法二针对用户画像生成不同风格的提示">4. 用法二：针对用户画像生成不同风格的提示</a></li>
+    <li><a href="#5-用法三给内部人员用的条款解释助手">5. 用法三：给内部人员用的「条款解释助手」</a></li>
+    <li><a href="#6-技术侧的安全阀别只靠流程">6. 技术侧的安全阀：别只靠流程</a></li>
+    <li><a href="#7-实际体验哪里最有价值">7. 实际体验：哪里最有价值？</a></li>
+    <li><a href="#8-小结">8. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>金融业务的前端开发，有一块很「非技术」但非常重要的内容：</p>
+<blockquote>
+<p>各种风险提示、重要说明、免责声明。</p>
+</blockquote>
+<p>这些文案往往：</p>
+<ul>
+<li>又长又硬，措辞要非常谨慎</li>
+<li>改一两个字都要走产品 / 合规 / 法务流程</li>
+<li>但监管、业务又在不断变化</li>
+</ul>
+<p>于是就有一个自然的想法：</p>
+<blockquote>
+<p>能不能让 AI 帮我们「起草」这些文案，让人只负责最后确认？</p>
+</blockquote>
+<p>这篇文章就记录一下在金融前端场景中，用 AI 做风险提示与文案生成的一些实践。</p>
+<hr>
+<h2 id="1-先定边界ai-能做什么不能做什么">1. 先定边界：AI 能做什么，不能做什么？</h2>
+<p>一句话：<strong>AI 只负责辅助，不负责最终结论。</strong></p>
+<p>可以做的事情：</p>
+<ul>
+<li>根据已有条款，生成更易懂的「短版说明」</li>
+<li>针对不同用户类型，调整语气和强调点</li>
+<li>帮工程师/产品解释复杂条款的含义</li>
+</ul>
+<p>绝对不能做的事情：</p>
+<ul>
+<li>修改风险等级、收益描述等关键事实</li>
+<li>给出任何「收益承诺」「投资建议」</li>
+<li>跳过合规流程，直接把生成文案上到生产页面</li>
+</ul>
+<p>最终对外展示的内容，责任仍然在产品 / 合规，而不是模型。</p>
+<hr>
+<h2 id="2-文案来源让-ai-基于权威文本工作">2. 文案来源：让 AI 基于「权威文本」工作</h2>
+<p>为了避免 AI 瞎编，我们没有让它凭空创作，而是：</p>
+<ol>
+<li>收集已经过审的文案与条款</li>
+<li>做成一个小型「文案知识库」（或者直接附在 Prompt/上下文里）</li>
+<li>要求 AI 在此基础上做改写、摘要，而不是凭空编造</li>
+</ol>
+<p>示例 Prompt：</p>
+<blockquote>
+<p>下面是一段已经过合规审核的风险提示，请你在不改变关键信息的前提下，用更易懂的中文生成一段 80～120 字的短说明，给普通投资人阅读。<br>
+不允许添加任何「保证收益」「稳赚不赔」等内容。</p>
+</blockquote>
+<p>这样 AI 更像「翻译器」而不是「文案创作人」。</p>
+<hr>
+<h2 id="3-用法一长条款--短提示的组合">3. 用法一：长条款 + 短提示的组合</h2>
+<p>实际页面里经常这样设计：</p>
+<ul>
+<li>显示一段简短提示（1～2 行文案）</li>
+<li>下面有「展开阅读完整风险揭示」链接</li>
+<li>点击后查看长条款</li>
+</ul>
+<p>这里可以让 AI 帮忙生成简短提示部分：</p>
+<ol>
+<li>输入：完整条款 + 目标长度 + 目标受众</li>
+<li>输出：1 段短文案草稿</li>
+<li>经过产品 / 合规审阅后，挂在页面上使用</li>
+</ol>
+<p>完整条款仍然保持原文，不做模型改写。</p>
+<hr>
+<h2 id="4-用法二针对用户画像生成不同风格的提示">4. 用法二：针对用户画像生成不同风格的提示</h2>
+<p>比如适当性里有不同风险等级：保守型、稳健型、积极型……<br>
+我们希望提示能更「对人说话」一点：</p>
+<ul>
+<li>对保守型投资人，多强调本金可能亏损、波动风险</li>
+<li>对积极型投资人，多提醒高收益伴随高风险</li>
+</ul>
+<p>做法：</p>
+<ol>
+<li>提供基准风险提示条款</li>
+<li>传入用户风险等级、部分画像信息（如年龄段、投资经验）</li>
+<li>让 AI 在语气和重点上做轻微调整，但不得改实质含义</li>
+</ol>
+<p>示例 Prompt：</p>
+<blockquote>
+<p>请基于下面的标准风险提示条款，为“风险承受能力 = 保守型”的投资人生成一段更易理解的风险提示，强调可能发生本金亏损和净值波动。不得弱化任何风险或加入额外的收益承诺。</p>
+</blockquote>
+<p>输出仍要走人工审核，这一点不会省略。</p>
+<hr>
+<h2 id="5-用法三给内部人员用的条款解释助手">5. 用法三：给内部人员用的「条款解释助手」</h2>
+<p>这其实是我个人感觉最有价值的部分：</p>
+<ul>
+<li>工程师、产品经常要读长条款，用以设计流程和交互</li>
+<li>但法律/监管语言很难读，容易理解偏差</li>
+</ul>
+<p>这里可以大胆一些：</p>
+<ol>
+<li>把条款原文 + 业务背景喂给 AI</li>
+<li>让它用白话解释「这条款在说什么」</li>
+<li>再要求它提炼出「前端实现要注意的点」</li>
+</ol>
+<p>示例结果可能是：</p>
+<ul>
+<li>需要额外增加一个勾选框，提示「您的风险等级低于产品风险等级」</li>
+<li>未勾选则不允许继续购买</li>
+<li>需要记录确认时间和确认渠道</li>
+</ul>
+<p>这些内容只用在内部沟通和设计文档里，不直接给 C 端用户看。</p>
+<hr>
+<h2 id="6-技术侧的安全阀别只靠流程">6. 技术侧的安全阀：别只靠流程</h2>
+<p>除了流程和规范，还可以在技术上加几道保险：</p>
+<ol>
+<li>
+<p><strong>敏感词过滤</strong></p>
+<ul>
+<li>对生成结果做文本扫描</li>
+<li>出现「保证」「承诺」「稳健收益」等敏感词直接判为不合格</li>
+</ul>
+</li>
+<li>
+<p><strong>审计日志</strong></p>
+<ul>
+<li>记录每次生成的输入和输出</li>
+<li>问题追溯时有据可查</li>
+</ul>
+</li>
+<li>
+<p><strong>权限限制</strong></p>
+<ul>
+<li>文案生成工具只开放给特定角色</li>
+<li>生成结果默认只保存在「草稿区」，不能直接发布到生产环境</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="7-实际体验哪里最有价值">7. 实际体验：哪里最有价值？</h2>
+<p>做下来之后有两个明显的收益：</p>
+<ol>
+<li>
+<p><strong>写文案从「从 0 开始」变成「改草稿」</strong></p>
+<ul>
+<li>原来产品/前端要自己写初稿，再交给合规挑词</li>
+<li>现在可以让 AI 基于标准条款先生成几版草稿</li>
+<li>合规在这几版里挑一个修改，效率会高很多</li>
+</ul>
+</li>
+<li>
+<p><strong>工程师读条款不那么痛苦了</strong></p>
+<ul>
+<li>复杂条款先喂给 AI，总结出「对前端实现的关键点」</li>
+<li>写需求文档和接口设计时脑子更清晰</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="8-小结">8. 小结</h2>
+<p>在金融前端里引入 AI 做风险提示与文案生成，最重要的是三件事：</p>
+<ol>
+<li><strong>边界画清楚：辅助，不替代</strong></li>
+<li><strong>基于权威文本，不凭空创作</strong></li>
+<li><strong>所有对外文案仍走合规审核</strong></li>
+</ol>
+<p>只要底线稳住，它就是一个很好用的加速器：</p>
+<ul>
+<li>帮产品/合规节省时间</li>
+<li>帮工程师更快理解条款</li>
+<li>让前端页面上的提示更友好、更易懂</li>
+</ul>
+<p>但无论怎么用，有一条不会变：<strong>最终对用户负责的，永远是人，而不是模型。</strong></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2024-06-22</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在金融前端里用 AI 做风险提示与文案生成" data-via="https://github.com/cs11b137" data-hashtags="风险提示,合规,金融文案,大模型"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-hashtag="风险提示"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在金融前端里用 AI 做风险提示与文案生成"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在金融前端里用 AI 做风险提示与文案生成"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在金融前端里用 AI 做风险提示与文案生成"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E9%A3%8E%E9%99%A9%E6%8F%90%E7%A4%BA/">风险提示</a>,&nbsp;<a href="/tags/%E5%90%88%E8%A7%84/">合规</a>,&nbsp;<a href="/tags/%E9%87%91%E8%9E%8D%E6%96%87%E6%A1%88/">金融文案</a>,&nbsp;<a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2024-05-01-ai-performance-analyzer/" class="prev" rel="prev" title="让 AI 帮我做前端性能分析报告"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>让 AI 帮我做前端性能分析报告</a>
+            <a href="/posts/2024-08-10-personal-knowledge-base-with-ai/" class="next" rel="next" title="用 Hugo &#43; 向量库搭一个个人知识库 &#43; AI 搜索">用 Hugo + 向量库搭一个个人知识库 + AI 搜索<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

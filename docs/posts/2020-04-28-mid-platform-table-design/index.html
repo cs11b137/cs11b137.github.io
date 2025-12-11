@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>中后台「表格 &#43; 查询」通用化设计实践 - Saiga</title><meta name="Description" content="抽象常见查询区、表格、分页、批量操作组件的一套通用方案。"><meta property="og:url" content="http://localhost:1313/posts/2020-04-28-mid-platform-table-design/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="中后台「表格 &#43; 查询」通用化设计实践">
+  <meta property="og:description" content="抽象常见查询区、表格、分页、批量操作组件的一套通用方案。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2020-04-28T00:00:00+00:00">
+    <meta property="article:modified_time" content="2020-04-28T00:00:00+00:00">
+    <meta property="article:tag" content="中台">
+    <meta property="article:tag" content="表格组件">
+    <meta property="article:tag" content="查询表单">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="中后台「表格 &#43; 查询」通用化设计实践">
+  <meta name="twitter:description" content="抽象常见查询区、表格、分页、批量操作组件的一套通用方案。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2020-04-28-mid-platform-table-design/" /><link rel="prev" href="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" /><link rel="next" href="http://localhost:1313/posts/2020-07-03-error-handling-and-logging/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "中后台「表格 + 查询」通用化设计实践",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2020-04-28-mid-platform-table-design\/"
+        },"genre": "posts","keywords": "中台, 表格组件, 查询表单","wordcount":  612 ,
+        "url": "http:\/\/localhost:1313\/posts\/2020-04-28-mid-platform-table-design\/","datePublished": "2020-04-28T00:00:00+00:00","dateModified": "2020-04-28T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "抽象常见查询区、表格、分页、批量操作组件的一套通用方案。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">中后台「表格 + 查询」通用化设计实践</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E4%B8%AD%E5%90%8E%E5%8F%B0%E6%9E%B6%E6%9E%84/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>中后台架构</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2020-04-28">2020-04-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 612 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-标准列表页长什么样">1. 标准「列表页」长什么样？</a></li>
+    <li><a href="#2-查询表单的配置化设计">2. 查询表单的配置化设计</a>
+      <ul>
+        <li><a href="#21-基本配置格式">2.1 基本配置格式</a></li>
+        <li><a href="#22-查询行为与-url-同步">2.2 查询行为与 URL 同步</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-表格列的通用配置">3. 表格列的通用配置</a></li>
+    <li><a href="#4-操作区与行内操作">4. 操作区与行内操作</a>
+      <ul>
+        <li><a href="#41-顶部操作按钮">4.1 顶部操作按钮</a></li>
+        <li><a href="#42-行内操作按钮">4.2 行内操作按钮</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-分页与数据获取的约定">5. 分页与数据获取的约定</a></li>
+    <li><a href="#6-抽象成通用-listpage-组件">6. 抽象成通用 ListPage 组件</a></li>
+    <li><a href="#7-踩过的坑与一些小经验">7. 踩过的坑与一些小经验</a></li>
+    <li><a href="#8-总结">8. 总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>中后台系统有一个经典页面模样：</p>
+<blockquote>
+<p>上面一块查询条件，下面一张表格，再加一个分页条。</p>
+</blockquote>
+<p>做过几套之后你会发现：字段变了、接口变了、样式改改，<strong>本质都差不多</strong>。与其每个项目都重写，不如抽象出一套可复用的「查询 + 表格」方案。</p>
+<p>这篇文章记录我在中后台项目里总结的一套通用设计思路。</p>
+<hr>
+<h2 id="1-标准列表页长什么样">1. 标准「列表页」长什么样？</h2>
+<p>通常一个「标准列表页」包含：</p>
+<ol>
+<li>
+<p><strong>查询区（Search Form）</strong></p>
+<ul>
+<li>输入框、下拉、日期区间、状态选择等</li>
+<li>「查询」、「重置」按钮</li>
+</ul>
+</li>
+<li>
+<p><strong>操作区（Toolbar）</strong></p>
+<ul>
+<li>新增、批量操作、导出等</li>
+</ul>
+</li>
+<li>
+<p><strong>结果表格（Table）</strong></p>
+<ul>
+<li>列信息、操作列</li>
+<li>勾选、多选</li>
+</ul>
+</li>
+<li>
+<p><strong>分页条（Pagination）</strong></p>
+<ul>
+<li>当前页、总数、页大小</li>
+</ul>
+</li>
+</ol>
+<p>可以抽象成一个数据结构：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ListPageConfig</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">searchItems</span>: <span style="color:#66d9ef">SearchItem</span>[];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">columns</span>: <span style="color:#66d9ef">Column</span>[];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">actions</span>: <span style="color:#66d9ef">ActionItem</span>[]; <span style="color:#75715e">// 顶部操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">rowActions</span>: <span style="color:#66d9ef">ActionItem</span>[]; <span style="color:#75715e">// 行内操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>换句话说：<strong>绝大部分差异都可以通过配置表达出来。</strong></p>
+<hr>
+<h2 id="2-查询表单的配置化设计">2. 查询表单的配置化设计</h2>
+<p>先从搜索区开始。</p>
+<h3 id="21-基本配置格式">2.1 基本配置格式</h3>
+<p>我习惯用一个数组描述查询项：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">searchItems</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;keyword&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;关键词&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;input&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">placeholder</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;请输入订单号/姓名&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;status&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;状态&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;select&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">options</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;全部&#39;</span>, <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span> },
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;待处理&#39;</span>, <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;PENDING&#39;</span> },
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;已完成&#39;</span>, <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;DONE&#39;</span> },
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;dateRange&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;创建日期&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;daterange&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p>再写一个通用的 <code>&lt;SearchForm /&gt;</code> 组件去渲染它：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">SearchForm</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:items</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;searchItems&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">v-model</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;searchModel&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">@search</span><span style="color:#e6db74">=&#34;handleSearch&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">@reset</span><span style="color:#e6db74">=&#34;handleReset&#34;</span>
+</span></span><span style="display:flex;"><span>/&gt;
+</span></span></code></pre></div><p><code>searchModel</code> 形如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">keyword</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">status</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">dateRange</span><span style="color:#f92672">:</span> [],
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>组件内部根据 <code>type</code> 决定用哪个 UI 控件，表单的布局也可以统一处理。</p>
+<hr>
+<h3 id="22-查询行为与-url-同步">2.2 查询行为与 URL 同步</h3>
+<p>和前面路由那篇文章呼应：<strong>查询条件最好能反映到 URL 中</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">methods</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">handleSearch</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$router</span>.<span style="color:#a6e22e">push</span>({
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;OrderList&#39;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">query</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        ...<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">searchModel</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">page</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">handleReset</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">searchModel</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">getDefaultSearchModel</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">handleSearch</span>();
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>而 <code>&lt;SearchForm /&gt;</code> 只管内聚：</p>
+<ul>
+<li>维护自己的 <code>modelValue</code></li>
+<li>把「点查询按钮」这个事件抛出去</li>
+</ul>
+<hr>
+<h2 id="3-表格列的通用配置">3. 表格列的通用配置</h2>
+<p>接下来是表格列。常见需求有：</p>
+<ul>
+<li>格式化显示</li>
+<li>显示枚举标签</li>
+<li>可点击跳转</li>
+<li>操作列需要根据行数据动态展示按钮</li>
+</ul>
+<p>我会用类似这样的配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">columns</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;orderNo&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;订单号&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">width</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">180</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">clickable</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;customerName&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;客户姓名&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;amount&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;金额&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">formatter</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">row</span>) =&gt; <span style="color:#a6e22e">row</span>.<span style="color:#a6e22e">amount</span>.<span style="color:#a6e22e">toFixed</span>(<span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">align</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;right&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;status&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;状态&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;statusTag&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">options</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">PENDING</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;待处理&#39;</span>, <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;warning&#39;</span> },
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">DONE</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;已完成&#39;</span>, <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;success&#39;</span> },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;createdAt&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;创建时间&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;datetime&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p>在 <code>&lt;ListTable /&gt;</code> 组件里，根据 <code>type</code>/<code>formatter</code> 渲染：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">el-table-column</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">v-for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col in columns&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:key</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col.prop&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:prop</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col.prop&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col.label&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col.width&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:</span><span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col.align || &#39;left&#39;&#34;</span>
+</span></span><span style="display:flex;"><span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">template</span> <span style="color:#f92672">v-slot</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;scope&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">span</span> <span style="color:#f92672">v-if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col.type === &#39;statusTag&#39;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">StatusTag</span> <span style="color:#f92672">:value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;scope.row[col.prop]&#34;</span> <span style="color:#f92672">:options</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col.options&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">span</span> <span style="color:#f92672">v-else-if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col.type === &#39;datetime&#39;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      {{ <span style="color:#a6e22e">formatDateTime</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">scope.row</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">col.prop</span><span style="color:#960050;background-color:#1e0010">])</span> }}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">span</span> <span style="color:#f92672">v-else-if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;col.clickable&#34; class=&#34;link&#34; @click=&#34;onCellClick(col, scope.row)&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      {{ <span style="color:#a6e22e">scope.row</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">col.prop</span><span style="color:#960050;background-color:#1e0010">]</span> }}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">span</span> <span style="color:#f92672">v-else</span>&gt;
+</span></span><span style="display:flex;"><span>      {{ <span style="color:#a6e22e">col.formatter</span> <span style="color:#960050;background-color:#1e0010">?</span> <span style="color:#a6e22e">col.formatter</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">scope.row</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#f92672">:</span> <span style="color:#a6e22e">scope.row</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">col.prop</span><span style="color:#960050;background-color:#1e0010">]</span> }}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">span</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;/</span><span style="color:#a6e22e">el</span><span style="color:#f92672">-table-column</span>&gt;
+</span></span></code></pre></div><p>这样做的好处：</p>
+<ul>
+<li>新增一个字段只需要改配置，不改模板；</li>
+<li>一些常用显示类型（状态标签、金额、时间）可以沉淀成内置 <code>type</code>。</li>
+</ul>
+<hr>
+<h2 id="4-操作区与行内操作">4. 操作区与行内操作</h2>
+<h3 id="41-顶部操作按钮">4.1 顶部操作按钮</h3>
+<p>顶部操作（新增、导出、批量删除等）可以用数组描述：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">actions</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;create&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;新增订单&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;primary&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">show</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">ctx</span>) =&gt; <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">permissions</span>.<span style="color:#a6e22e">includes</span>(<span style="color:#e6db74">&#39;order:create&#39;</span>),
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;export&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;导出&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;default&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">show</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">ctx</span>) =&gt; <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">total</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p><code>ctx</code> 可以包含当前用户权限、列表状态等上下文。</p>
+<p>在 <code>&lt;ListToolbar /&gt;</code> 里：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">el-button</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">v-for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;act in visibleActions&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:key</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;act.key&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:</span><span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;act.type || &#39;default&#39;&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">@click</span><span style="color:#e6db74">=&#34;$emit(&#39;action&#39;, act.key)&#34;</span>
+</span></span><span style="display:flex;"><span>&gt;
+</span></span><span style="display:flex;"><span>  {{ <span style="color:#a6e22e">act</span>.<span style="color:#a6e22e">text</span> }}
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">el-button</span>&gt;
+</span></span></code></pre></div><p>父组件统一处理事件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">methods</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">handleAction</span>(<span style="color:#a6e22e">key</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">key</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;create&#39;</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">goCreate</span>();
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">key</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;export&#39;</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">exportData</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h3 id="42-行内操作按钮">4.2 行内操作按钮</h3>
+<p>行内操作同理：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">rowActions</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;view&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;查看&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">show</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">row</span>) =&gt; <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;edit&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;编辑&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">show</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">row</span>) =&gt; <span style="color:#a6e22e">row</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;PENDING&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;cancel&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;取消&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">confirm</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">confirmText</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;确认取消该订单？&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">show</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">row</span>) =&gt; <span style="color:#a6e22e">row</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;PENDING&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p>在 <code>&lt;ListTable /&gt;</code> 中增加一列「操作」：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">el-table-column</span> <span style="color:#a6e22e">label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;操作&#34;</span> <span style="color:#a6e22e">fixed</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;right&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;180&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">template</span> <span style="color:#f92672">v-slot</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;scope&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">el-button</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">v-for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;act in visibleRowActions(scope.row)&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">:key</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;act.key&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;small&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">@click</span><span style="color:#e6db74">=&#34;onRowAction(act, scope.row)&#34;</span>
+</span></span><span style="display:flex;"><span>    &gt;
+</span></span><span style="display:flex;"><span>      {{ <span style="color:#a6e22e">act</span>.<span style="color:#a6e22e">text</span> }}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">el-button</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">el-table-column</span>&gt;
+</span></span></code></pre></div><p><code>onRowAction</code> 再把事件抛出来给父组件处理。</p>
+<hr>
+<h2 id="5-分页与数据获取的约定">5. 分页与数据获取的约定</h2>
+<p>数据获取和分页是列表页的核心逻辑，我会约定一套简单的接口契约：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">PageRequest</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">page</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">pageSize</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 其他查询条件...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">PageResponse</span>&lt;<span style="color:#f92672">T</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">list</span>: <span style="color:#66d9ef">T</span>[];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">total</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在页面组件里：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">data</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">searchModel</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">getDefaultSearchModel</span>(),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">tableData</span><span style="color:#f92672">:</span> [],
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">total</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">page</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">pageSize</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">20</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">loading</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>},
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">methods</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">fetchData</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">loading</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        ...<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">searchModel</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">page</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">page</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">pageSize</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">pageSize</span>,
+</span></span><span style="display:flex;"><span>      };
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">res</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">fetchOrderList</span>(<span style="color:#a6e22e">params</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tableData</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">list</span> <span style="color:#f92672">||</span> [];
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">total</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">total</span> <span style="color:#f92672">||</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">finally</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">loading</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">handlePageChange</span>(<span style="color:#a6e22e">p</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">page</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">p</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">fetchData</span>();
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">handleSizeChange</span>(<span style="color:#a6e22e">size</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">pageSize</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">size</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">page</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">fetchData</span>();
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>分页组件就可以写死在 <code>&lt;ListPage /&gt;</code> 里，只暴露相关回调。</p>
+<hr>
+<h2 id="6-抽象成通用-listpage-组件">6. 抽象成通用 ListPage 组件</h2>
+<p>前面这些拆完后，其实我们已经可以封装一个通用的 <code>&lt;ListPage /&gt;</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">ListPage</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:search-items</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;searchItems&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:columns</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;columns&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:actions</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;actions&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:row-actions</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rowActions&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:request</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;fetchOrderList&#34;</span>
+</span></span><span style="display:flex;"><span>/&gt;
+</span></span></code></pre></div><p>内部大致做的事情：</p>
+<ol>
+<li>根据 <code>searchItems</code> 渲染搜索区，并维护 <code>searchModel</code>。</li>
+<li>根据 <code>columns</code> 渲染表格列。</li>
+<li>根据 <code>actions</code> 和 <code>rowActions</code> 渲染操作按钮并抛出事件。</li>
+<li>根据 <code>request</code> 请求数据，并处理分页。</li>
+</ol>
+<p>这样之后，一个新模块的列表页往往只需要：</p>
+<ul>
+<li>定义几组配置；</li>
+<li>写几个真正的业务事件处理（新增、编辑、导出）。</li>
+</ul>
+<hr>
+<h2 id="7-踩过的坑与一些小经验">7. 踩过的坑与一些小经验</h2>
+<ol>
+<li>
+<p><strong>配置不要过度抽象到看不懂</strong><br>
+配置项适当即可，太多层封装会导致新人很难上手。命名尽量直白。</p>
+</li>
+<li>
+<p><strong>保留逃生出口</strong><br>
+通用组件应该允许「自定义渲染」插槽，比如表格列支持 <code>scoped-slot</code>，避免被配置完全锁死。</p>
+</li>
+<li>
+<p><strong>接口约定要和后端提前对齐</strong><br>
+包括分页字段名（<code>page</code> vs <code>pageNum</code>）、总数字段（<code>total</code> vs <code>totalCount</code>）等等，最好统一。</p>
+</li>
+<li>
+<p><strong>不要强求所有列表都塞进一个 ListPage</strong><br>
+超复杂的页面可以只借用部分思想，比如只用配置化表单 + 通用表格，不必所有都走通用组件。</p>
+</li>
+</ol>
+<hr>
+<h2 id="8-总结">8. 总结</h2>
+<p>中后台页面看起来都差不多，本质上是：</p>
+<blockquote>
+<p><strong>配置化的查询 + 配置化的表格 + 一点点业务操作。</strong></p>
+</blockquote>
+<p>如果你能在一个项目里沉淀出一套好用的「列表页模板」，下一次再做类似需求时，心态会轻松很多，也更有空间把精力放在真正有业务价值的地方。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-04-28</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2020-04-28-mid-platform-table-design/" data-title="中后台「表格 &#43; 查询」通用化设计实践" data-via="https://github.com/cs11b137" data-hashtags="中台,表格组件,查询表单"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2020-04-28-mid-platform-table-design/" data-hashtag="中台"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2020-04-28-mid-platform-table-design/" data-title="中后台「表格 &#43; 查询」通用化设计实践"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2020-04-28-mid-platform-table-design/" data-title="中后台「表格 &#43; 查询」通用化设计实践"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2020-04-28-mid-platform-table-design/" data-title="中后台「表格 &#43; 查询」通用化设计实践"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E4%B8%AD%E5%8F%B0/">中台</a>,&nbsp;<a href="/tags/%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6/">表格组件</a>,&nbsp;<a href="/tags/%E6%9F%A5%E8%AF%A2%E8%A1%A8%E5%8D%95/">查询表单</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2020-02-15-spa-routing-thoughts/" class="prev" rel="prev" title="单页应用路由设计心得：守护好你的「返回键」"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>单页应用路由设计心得：守护好你的「返回键」</a>
+            <a href="/posts/2020-07-03-error-handling-and-logging/" class="next" rel="next" title="别再只 console.log 了：前端错误收集与日志治理">别再只 console.log 了：前端错误收集与日志治理<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

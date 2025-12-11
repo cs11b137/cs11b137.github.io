@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>开发工具 on Saiga</title>
+    <link>http://localhost:1313/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</link>
+    <description>Recent content in 开发工具 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Sat, 12 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2019–2020 我的前端工作流与常用工具清单</title>
+      <link>http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/</link>
+      <pubDate>Sat, 12 Dec 2020 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/</guid>
+      <description>&lt;p&gt;每隔一段时间，我都会回头看一下：&lt;strong&gt;自己每天在用的工具和工作流，哪些真的有效，哪些只是「习惯了就一直没动」&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;p&gt;这篇文章算是对 2019–2020 这两年自己前端工作流的一次归档，顺便给以后想重构环境的自己当个参考。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-编辑器与基础环境&#34;&gt;1. 编辑器与基础环境&lt;/h2&gt;&#xA;&lt;h3 id=&#34;11-vs-code-为主webstorm-偶尔上场&#34;&gt;1.1 VS Code 为主，WebStorm 偶尔上场&lt;/h3&gt;&#xA;&lt;p&gt;这两年主要是 VS Code 打主力，原因很简单：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;生态丰富（插件多）；&lt;/li&gt;&#xA;&lt;li&gt;配置灵活（&lt;code&gt;settings.json&lt;/code&gt;、&lt;code&gt;tasks&lt;/code&gt; 等等）；&lt;/li&gt;&#xA;&lt;li&gt;打开仓库速度相对快。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;WebStorm 的优势在于：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;更强的「开箱即用」体验（尤其是对 TS / 重构支持）；&lt;/li&gt;&#xA;&lt;li&gt;有些场景下更稳，但是资源占用也更高。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;我的做法：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;日常写业务、处理多个小项目 → VS Code；&lt;/li&gt;&#xA;&lt;li&gt;需要重构大型 TS 项目、或者做复杂的重命名/移动 → 偶尔打开 WebStorm。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;12-vs-code-常驻插件&#34;&gt;1.2 VS Code 常驻插件&lt;/h3&gt;&#xA;&lt;p&gt;只列一些我真正离不开的：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;ESLint&lt;/strong&gt;：保存自动修复格式/语法问题。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Prettier&lt;/strong&gt;：统一代码风格（也可以用 ESLint 负责格式化）。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Vetur / Volar&lt;/strong&gt;：Vue 项目对应的语法高亮与提示。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;GitLens&lt;/strong&gt;：在代码行旁边直接看到最近一次提交记录。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Path Intellisense&lt;/strong&gt;：自动补全文件路径。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;TODO Highlight&lt;/strong&gt;：高亮 TODO / FIXME，提醒自己有坑没填。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;设置里会开：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;editor.formatOnSave&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;,&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;editor.codeActionsOnSave&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;:&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;source.fixAll.eslint&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这样每次保存就是一次「小型代码体检」。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-git-工作流&#34;&gt;2. Git 工作流&lt;/h2&gt;&#xA;&lt;p&gt;这两年基本稳定在一套很简单的 Git 流程：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

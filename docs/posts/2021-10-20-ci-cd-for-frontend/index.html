@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>给前端项目接上 CI/CD：自动构建与预发布环境 - Saiga</title><meta name="Description" content="梳理一次给前端项目搭建 CI/CD 流水线的过程：从代码提交，到自动构建、部署预发布环境，再到可回滚的上线流程。"><meta property="og:url" content="http://localhost:1313/posts/2021-10-20-ci-cd-for-frontend/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="给前端项目接上 CI/CD：自动构建与预发布环境">
+  <meta property="og:description" content="梳理一次给前端项目搭建 CI/CD 流水线的过程：从代码提交，到自动构建、部署预发布环境，再到可回滚的上线流程。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-10-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-10-20T00:00:00+00:00">
+    <meta property="article:tag" content="CI/CD">
+    <meta property="article:tag" content="自动化部署">
+    <meta property="article:tag" content="前端发布流程">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="给前端项目接上 CI/CD：自动构建与预发布环境">
+  <meta name="twitter:description" content="梳理一次给前端项目搭建 CI/CD 流水线的过程：从代码提交，到自动构建、部署预发布环境，再到可回滚的上线流程。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2021-10-20-ci-cd-for-frontend/" /><link rel="prev" href="http://localhost:1313/posts/2021-08-30-api-contract-and-mock/" /><link rel="next" href="http://localhost:1313/posts/2021-12-05-first-ai-touch/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "给前端项目接上 CI/CD：自动构建与预发布环境",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2021-10-20-ci-cd-for-frontend\/"
+        },"genre": "posts","keywords": "CI\/CD, 自动化部署, 前端发布流程","wordcount":  383 ,
+        "url": "http:\/\/localhost:1313\/posts\/2021-10-20-ci-cd-for-frontend\/","datePublished": "2021-10-20T00:00:00+00:00","dateModified": "2021-10-20T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "梳理一次给前端项目搭建 CI/CD 流水线的过程：从代码提交，到自动构建、部署预发布环境，再到可回滚的上线流程。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">给前端项目接上 CI/CD：自动构建与预发布环境</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>工程化</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2021-10-20">2021-10-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 383 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-流程目标先画出来">1. 流程目标先画出来</a></li>
+    <li><a href="#2-以-github-actions-为例写一个最小流水线">2. 以 GitHub Actions 为例写一个最小流水线</a>
+      <ul>
+        <li><a href="#21-基础-ci安装--构建">2.1 基础 CI：安装 + 构建</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-预发布环境部署">3. 预发布环境部署</a></li>
+    <li><a href="#4-生产环境上线与回滚">4. 生产环境上线与回滚</a></li>
+    <li><a href="#5-在流水线中加入质量门禁">5. 在流水线中加入质量门禁</a></li>
+    <li><a href="#6-落地过程中的小问题">6. 落地过程中的小问题</a></li>
+    <li><a href="#7-小结">7. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>以前做前端上线，经常是这样的：</p>
+<ul>
+<li>本地 <code>npm run build</code> 打包；</li>
+<li>用 FTP 或手动拷贝把 dist 丢到服务器；</li>
+<li>出了问题再手动覆盖回去。</li>
+</ul>
+<p>这种方式有几个明显缺点：</p>
+<ul>
+<li>完全依赖人的操作习惯，出错难追踪；</li>
+<li>没有固定的「预发布环境」，测试体验不好；</li>
+<li>回滚麻烦，基本靠「手快」。</li>
+</ul>
+<p>这篇文章记录的是：<strong>一次给前端项目接上 CI/CD 的实际过程</strong>，目标是：</p>
+<blockquote>
+<p>提交代码 → 自动构建 → 部署到预发布 → 人工验证 → 一键上线 &amp; 可快速回滚。</p>
+</blockquote>
+<hr>
+<h2 id="1-流程目标先画出来">1. 流程目标先画出来</h2>
+<p>先不管用什么平台（GitHub Actions、GitLab CI、Jenkins…），流程大致分为几步：</p>
+<ol>
+<li>
+<p><strong>CI 阶段（持续集成）</strong></p>
+<ul>
+<li>安装依赖；</li>
+<li>跑 lint / 单测；</li>
+<li>打包构建。</li>
+</ul>
+</li>
+<li>
+<p><strong>CD 阶段（持续交付/部署）</strong></p>
+<ul>
+<li>构建产物上传到制品库或对象存储；</li>
+<li>自动部署到预发布环境；</li>
+<li>人工验证无问题后，再部署到生产；</li>
+<li>所有版本有记录，可一键回滚。</li>
+</ul>
+</li>
+</ol>
+<p>把这张「大图」先画给团队看，大家对齐预期后，再来谈具体实现。</p>
+<hr>
+<h2 id="2-以-github-actions-为例写一个最小流水线">2. 以 GitHub Actions 为例写一个最小流水线</h2>
+<h3 id="21-基础-ci安装--构建">2.1 基础 CI：安装 + 构建</h3>
+<p><code>.github/workflows/ci.yml</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">Frontend CI</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">pull_request</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main, develop ]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">develop ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Checkout code</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Use Node.js</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-node@v3</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">node-version</span>: <span style="color:#e6db74">&#39;18&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Install dependencies</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">npm ci</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Lint</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">npm run lint</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">npm run build</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Archive production artifacts</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/upload-artifact@v3</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">name</span>: <span style="color:#ae81ff">dist</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">path</span>: <span style="color:#ae81ff">dist</span>
+</span></span></code></pre></div><p>这样每次 PR / 推送到 develop，都能自动帮你检查：</p>
+<ul>
+<li>能不能正常安装依赖；</li>
+<li>lint 是否通过；</li>
+<li>构建是否成功。</li>
+</ul>
+<p>这一步就已经能避免不少「构建失败还被合到主干」的问题。</p>
+<hr>
+<h2 id="3-预发布环境部署">3. 预发布环境部署</h2>
+<p>接下来是 CD 部分。以「静态站部署到 Nginx + 对象存储」为例，我们可以：</p>
+<ol>
+<li>在 CI 构建产物后，上传到一个对象存储/制品库；</li>
+<li>触发一段部署脚本把对应版本发布到「预发布环境」。</li>
+</ol>
+<p>举个简化示例（仍然用 GitHub Actions）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># 在 CI 成功的基础上新增一个 job</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">deploy_staging</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">needs</span>: <span style="color:#ae81ff">build</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">if</span>: <span style="color:#ae81ff">github.ref == &#39;refs/heads/develop&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Download artifact</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/download-artifact@v3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">name</span>: <span style="color:#ae81ff">dist</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">path</span>: <span style="color:#ae81ff">dist</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Deploy to staging server</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">easingthemes/ssh-deploy@v2</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ssh-private-key</span>: <span style="color:#ae81ff">${{ secrets.SSH_KEY }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">remote-user</span>: <span style="color:#ae81ff">deploy</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">server-ip</span>: <span style="color:#ae81ff">${{ secrets.STAGING_HOST }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">remote-path</span>: <span style="color:#ae81ff">/var/www/your-app-staging</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">local-path</span>: <span style="color:#ae81ff">dist</span>
+</span></span></code></pre></div><p>这段会把 <code>dist</code> 同步到预发布服务器指定目录。</p>
+<p>项目内部约定：</p>
+<ul>
+<li>访问 <code>https://staging.xxx.com</code> 就是预发布；</li>
+<li>只有通过了预发布验证，才允许合并到主干或触发生产部署。</li>
+</ul>
+<hr>
+<h2 id="4-生产环境上线与回滚">4. 生产环境上线与回滚</h2>
+<p>生产环境的部署要更谨慎一些，可以有几种触发方式：</p>
+<ol>
+<li>手动在 CI 平台点「Deploy to Production」；</li>
+<li>打 Tag 时触发；</li>
+<li>推送到 <code>main</code> 分支时触发，但建议加人工确认步骤。</li>
+</ol>
+<p>示例（手动触发 + 简单回滚能力）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">Deploy Production</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">workflow_dispatch</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">inputs</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">version</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">description</span>: <span style="color:#e6db74">&#39;Version or branch to deploy&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">required</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">default</span>: <span style="color:#e6db74">&#39;main&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">deploy_prod</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v3</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">ref</span>: <span style="color:#ae81ff">${{ github.event.inputs.version }}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Use Node.js</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-node@v3</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">node-version</span>: <span style="color:#e6db74">&#39;18&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Install dependencies</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">npm ci</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">npm run build</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Deploy to production</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">easingthemes/ssh-deploy@v2</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">ssh-private-key</span>: <span style="color:#ae81ff">${{ secrets.SSH_KEY }}</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">remote-user</span>: <span style="color:#ae81ff">deploy</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">server-ip</span>: <span style="color:#ae81ff">${{ secrets.PROD_HOST }}</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">remote-path</span>: <span style="color:#ae81ff">/var/www/your-app</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">local-path</span>: <span style="color:#ae81ff">dist</span>
+</span></span></code></pre></div><p>回滚的时候，只需要：</p>
+<ul>
+<li>再次触发同一个 workflow；</li>
+<li><code>version</code> 输入改成上一个 Tag 或 commit hash；</li>
+<li>CI 会用那一版代码重新构建并覆盖部署。</li>
+</ul>
+<p>如果你使用的是 S3/OSS + CDN 的方式，也可以：</p>
+<ul>
+<li>按版本号上传到不同前缀；</li>
+<li>用一个 <code>current</code> 的软链接/配置文件指向当前版本；</li>
+<li>回滚时只需要切回旧的前缀。</li>
+</ul>
+<hr>
+<h2 id="5-在流水线中加入质量门禁">5. 在流水线中加入质量门禁</h2>
+<p>有了 CI/CD 之后，还可以顺手做几件「质量相关」的小事：</p>
+<ol>
+<li><strong>Lint 不通过禁止合并到主干</strong>；</li>
+<li>有单测的话，把 <code>npm test</code> 放进 CI；</li>
+<li>接入简单的构建产物体积检测（防止某次引入包导致 bundle 暴涨）；</li>
+<li>构建失败时通过机器人推送到群里，提醒相关同学处理。</li>
+</ol>
+<p>这些都属于「顺带就能做」的事情，对整体体验提升很明显。</p>
+<hr>
+<h2 id="6-落地过程中的小问题">6. 落地过程中的小问题</h2>
+<ol>
+<li>
+<p><strong>一开始脚本写得过于复杂</strong></p>
+<ul>
+<li>想在第一次就把灰度、蓝绿发布都上齐，结果自己都搞晕了；</li>
+<li>后来改成：先最小可用流程跑通，再慢慢加花活。</li>
+</ul>
+</li>
+<li>
+<p><strong>环境变量管理混乱</strong></p>
+<ul>
+<li>CI 和服务器上的环境变量不一致，导致「本地 OK、CI 失败」；</li>
+<li>把所有环境变量（后端域名、静态资源域名等）都收敛到 <code>.env.*</code> 和 CI 平台 Secrets 管理。</li>
+</ul>
+</li>
+<li>
+<p><strong>日志与监控缺位</strong></p>
+<ul>
+<li>早期部署失败只能看脚本输出，很难定位；</li>
+<li>后来尽量让脚本有清晰日志，以及对接一些简单监控（如 Nginx 状态、前端监控上报）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="7-小结">7. 小结</h2>
+<p>给前端项目接上 CI/CD，本质是在做三件事：</p>
+<ol>
+<li>
+<p><strong>把「能自动化的步骤全部自动化」</strong></p>
+<ul>
+<li>安装依赖、lint、构建、上传、部署。</li>
+</ul>
+</li>
+<li>
+<p><strong>显式区分「开发 / 预发布 / 生产」</strong></p>
+<ul>
+<li>每个环境有清晰的入口和配置；</li>
+<li>预发布成为上线前的必经之路。</li>
+</ul>
+</li>
+<li>
+<p><strong>让上线和回滚都变成「标准动作」</strong></p>
+<ul>
+<li>用脚本和流水线固化流程；</li>
+<li>减少对人的记忆和手感依赖。</li>
+</ul>
+</li>
+</ol>
+<p>做完这些之后，你会明显感觉到：</p>
+<ul>
+<li>发版节奏更可控；</li>
+<li>出问题时更镇定，因为你知道「怎么回滚」；</li>
+<li>团队对「上线」这件事的恐惧感会小很多。</li>
+</ul>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-10-20</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2021-10-20-ci-cd-for-frontend/" data-title="给前端项目接上 CI/CD：自动构建与预发布环境" data-via="https://github.com/cs11b137" data-hashtags="CI/CD,自动化部署,前端发布流程"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2021-10-20-ci-cd-for-frontend/" data-hashtag="CI/CD"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2021-10-20-ci-cd-for-frontend/" data-title="给前端项目接上 CI/CD：自动构建与预发布环境"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2021-10-20-ci-cd-for-frontend/" data-title="给前端项目接上 CI/CD：自动构建与预发布环境"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2021-10-20-ci-cd-for-frontend/" data-title="给前端项目接上 CI/CD：自动构建与预发布环境"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/ci/cd/">CI/CD</a>,&nbsp;<a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2/">自动化部署</a>,&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B/">前端发布流程</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2021-08-30-api-contract-and-mock/" class="prev" rel="prev" title="前后端协作改造记：从「口头协议」到 Mock 驱动开发"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>前后端协作改造记：从「口头协议」到 Mock 驱动开发</a>
+            <a href="/posts/2021-12-05-first-ai-touch/" class="next" rel="next" title="用云端 NLP API 做一个简单的文本分析工具">用云端 NLP API 做一个简单的文本分析工具<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

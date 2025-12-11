@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>调用大模型 API 的几个最佳实践：重试、降级与审计 - Saiga</title><meta name="Description" content="从实际接入大模型 API 的经验里，总结几条「踩过坑之后才会在意」的实践：重试策略、超时控制、结果审计和安全防护。"><meta property="og:url" content="http://localhost:1313/posts/2023-06-05-ai-api-best-practices/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="调用大模型 API 的几个最佳实践：重试、降级与审计">
+  <meta property="og:description" content="从实际接入大模型 API 的经验里，总结几条「踩过坑之后才会在意」的实践：重试策略、超时控制、结果审计和安全防护。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2023-06-05T00:00:00+00:00">
+    <meta property="article:modified_time" content="2023-06-05T00:00:00+00:00">
+    <meta property="article:tag" content="大模型 API">
+    <meta property="article:tag" content="容错">
+    <meta property="article:tag" content="重试">
+    <meta property="article:tag" content="审计">
+    <meta property="article:tag" content="安全">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="调用大模型 API 的几个最佳实践：重试、降级与审计">
+  <meta name="twitter:description" content="从实际接入大模型 API 的经验里，总结几条「踩过坑之后才会在意」的实践：重试策略、超时控制、结果审计和安全防护。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2023-06-05-ai-api-best-practices/" /><link rel="prev" href="http://localhost:1313/posts/2023-04-20-ab-testing-in-frontend/" /><link rel="next" href="http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "调用大模型 API 的几个最佳实践：重试、降级与审计",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2023-06-05-ai-api-best-practices\/"
+        },"genre": "posts","keywords": "大模型 API, 容错, 重试, 审计, 安全","wordcount":  261 ,
+        "url": "http:\/\/localhost:1313\/posts\/2023-06-05-ai-api-best-practices\/","datePublished": "2023-06-05T00:00:00+00:00","dateModified": "2023-06-05T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "从实际接入大模型 API 的经验里，总结几条「踩过坑之后才会在意」的实践：重试策略、超时控制、结果审计和安全防护。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">调用大模型 API 的几个最佳实践：重试、降级与审计</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/ai-%E5%BA%94%E7%94%A8/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 应用</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-06-05">2023-06-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 261 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-超时与重试别把前端一直挂着">1. 超时与重试：别把前端一直挂着</a>
+      <ul>
+        <li><a href="#11-超时要有明确上限">1.1 超时要有明确上限</a></li>
+        <li><a href="#12-重试策略">1.2 重试策略</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-降级模型不可用时要有备胎">2. 降级：模型不可用时要有「备胎」</a></li>
+    <li><a href="#3-日志与审计每一次调用都要能被追踪">3. 日志与审计：每一次调用都要能被追踪</a></li>
+    <li><a href="#4-敏感词与安全别把原样输出直接丢给用户">4. 敏感词与安全：别把「原样输出」直接丢给用户</a></li>
+    <li><a href="#5-成本控制别让调用变成黑洞">5. 成本控制：别让调用变成「黑洞」</a></li>
+    <li><a href="#6-前端体验响应态与思考中的反馈">6. 前端体验：响应态与「思考中」的反馈</a></li>
+    <li><a href="#7-把不确定性告诉用户">7. 把「不确定性」告诉用户</a></li>
+    <li><a href="#8-小结">8. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>刚开始用大模型 API 时，大家一般关心的是：</p>
+<blockquote>
+<p>这个模型效果好不好？回答聪不聪明？</p>
+</blockquote>
+<p>但当你真的把它作为「线上能力」接入产品时，会发现很多工程问题：</p>
+<ul>
+<li>API 偶尔超时 / 报错怎么办？</li>
+<li>费用怎么控？</li>
+<li>返回内容里如果有敏感信息怎么办？</li>
+<li>出了问题，怎么排查某次请求？</li>
+</ul>
+<p>这篇文章就是从这些「落地问题」出发，整理几条接入大模型 API 的最佳实践。</p>
+<hr>
+<h2 id="1-超时与重试别把前端一直挂着">1. 超时与重试：别把前端一直挂着</h2>
+<h3 id="11-超时要有明确上限">1.1 超时要有明确上限</h3>
+<p>大模型生成本身需要时间，如果不设超时，前端可能会一直转圈。<br>
+我们一般做法：</p>
+<ul>
+<li>在 BFF / 中间层对每个调用设定超时时间（例如 10–15 秒）；</li>
+<li>超时后直接返回「超时错误」，由前端给出友好提示；</li>
+<li>前端也设置请求超时，避免被挂死。</li>
+</ul>
+<h3 id="12-重试策略">1.2 重试策略</h3>
+<p>常见错误类型：</p>
+<ul>
+<li>临时网络抖动；</li>
+<li>API 限流（429）；</li>
+<li>服务端偶发异常。</li>
+</ul>
+<p>对<strong>幂等请求</strong>（比如生成建议文案），我们采用：</p>
+<ul>
+<li><strong>指数退避重试</strong>：例如最多重试 2 次，间隔 500ms / 1000ms；</li>
+<li>遇到某些错误码（如 4xx 中的参数错误）不重试。</li>
+</ul>
+<p>伪代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">callLLMWithRetry</span>(<span style="color:#a6e22e">payload</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">maxRetry</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">attempt</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">callLLM</span>(<span style="color:#a6e22e">payload</span>);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">e</span>: <span style="color:#66d9ef">any</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">isRetryableError</span>(<span style="color:#a6e22e">e</span>) <span style="color:#f92672">||</span> <span style="color:#a6e22e">attempt</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">maxRetry</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">e</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">attempt</span><span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">sleep</span>(<span style="color:#ae81ff">500</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">attempt</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="2-降级模型不可用时要有备胎">2. 降级：模型不可用时要有「备胎」</h2>
+<p>大模型 API 作为外部依赖，不可能 100% 可用。<br>
+因此建议设计「降级方案」：</p>
+<ol>
+<li>
+<p><strong>轻度降级</strong></p>
+<ul>
+<li>换用备用模型（同一家/不同家供应商）；</li>
+<li>降低输出长度或关闭一些附加功能。</li>
+</ul>
+</li>
+<li>
+<p><strong>重度降级</strong></p>
+<ul>
+<li>回退到「非智能」版本的功能；</li>
+<li>例如：从「智能推荐搜索词」回退到「固定热词」。</li>
+</ul>
+</li>
+</ol>
+<p>前端体验上：</p>
+<ul>
+<li>明确告诉用户当前处于「简化模式」；</li>
+<li>或提示「智能推荐暂时不可用，请手动输入」。</li>
+</ul>
+<p>降级逻辑最好放在 BFF 层集中控制，避免前端到处判断。</p>
+<hr>
+<h2 id="3-日志与审计每一次调用都要能被追踪">3. 日志与审计：每一次调用都要能被追踪</h2>
+<p>当你开始让大模型给用户生成内容、建议甚至决策时，<strong>可追溯性很重要</strong>。</p>
+<p>我们通常会记录：</p>
+<ol>
+<li>
+<p>请求侧：</p>
+<ul>
+<li>调用时间、调用方系统、接口名；</li>
+<li>用户 ID（脱敏）、会话 ID；</li>
+<li>Prompt 内容（必要时做脱敏）；</li>
+<li>使用的模型版本、参数（温度、max_tokens 等）。</li>
+</ul>
+</li>
+<li>
+<p>响应侧：</p>
+<ul>
+<li>截断后的输出文本；</li>
+<li>Token 消耗（prompt / completion）；</li>
+<li>时延；</li>
+<li>是否命中内容安全/敏感词。</li>
+</ul>
+</li>
+</ol>
+<p>注意事项：</p>
+<ul>
+<li>避免在日志中记录敏感个人信息（必要时脱敏/哈希）；</li>
+<li>对「可能包含用户隐私」的内容，缩短日志保留时间或做额外隔离。</li>
+</ul>
+<p>这些日志是后续：</p>
+<ul>
+<li>排查错误、定位「为什么模型当时这么回答」；</li>
+<li>计算成本、优化调用策略；</li>
+<li>做内容审计的基础。</li>
+</ul>
+<hr>
+<h2 id="4-敏感词与安全别把原样输出直接丢给用户">4. 敏感词与安全：别把「原样输出」直接丢给用户</h2>
+<p>大模型有创造力，这既是优点，也是安全风险。<br>
+接入时需要至少考虑：</p>
+<ol>
+<li>
+<p><strong>内容安全过滤</strong></p>
+<ul>
+<li>对输出结果再走一层敏感词/内容安全检测；</li>
+<li>包括：违法、暴力、色情、歧视等内容。</li>
+</ul>
+</li>
+<li>
+<p><strong>业务相关规则</strong></p>
+<ul>
+<li>金融场景下不得给出投资建议；</li>
+<li>医疗场景下不得做诊断结论；</li>
+<li>对这些场景，应在 Prompt 中明确约束，并在结果侧再做检测。</li>
+</ul>
+</li>
+<li>
+<p><strong>Prompt 注入防御</strong></p>
+<ul>
+<li>不要把系统规则与用户输入简单拼接，而不做区分；</li>
+<li>使用明确的系统 / 用户角色分离（如 Chat Completion 的 role）。</li>
+</ul>
+</li>
+</ol>
+<p>例子：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  { <span style="color:#f92672">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;system&#34;</span>, <span style="color:#f92672">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;你是一个金融知识助手，只能基于公开知识解释概念，不能给出具体投资建议。&#34;</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#f92672">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>, <span style="color:#f92672">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;给我推荐一只明天一定涨的股票。&#34;</span> }
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><p>输出侧可以增加简单规则：</p>
+<ul>
+<li>若检测到「推荐具体股票代码」，直接替换为安全提示。</li>
+</ul>
+<hr>
+<h2 id="5-成本控制别让调用变成黑洞">5. 成本控制：别让调用变成「黑洞」</h2>
+<p>大模型按 Token 计费，前端「随便调用」很快会超预算。<br>
+几条实用策略：</p>
+<ol>
+<li>
+<p><strong>Prompt 压缩</strong></p>
+<ul>
+<li>避免每次把整段历史对话全部带上；</li>
+<li>对上下文做摘要，只保留必要信息。</li>
+</ul>
+</li>
+<li>
+<p><strong>限制最大输出长度</strong></p>
+<ul>
+<li><code>max_tokens</code> 控制在合理范围；</li>
+<li>对于简单问答没必要生成几千字。</li>
+</ul>
+</li>
+<li>
+<p><strong>按场景选择模型</strong></p>
+<ul>
+<li>简单分类/打标签的任务用便宜模型；</li>
+<li>只有需要复杂推理/生成时才用昂贵模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>监控 &amp; 限流</strong></p>
+<ul>
+<li>对单用户/单 IP 设置调用频次上限；</li>
+<li>对每天/每小时整体用量做监控和预警。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="6-前端体验响应态与思考中的反馈">6. 前端体验：响应态与「思考中」的反馈</h2>
+<p>从用户体验角度，大模型调用和普通接口不太一样：</p>
+<ol>
+<li>响应时间更长（几秒）；</li>
+<li>结果高度不确定。</li>
+</ol>
+<p>前端可以做的优化：</p>
+<ul>
+<li>使用「流式输出」（streaming），让用户看到模型在「打字」；</li>
+<li>明确展示「AI 生成中…」的状态，而不是普通 loading；</li>
+<li>支持中断生成（取消请求）。</li>
+</ul>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">response</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;/api/ai/stream&#39;</span>, { <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;POST&#39;</span>, <span style="color:#a6e22e">body</span>: <span style="color:#66d9ef">...</span> });
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">reader</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">body</span>.<span style="color:#a6e22e">getReader</span>();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 按 chunk 读取并显示在界面上
+</span></span></span></code></pre></div><p>用户体感会比一次性「憋很久再出现一整段」好很多。</p>
+<hr>
+<h2 id="7-把不确定性告诉用户">7. 把「不确定性」告诉用户</h2>
+<p>大模型不是传统确定性服务，接入时要避免「过度承诺」：</p>
+<ul>
+<li>文案上说明「AI 仅供参考」；</li>
+<li>对于关键操作（如下单、签约），不要直接依据 AI 结果做自动决策，而是作为辅助信息；</li>
+<li>对明显错误的结果，给用户提供反馈入口（thumb up / down），便于后续持续优化。</li>
+</ul>
+<hr>
+<h2 id="8-小结">8. 小结</h2>
+<p>调用大模型 API，从工程视角看更像是在接一个「<strong>强大但不稳定的外部服务</strong>」。<br>
+几条关键实践：</p>
+<ol>
+<li>超时与重试要设计好，避免前后端互相拖死；</li>
+<li>有清晰的降级方案，模型不可用时不会影响主流程；</li>
+<li>每次调用都能被审计和追踪，便于排查和成本控制；</li>
+<li>输出侧要做内容安全和业务规则约束；</li>
+<li>前端体验要针对「多秒响应 + 流式输出」做优化。</li>
+</ol>
+<p>把这些「底层工程防线」搭好之后，你就可以更放心地把大模型接入到实际业务中，而不是停留在 Demo 阶段。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2023-06-05</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2023-06-05-ai-api-best-practices/" data-title="调用大模型 API 的几个最佳实践：重试、降级与审计" data-via="https://github.com/cs11b137" data-hashtags="大模型 API,容错,重试,审计,安全"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2023-06-05-ai-api-best-practices/" data-hashtag="大模型 API"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2023-06-05-ai-api-best-practices/" data-title="调用大模型 API 的几个最佳实践：重试、降级与审计"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2023-06-05-ai-api-best-practices/" data-title="调用大模型 API 的几个最佳实践：重试、降级与审计"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2023-06-05-ai-api-best-practices/" data-title="调用大模型 API 的几个最佳实践：重试、降级与审计"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B-api/">大模型 API</a>,&nbsp;<a href="/tags/%E5%AE%B9%E9%94%99/">容错</a>,&nbsp;<a href="/tags/%E9%87%8D%E8%AF%95/">重试</a>,&nbsp;<a href="/tags/%E5%AE%A1%E8%AE%A1/">审计</a>,&nbsp;<a href="/tags/%E5%AE%89%E5%85%A8/">安全</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2023-04-20-ab-testing-in-frontend/" class="prev" rel="prev" title="前端视角下的 A/B Test：埋点、分流与验证"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>前端视角下的 A/B Test：埋点、分流与验证</a>
+            <a href="/posts/2023-07-22-ai-assistant-for-dev/" class="next" rel="next" title="给自己搭一个「AI 助理」开发流程">给自己搭一个「AI 助理」开发流程<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

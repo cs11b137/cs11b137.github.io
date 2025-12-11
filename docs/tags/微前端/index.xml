@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>微前端 on Saiga</title>
+    <link>http://localhost:1313/tags/%E5%BE%AE%E5%89%8D%E7%AB%AF/</link>
+    <description>Recent content in 微前端 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Thu, 02 Mar 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%BE%AE%E5%89%8D%E7%AB%AF/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>微前端尝试记：什么时候值得用，又该怎么用</title>
+      <link>http://localhost:1313/posts/2023-03-02-micro-frontend-trial/</link>
+      <pubDate>Thu, 02 Mar 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2023-03-02-micro-frontend-trial/</guid>
+      <description>&lt;p&gt;微前端这个词已经火了很多年，但真要落地时，经常会遇到几个灵魂拷问：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;我们的项目有必要用吗？&lt;/li&gt;&#xA;&lt;li&gt;是不是换个 iframe 也能解决？&lt;/li&gt;&#xA;&lt;li&gt;上了之后会不会更复杂？&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这篇文章是一次真实的尝试记录：我们为什么考虑微前端、最后怎么落地、踩过哪些坑。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-我们为什么会想到微前端&#34;&gt;1. 我们为什么会想到微前端？&lt;/h2&gt;&#xA;&lt;p&gt;当时的背景：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;已经有一个比较大的运营中台，使用 Vue2；&lt;/li&gt;&#xA;&lt;li&gt;新业务线希望独立迭代，想用 Vue3/Vite；&lt;/li&gt;&#xA;&lt;li&gt;不同团队节奏不一致，但最终还是要在一个「统一入口」下为业务方服务。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;简单说就是：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;不同团队、不同技术栈、不同发布节奏，但对外要看起来像「一个系统」。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;这是典型的微前端适用场景之一。&lt;/p&gt;&#xA;&lt;p&gt;我们也认真讨论过：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;方案 A：继续在原系统里加路由&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;所有业务都塞进一个 Vue2 大仓库；&lt;/li&gt;&#xA;&lt;li&gt;优点是简单，缺点是历史包袱越来越重。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;方案 B：子系统独立域名&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;完全分开，运营自己维护入口；&lt;/li&gt;&#xA;&lt;li&gt;用户在不同系统间跳转，体验割裂。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;最终，我们选了一个折中方案：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;用微前端把多个独立应用挂在一个统一壳子下，保证用户体验一致，同时保留各团队的技术栈和发布节奏。&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-选型为什么最后选了框架型方案&#34;&gt;2. 选型：为什么最后选了「框架型」方案&lt;/h2&gt;&#xA;&lt;p&gt;有几种路线：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;自己基于 iframe + postMessage 搞一套协议；&lt;/li&gt;&#xA;&lt;li&gt;使用成熟微前端框架（如 single-spa、qiankun、Module Federation 等）；&lt;/li&gt;&#xA;&lt;li&gt;基于构建时集成的模块联邦方案（Webpack Module Federation 等）。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;我们最后选的是类似 qiankun 的「运行时加载子应用」方案，原因：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;接入成本相对低，不用大改原有项目；&lt;/li&gt;&#xA;&lt;li&gt;不强绑某个构建工具；&lt;/li&gt;&#xA;&lt;li&gt;社区实践比较多。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;整体架构是：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;主应用（Shell，负责导航/布局/统一登录）&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  ├── 子应用 A（Vue2，老中台）&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  ├── 子应用 B（Vue3，新模块）&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  └── 子应用 C（React，小实验项目）&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;3-路由接入谁管-url&#34;&gt;3. 路由接入：谁管 URL？&lt;/h2&gt;&#xA;&lt;p&gt;微前端绕不开的一个问题是：&lt;strong&gt;路由由谁控制？&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

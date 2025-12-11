@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>一次性能优化实战：从 5s 到 1.5s 的页面加载 - Saiga</title><meta name="Description" content="记录一次真实的前端性能优化：从用户反馈「有点卡」出发，量化问题、拆分 bundle、懒加载、加缓存、加骨架屏，一步步把首屏从 5s 优化到 1.5s。"><meta property="og:url" content="http://localhost:1313/posts/2022-07-14-performance-optimization-case/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="一次性能优化实战：从 5s 到 1.5s 的页面加载">
+  <meta property="og:description" content="记录一次真实的前端性能优化：从用户反馈「有点卡」出发，量化问题、拆分 bundle、懒加载、加缓存、加骨架屏，一步步把首屏从 5s 优化到 1.5s。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-07-14T00:00:00+00:00">
+    <meta property="article:modified_time" content="2022-07-14T00:00:00+00:00">
+    <meta property="article:tag" content="性能">
+    <meta property="article:tag" content="懒加载">
+    <meta property="article:tag" content="代码拆分">
+    <meta property="article:tag" content="缓存">
+    <meta property="article:tag" content="Skeleton">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="一次性能优化实战：从 5s 到 1.5s 的页面加载">
+  <meta name="twitter:description" content="记录一次真实的前端性能优化：从用户反馈「有点卡」出发，量化问题、拆分 bundle、懒加载、加缓存、加骨架屏，一步步把首屏从 5s 优化到 1.5s。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2022-07-14-performance-optimization-case/" /><link rel="prev" href="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" /><link rel="next" href="http://localhost:1313/posts/2022-09-05-monitoring-and-alert/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "一次性能优化实战：从 5s 到 1.5s 的页面加载",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2022-07-14-performance-optimization-case\/"
+        },"genre": "posts","keywords": "性能, 懒加载, 代码拆分, 缓存, Skeleton","wordcount":  228 ,
+        "url": "http:\/\/localhost:1313\/posts\/2022-07-14-performance-optimization-case\/","datePublished": "2022-07-14T00:00:00+00:00","dateModified": "2022-07-14T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "记录一次真实的前端性能优化：从用户反馈「有点卡」出发，量化问题、拆分 bundle、懒加载、加缓存、加骨架屏，一步步把首屏从 5s 优化到 1.5s。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">一次性能优化实战：从 5s 到 1.5s 的页面加载</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>性能优化</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-07-14">2022-07-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 228 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-先量化而不是拍脑袋">1. 先量化，而不是拍脑袋</a></li>
+    <li><a href="#2-bundle-拆分让首屏只拿它真需要的">2. Bundle 拆分：让首屏只拿它真需要的</a>
+      <ul>
+        <li><a href="#21-分析构建结果">2.1 分析构建结果</a></li>
+        <li><a href="#22-做的调整">2.2 做的调整</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-首屏只做必须的事">3. 首屏只做「必须的事」</a>
+      <ul>
+        <li><a href="#31-拆解首屏职责">3.1 拆解首屏职责</a></li>
+        <li><a href="#32-骨架屏skeleton">3.2 骨架屏（Skeleton）</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-缓存重复访问的用户要更快">4. 缓存：重复访问的用户要更快</a></li>
+    <li><a href="#5-小细节图片字体和第三方脚本">5. 小细节：图片、字体和第三方脚本</a></li>
+    <li><a href="#6-优化前后指标对比">6. 优化前后指标对比</a></li>
+    <li><a href="#7-遗留的问题和后续计划">7. 遗留的问题和后续计划</a></li>
+    <li><a href="#8-小结一套可复用的实践路径">8. 小结：一套可复用的实践路径</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>有一次线上迭代后，陆续收到反馈：</p>
+<blockquote>
+<p>「系统能用，就是打开慢了一截。」<br>
+「首页白屏时间变长了。」</p>
+</blockquote>
+<p>监控一看，某个核心页面的首屏时间从 <strong>约 2s 抬升到了接近 5s</strong>。<br>
+这篇文章就是那次性能优化的实战复盘：<strong>我们如何量化问题、定位瓶颈、再一步步把首屏拉回到 1.5s 左右。</strong></p>
+<hr>
+<h2 id="1-先量化而不是拍脑袋">1. 先量化，而不是拍脑袋</h2>
+<p>第一步是搞清楚「慢」在哪：</p>
+<ul>
+<li>首包下载？</li>
+<li>JS 执行？</li>
+<li>接口耗时？</li>
+<li>还是一堆「非必要逻辑」抢在首屏执行？</li>
+</ul>
+<p>我们主要用了三种手段：</p>
+<ol>
+<li><strong>Chrome DevTools Performance</strong> 看关键时序；</li>
+<li><strong>Lighthouse</strong> 跑实验室指标；</li>
+<li><strong>前端埋点</strong> 看真实用户数据（FMP/TTI 的简化近似）。</li>
+</ol>
+<p>初步结论：</p>
+<ul>
+<li>JS 资源总体体积较大，首屏要加载的 JS 超过 1MB（压缩后）；</li>
+<li>首屏渲染完成前存在一段较长的 JS 执行（主线程被占用）；</li>
+<li>首屏接口本身不是特别慢，但被一些<strong>不必要的请求</strong>夹在中间。</li>
+</ul>
+<p>目标明确：<strong>瘦 JS、少阻塞、分优先级。</strong></p>
+<hr>
+<h2 id="2-bundle-拆分让首屏只拿它真需要的">2. Bundle 拆分：让首屏只拿它真需要的</h2>
+<h3 id="21-分析构建结果">2.1 分析构建结果</h3>
+<p>接入 <code>webpack-bundle-analyzer</code> / Vite 插件之后，很快看到几个「大头」：</p>
+<ul>
+<li>整个 UI 组件库全量引入；</li>
+<li>某些图表库（在其他页面才用）被打进首屏 bundle；</li>
+<li>若干工具库重复/未 Tree-shaking。</li>
+</ul>
+<h3 id="22-做的调整">2.2 做的调整</h3>
+<ol>
+<li>
+<p><strong>组件库改为按需引入</strong></p>
+<ul>
+<li>把 <code>import ElementUI from 'element-ui'</code> 改成 babel 插件/手动按需；</li>
+<li>打包结果里组件库体积明显下降。</li>
+</ul>
+</li>
+<li>
+<p><strong>路由级别代码拆分</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Dashboard</span> <span style="color:#f92672">=</span> () <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">import</span>(<span style="color:#e6db74">&#39;@/views/dashboard/index.vue&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Report</span> <span style="color:#f92672">=</span> () <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">import</span>(<span style="color:#e6db74">&#39;@/views/report/index.vue&#39;</span>);
+</span></span></code></pre></div><p>首屏只加载首页路由，其它页面按需加载。</p>
+</li>
+<li>
+<p><strong>大模块进一步 Lazy load</strong></p>
+<ul>
+<li>某个复杂筛选面板、报表区域改成「用户点击再加载」；</li>
+<li>图表渲染延迟到首屏稳定后再执行。</li>
+</ul>
+</li>
+</ol>
+<p>结果：首屏 JS 体积从 ~1MB 降到 ~600KB 左右。</p>
+<hr>
+<h2 id="3-首屏只做必须的事">3. 首屏只做「必须的事」</h2>
+<h3 id="31-拆解首屏职责">3.1 拆解首屏职责</h3>
+<p>原来的首页逻辑：</p>
+<ol>
+<li>同时请求 4–5 个接口（摘要数据、消息、推荐信息、运营位…）；</li>
+<li>所有数据都返回后再一起渲染；</li>
+<li>同时初始化多个图表。</li>
+</ol>
+<p>我们把它改成：</p>
+<ol>
+<li><strong>第一批接口</strong>：只请求首屏「核心信息」（例如资产总览、关键指标）；</li>
+<li>首屏渲染完成后，再发第二批请求（消息列表、推荐、报表等）；</li>
+<li>图表采用懒加载：用户滑到可视区域时再渲染。</li>
+</ol>
+<h3 id="32-骨架屏skeleton">3.2 骨架屏（Skeleton）</h3>
+<p>长白屏带来的体感其实比「慢」更糟糕。</p>
+<p>我们给首页增加了：</p>
+<ul>
+<li>顶部摘要卡片 Skeleton；</li>
+<li>列表的占位条形块。</li>
+</ul>
+<p>Skeleton 本身非常轻量，只需要一些灰块和简单动画，用户会感知到：</p>
+<blockquote>
+<p>页面「正在」加载，而不是「卡死」了。</p>
+</blockquote>
+<hr>
+<h2 id="4-缓存重复访问的用户要更快">4. 缓存：重复访问的用户要更快</h2>
+<p>对于高频访问的首页，我们增加了两层缓存：</p>
+<ol>
+<li>
+<p><strong>前端内存缓存</strong></p>
+<ul>
+<li>在单次会话中多次切回首页时，不重复请求；</li>
+<li>结合时间戳做简单过期控制（例如 30s）。</li>
+</ul>
+</li>
+<li>
+<p><strong>本地持久缓存（localStorage / IndexedDB）</strong></p>
+<ul>
+<li>冷启动时优先渲染上一次打开时的摘要数据；</li>
+<li>同时在后台请求最新数据并刷新。</li>
+</ul>
+</li>
+</ol>
+<p>伪代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">loadDashboard() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cache</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">loadDashboardCache</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">cache</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">cache</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fresh</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">getDashboard</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">fresh</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">saveDashboardCache</span>(<span style="color:#a6e22e">fresh</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样即使网络条件一般，用户至少不会等着一片空白。</p>
+<hr>
+<h2 id="5-小细节图片字体和第三方脚本">5. 小细节：图片、字体和第三方脚本</h2>
+<ol>
+<li>
+<p><strong>图片</strong></p>
+<ul>
+<li>首页尽量使用 SVG 或压缩后的 WebP；</li>
+<li>尽量避免首屏出现大尺寸非必要图。</li>
+</ul>
+</li>
+<li>
+<p><strong>字体</strong></p>
+<ul>
+<li>不乱引第三方花哨字体，避免额外字体文件；</li>
+<li>如果有图标字体，确认只打包实际用到的字形。</li>
+</ul>
+</li>
+<li>
+<p><strong>第三方脚本</strong></p>
+<ul>
+<li>延迟加载非关键第三方 SDK（埋点、聊天浮标等）；</li>
+<li>能异步就不要阻塞，能 <code>defer</code> 就不要 <code>sync</code>。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="6-优化前后指标对比">6. 优化前后指标对比</h2>
+<p>以某核心页面为例（有一定统计样本）：</p>
+<table>
+  <thead>
+      <tr>
+          <th>指标</th>
+          <th>优化前（均值）</th>
+          <th>优化后（均值）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>首屏可见时间（近似 FMP）</td>
+          <td>~5.0s</td>
+          <td>~1.5–1.8s</td>
+      </tr>
+      <tr>
+          <td>可交互时间（近似 TTI）</td>
+          <td>~6.5s</td>
+          <td>~2.5–3.0s</td>
+      </tr>
+      <tr>
+          <td>首屏 JS 体积</td>
+          <td>~1MB</td>
+          <td>~600KB</td>
+      </tr>
+      <tr>
+          <td>JS 执行总时长</td>
+          <td>~2.5s</td>
+          <td>~1.2s</td>
+      </tr>
+  </tbody>
+</table>
+<p>更重要的是：</p>
+<ul>
+<li>用户主观反馈「打开速度明显好一些了」；</li>
+<li>业务侧不再频繁提「首页卡」的问题。</li>
+</ul>
+<hr>
+<h2 id="7-遗留的问题和后续计划">7. 遗留的问题和后续计划</h2>
+<p>虽然这次把首屏拉回来了，但还有一些遗留点：</p>
+<ol>
+<li>有些老组件性能一般，后续还计划逐步替换；</li>
+<li>双端适配（PC + 移动）下，部分样式计算/重排还有优化空间；</li>
+<li>监控体系需要进一步精细化（区分不同网络类型、终端型号）。</li>
+</ol>
+<p>性能优化本身没有终点，重要的是：<strong>建立可复用的排查套路和指标体系。</strong></p>
+<hr>
+<h2 id="8-小结一套可复用的实践路径">8. 小结：一套可复用的实践路径</h2>
+<p>这次实战下来，我觉得可以抽象出一条通用路径：</p>
+<ol>
+<li>先用工具 &amp; 埋点<strong>量化问题</strong>，搞清楚慢在哪；</li>
+<li>查看打包结果，做 <strong>bundle 拆分 &amp; 按需引入</strong>；</li>
+<li>让首屏只做真正必须的事，把次要内容延后；</li>
+<li>加 <strong>Skeleton</strong> 减少体感白屏时间；</li>
+<li>对高频页面增加适度缓存；</li>
+<li>持续看监控，避免「优化反弹」。</li>
+</ol>
+<p>只要按这套流程走一遍，大多数 SPA 的首屏体验都会有肉眼可见的改善。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-07-14</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2022-07-14-performance-optimization-case/" data-title="一次性能优化实战：从 5s 到 1.5s 的页面加载" data-via="https://github.com/cs11b137" data-hashtags="性能,懒加载,代码拆分,缓存,Skeleton"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2022-07-14-performance-optimization-case/" data-hashtag="性能"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2022-07-14-performance-optimization-case/" data-title="一次性能优化实战：从 5s 到 1.5s 的页面加载"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2022-07-14-performance-optimization-case/" data-title="一次性能优化实战：从 5s 到 1.5s 的页面加载"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2022-07-14-performance-optimization-case/" data-title="一次性能优化实战：从 5s 到 1.5s 的页面加载"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E6%80%A7%E8%83%BD/">性能</a>,&nbsp;<a href="/tags/%E6%87%92%E5%8A%A0%E8%BD%BD/">懒加载</a>,&nbsp;<a href="/tags/%E4%BB%A3%E7%A0%81%E6%8B%86%E5%88%86/">代码拆分</a>,&nbsp;<a href="/tags/%E7%BC%93%E5%AD%98/">缓存</a>,&nbsp;<a href="/tags/skeleton/">Skeleton</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2022-05-26-encryption-in-frontend/" class="prev" rel="prev" title="前端加解密实践：从「别明文传密码」开始"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>前端加解密实践：从「别明文传密码」开始</a>
+            <a href="/posts/2022-09-05-monitoring-and-alert/" class="next" rel="next" title="前端监控闭环：采集、告警到问题跟踪">前端监控闭环：采集、告警到问题跟踪<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

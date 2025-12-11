@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Code Review on Saiga</title>
+    <link>http://localhost:1313/tags/code-review/</link>
+    <description>Recent content in Code Review on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Mon, 18 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/code-review/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI Code Review 实战：规则、提示词与边界</title>
+      <link>http://localhost:1313/posts/2024-03-18-smart-code-review/</link>
+      <pubDate>Mon, 18 Mar 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2024-03-18-smart-code-review/</guid>
+      <description>&lt;p&gt;今年做了一次尝试：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;不改变现有流程的前提下，让大模型参与到 Code Review 里，当一个「辅助 reviewer」。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;它不会替代人类审核，只做三件事：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;帮忙找明显 bug / 边界问题&lt;/li&gt;&#xA;&lt;li&gt;帮忙发现重复逻辑、代码味道&lt;/li&gt;&#xA;&lt;li&gt;帮忙写结构化的改进建议&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-我们希望-ai-扮演什么角色&#34;&gt;1. 我们希望 AI 扮演什么角色？&lt;/h2&gt;&#xA;&lt;p&gt;一开始就想清楚边界：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;不负责通过/拒绝 PR&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;不修改状态，只给评论和建议&lt;/li&gt;&#xA;&lt;li&gt;最终决策仍然是人类 reviewer&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;关注「模式」而不是细枝末节&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;比如错误处理缺失、越界风险、循环里请求等&lt;/li&gt;&#xA;&lt;li&gt;而不是变量名叫 &lt;code&gt;a&lt;/code&gt; 还是 &lt;code&gt;data&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;输出要尽量具体&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;指出文件、位置、问题和建议&lt;/li&gt;&#xA;&lt;li&gt;避免空话：「可以优化」「可以重构」这种直接过滤掉&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-整体方案在-ci-里多插一段ai-review&#34;&gt;2. 整体方案：在 CI 里多插一段「AI Review」&lt;/h2&gt;&#xA;&lt;p&gt;流程：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;CI 获取本次 PR 的变更文件 + diff&lt;/li&gt;&#xA;&lt;li&gt;对每个文件构造一个「上下文 + diff」的 payload&lt;/li&gt;&#xA;&lt;li&gt;调用大模型，让它产出结构化的 review 结果&lt;/li&gt;&#xA;&lt;li&gt;再由机器人账号把评论贴回 PR（或者汇总成一条）&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;为控制成本和复杂度：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;优先只分析变更行附近的代码&lt;/li&gt;&#xA;&lt;li&gt;超长文件只截取相关片段&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;3-prompt-设计告诉-ai只看这四件事&#34;&gt;3. Prompt 设计：告诉 AI「只看这四件事」&lt;/h2&gt;&#xA;&lt;p&gt;一个简化的系统提示大致是：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;你是一名资深前端/全栈工程师，正在做 Code Review。&lt;br&gt;&#xA;请只关注以下问题：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;明显的 bug 或潜在边界问题&lt;/li&gt;&#xA;&lt;li&gt;异常处理和错误提示是否合理&lt;/li&gt;&#xA;&lt;li&gt;性能隐患（多余循环、重复请求等）&lt;/li&gt;&#xA;&lt;li&gt;安全/权限风险&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;不要评论代码风格、缩进、单双引号之类的问题，这些交给 Lint 工具。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>前后端协作改造记：从「口头协议」到 Mock 驱动开发 - Saiga</title><meta name="Description" content="记录一次把接口文档、Mock、联调流程规范化的过程，以及过程中踩过的坑。"><meta property="og:url" content="http://localhost:1313/posts/2021-08-30-api-contract-and-mock/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="前后端协作改造记：从「口头协议」到 Mock 驱动开发">
+  <meta property="og:description" content="记录一次把接口文档、Mock、联调流程规范化的过程，以及过程中踩过的坑。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-08-30T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-08-30T00:00:00+00:00">
+    <meta property="article:tag" content="接口规范">
+    <meta property="article:tag" content="Mock">
+    <meta property="article:tag" content="前后端协作">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="前后端协作改造记：从「口头协议」到 Mock 驱动开发">
+  <meta name="twitter:description" content="记录一次把接口文档、Mock、联调流程规范化的过程，以及过程中踩过的坑。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2021-08-30-api-contract-and-mock/" /><link rel="prev" href="http://localhost:1313/posts/2021-06-15-config-driven-page/" /><link rel="next" href="http://localhost:1313/posts/2021-10-20-ci-cd-for-frontend/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "前后端协作改造记：从「口头协议」到 Mock 驱动开发",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2021-08-30-api-contract-and-mock\/"
+        },"genre": "posts","keywords": "接口规范, Mock, 前后端协作","wordcount":  252 ,
+        "url": "http:\/\/localhost:1313\/posts\/2021-08-30-api-contract-and-mock\/","datePublished": "2021-08-30T00:00:00+00:00","dateModified": "2021-08-30T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "记录一次把接口文档、Mock、联调流程规范化的过程，以及过程中踩过的坑。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">前后端协作改造记：从「口头协议」到 Mock 驱动开发</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%8D%8F%E4%BD%9C/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>工程协作</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2021-08-30">2021-08-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 252 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-先承认问题我们缺的不是工具而是契约">1. 先承认问题：我们缺的不是工具，而是「契约」</a></li>
+    <li><a href="#2-选择和收敛接口文档工具">2. 选择和收敛接口文档工具</a></li>
+    <li><a href="#3-mock-驱动开发不用等后端就能联调">3. Mock 驱动开发：不用等后端就能联调</a>
+      <ul>
+        <li><a href="#31-基本思路">3.1 基本思路</a></li>
+        <li><a href="#32-前端环境配置">3.2 前端环境配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-前端如何信任文档用类型和-sdk-来约束">4. 前端如何「信任」文档？——用类型和 SDK 来约束</a></li>
+    <li><a href="#5-联调流程也需要规范">5. 联调流程也需要「规范」</a></li>
+    <li><a href="#6-过程中踩过的一些坑">6. 过程中踩过的一些坑</a></li>
+    <li><a href="#7-改造之后带来的变化">7. 改造之后带来的变化</a></li>
+    <li><a href="#8-小结">8. 小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>很多项目的前后端协作，一开始都是这样：</p>
+<blockquote>
+<p>「你先把页面搭着，接口我晚点给你。」<br>
+「返回字段大概就这些，不行再改。」</p>
+</blockquote>
+<p>结果就是：</p>
+<ul>
+<li>接口文档滞后甚至缺失，全靠口头约定；</li>
+<li>字段今天叫 <code>userName</code> 明天叫 <code>customerName</code>；</li>
+<li>前端经常等后端联调，后端也抱怨前端改来改去。</li>
+</ul>
+<p>这篇文章是一次真实改造的复盘：我们从这种「口头协议」状态，逐步过渡到：</p>
+<blockquote>
+<p>有规范的接口文档 + 可用的 Mock 服务 + 基于契约的联调流程。</p>
+</blockquote>
+<hr>
+<h2 id="1-先承认问题我们缺的不是工具而是契约">1. 先承认问题：我们缺的不是工具，而是「契约」</h2>
+<p>一开始我们也装过各种工具：</p>
+<ul>
+<li>Swagger / OpenAPI；</li>
+<li>YApi / Rap2 之类的平台；</li>
+<li>各种 Mock 插件。</li>
+</ul>
+<p>但用一段时间就废掉了，根本原因是：<strong>文档没人维护，接口变更不走流程</strong>。</p>
+<p>所以改造的第一步，不是换工具，而是统一几个规则：</p>
+<ol>
+<li><strong>所有新接口必须先有文档，再开发</strong>；</li>
+<li>文档就是契约：前端后端都按契约来实现；</li>
+<li>接口变更要么走版本，要么走兼容字段，不再「直接改」。</li>
+</ol>
+<p>工具只是为了让这套流程变得没那么痛苦。</p>
+<hr>
+<h2 id="2-选择和收敛接口文档工具">2. 选择和收敛接口文档工具</h2>
+<p>我们最终选的是：<strong>OpenAPI 规格 + 一套接口管理平台（如 YApi 或内部平台）</strong>：</p>
+<ul>
+<li>提供可视化的接口列表、请求例子、响应示例；</li>
+<li>支持一键导出 JSON / SDK 生成；</li>
+<li>自带 Mock 功能。</li>
+</ul>
+<p>接口粒度大致是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">paths</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">/api/order/list</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">post</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">summary</span>: <span style="color:#ae81ff">订单列表</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">parameters</span>: []
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">requestBody</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">content</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">application/json</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">schema</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">$ref</span>: <span style="color:#e6db74">&#39;#/components/schemas/OrderListRequest&#39;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">responses</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#39;200&#39;</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">description</span>: <span style="color:#ae81ff">OK</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">content</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">application/json</span>:
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">schema</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">$ref</span>: <span style="color:#e6db74">&#39;#/components/schemas/OrderListResponse&#39;</span>
+</span></span></code></pre></div><p>当后端定义好这些 schema 后，前端就可以基于文档做代码生成、Mock 数据、类型定义。</p>
+<hr>
+<h2 id="3-mock-驱动开发不用等后端就能联调">3. Mock 驱动开发：不用等后端就能联调</h2>
+<h3 id="31-基本思路">3.1 基本思路</h3>
+<ol>
+<li>后端先在接口平台上定义好接口和示例数据；</li>
+<li>平台生成对应的 Mock 地址；</li>
+<li>前端在 <code>.env.mock</code> 环境下把接口域名切换到 Mock 服务；</li>
+<li>页面开发和联调可以在 <strong>后端代码还没写完之前就开始</strong>。</li>
+</ol>
+<h3 id="32-前端环境配置">3.2 前端环境配置</h3>
+<p>例如在 Vite 项目里：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># .env.mock</span>
+</span></span><span style="display:flex;"><span>VITE_API_BASE_URL<span style="color:#f92672">=</span>https://mock-api.example.com
+</span></span></code></pre></div><p>请求工具：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// http.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">api</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">axios</span>.<span style="color:#a6e22e">create</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">baseURL</span>: <span style="color:#66d9ef">import.meta.env.VITE_API_BASE_URL</span>,
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>需要真实联调时，只要切换到 <code>.env.dev</code> 即可。</p>
+<hr>
+<h2 id="4-前端如何信任文档用类型和-sdk-来约束">4. 前端如何「信任」文档？——用类型和 SDK 来约束</h2>
+<p>当接口文档是 OpenAPI 时，可以用生成器把它变成 TS 类型和请求函数：</p>
+<ul>
+<li>避免手写接口类型；</li>
+<li>字段改名时能在编辑器里暴露问题。</li>
+</ul>
+<p>生成结果大概是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// apiTypes.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">OrderListRequest</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">page</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">pageSize</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">status?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">OrderListItem</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">orderId</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">customerName</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">amount</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">OrderListResponse</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">list</span>: <span style="color:#66d9ef">OrderListItem</span>[];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">total</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>和：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// apiClient.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">fetchOrderList</span>(<span style="color:#a6e22e">params</span>: <span style="color:#66d9ef">OrderListRequest</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">post</span>&lt;<span style="color:#f92672">OrderListResponse</span>&gt;(<span style="color:#e6db74">&#39;/api/order/list&#39;</span>, <span style="color:#a6e22e">params</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样前端的调用方式就固定了：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">res</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetchOrderList</span>({ <span style="color:#a6e22e">page</span>: <span style="color:#66d9ef">1</span>, <span style="color:#a6e22e">pageSize</span>: <span style="color:#66d9ef">20</span>, <span style="color:#a6e22e">status</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;PAID&#39;</span> });
+</span></span></code></pre></div><p>一旦后端修改字段名/类型，生成脚本重新跑一遍，前端这边就会有类型错误提示。</p>
+<hr>
+<h2 id="5-联调流程也需要规范">5. 联调流程也需要「规范」</h2>
+<p>我们给联调流程加了几条简单规则：</p>
+<ol>
+<li>
+<p><strong>开发阶段优先连 Mock 环境</strong></p>
+<ul>
+<li>页面基本交互完成后，再切换到 Dev 环境真实联调；</li>
+<li>避免双方频繁「互等」。</li>
+</ul>
+</li>
+<li>
+<p><strong>接口变更走兼容策略</strong></p>
+<ul>
+<li>增加字段：向后兼容；</li>
+<li>字段重命名：旧字段保留一段时间，同时新增新字段，并在文档里注明；</li>
+<li>废弃接口：用新接口替代，并给出迁移指南。</li>
+</ul>
+</li>
+<li>
+<p><strong>联调前对齐文档版本</strong></p>
+<ul>
+<li>接口平台有版本号，每次大改之前 bump 一次；</li>
+<li>前后端确认当前都是基于哪个版本来开发。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="6-过程中踩过的一些坑">6. 过程中踩过的一些坑</h2>
+<ol>
+<li>
+<p><strong>Mock 和真实数据差异太大</strong></p>
+<ul>
+<li>一开始 Mock 数据写得太「理想」，导致线上真实数据一来就各种边界问题；</li>
+<li>后来要求：Mock 数据要尽量贴近真实，比如「长字符串」「特殊字符」「缺失字段」。</li>
+</ul>
+</li>
+<li>
+<p><strong>接口平台当「文档站」，不当「单一事实源」</strong></p>
+<ul>
+<li>有些同学在 wiki/文档软件里又写了一套接口说明；</li>
+<li>久而久之，大家不知道看哪一份。</li>
+<li>后来统一约定：<strong>以接口平台为唯一标准</strong>，其他地方只放链接。</li>
+</ul>
+</li>
+<li>
+<p><strong>忘了给 Mock 分环境</strong></p>
+<ul>
+<li>有时候需要模拟错误/超时等情况；</li>
+<li>把「正常场景」和「异常场景」分成两套 Mock 配置，可以通过请求参数/头信息控制。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="7-改造之后带来的变化">7. 改造之后带来的变化</h2>
+<p>一段时间之后，能明显感受到：</p>
+<ul>
+<li>新需求时，<strong>讨论接口结构变成一个标准步骤</strong>；</li>
+<li>前端开发不会再因为「接口还没好」而完全停滞；</li>
+<li>接口字段的变更不会悄悄进行，而是需要更新文档和版本；</li>
+<li>出现线上问题时，可以直接对照接口文档排查。</li>
+</ul>
+<p>最关键的不是我们用了什么工具，而是整个团队都开始认同：</p>
+<blockquote>
+<p><strong>接口文档是「契约」，而不是「补充说明」。</strong></p>
+</blockquote>
+<hr>
+<h2 id="8-小结">8. 小结</h2>
+<p>从「口头协议」到 Mock 驱动开发，可以概括为三件事：</p>
+<ol>
+<li>选一套统一的接口描述方式（OpenAPI 等），并认定它是单一事实源；</li>
+<li>把 Mock 融入开发流程，让前后端都可以基于文档并行工作；</li>
+<li>用类型和生成工具，尽量减少「文档和实现不一致」的问题。</li>
+</ol>
+<p>当接口变得有契约、有版本、有 Mock 后，前后端协作会从「互相埋怨」慢慢变成「一起打磨契约」，这就是工程化改造最有价值的地方。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-08-30</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2021-08-30-api-contract-and-mock/" data-title="前后端协作改造记：从「口头协议」到 Mock 驱动开发" data-via="https://github.com/cs11b137" data-hashtags="接口规范,Mock,前后端协作"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2021-08-30-api-contract-and-mock/" data-hashtag="接口规范"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2021-08-30-api-contract-and-mock/" data-title="前后端协作改造记：从「口头协议」到 Mock 驱动开发"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2021-08-30-api-contract-and-mock/" data-title="前后端协作改造记：从「口头协议」到 Mock 驱动开发"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2021-08-30-api-contract-and-mock/" data-title="前后端协作改造记：从「口头协议」到 Mock 驱动开发"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E6%8E%A5%E5%8F%A3%E8%A7%84%E8%8C%83/">接口规范</a>,&nbsp;<a href="/tags/mock/">Mock</a>,&nbsp;<a href="/tags/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%8D%8F%E4%BD%9C/">前后端协作</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2021-06-15-config-driven-page/" class="prev" rel="prev" title="配置驱动页面：表单、表格到「低代码」的第一步"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>配置驱动页面：表单、表格到「低代码」的第一步</a>
+            <a href="/posts/2021-10-20-ci-cd-for-frontend/" class="next" rel="next" title="给前端项目接上 CI/CD：自动构建与预发布环境">给前端项目接上 CI/CD：自动构建与预发布环境<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

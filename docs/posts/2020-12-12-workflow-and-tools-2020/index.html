@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>2019–2020 我的前端工作流与常用工具清单 - Saiga</title><meta name="Description" content="整理那段时间最顺手的一套编辑器插件、调试方式和项目模板。"><meta property="og:url" content="http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="2019–2020 我的前端工作流与常用工具清单">
+  <meta property="og:description" content="整理那段时间最顺手的一套编辑器插件、调试方式和项目模板。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2020-12-12T00:00:00+00:00">
+    <meta property="article:modified_time" content="2020-12-12T00:00:00+00:00">
+    <meta property="article:tag" content="工作流">
+    <meta property="article:tag" content="开发工具">
+    <meta property="article:tag" content="效率">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="2019–2020 我的前端工作流与常用工具清单">
+  <meta name="twitter:description" content="整理那段时间最顺手的一套编辑器插件、调试方式和项目模板。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/" /><link rel="prev" href="http://localhost:1313/posts/2020-09-19-node-bff-intro/" /><link rel="next" href="http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "2019–2020 我的前端工作流与常用工具清单",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2020-12-12-workflow-and-tools-2020\/"
+        },"genre": "posts","keywords": "工作流, 开发工具, 效率","wordcount":  332 ,
+        "url": "http:\/\/localhost:1313\/posts\/2020-12-12-workflow-and-tools-2020\/","datePublished": "2020-12-12T00:00:00+00:00","dateModified": "2020-12-12T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "整理那段时间最顺手的一套编辑器插件、调试方式和项目模板。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">2019–2020 我的前端工作流与常用工具清单</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%96%B9%E6%B3%95%E8%AE%BA/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>工具与方法论</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2020-12-12">2020-12-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 332 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-编辑器与基础环境">1. 编辑器与基础环境</a>
+      <ul>
+        <li><a href="#11-vs-code-为主webstorm-偶尔上场">1.1 VS Code 为主，WebStorm 偶尔上场</a></li>
+        <li><a href="#12-vs-code-常驻插件">1.2 VS Code 常驻插件</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-git-工作流">2. Git 工作流</a>
+      <ul>
+        <li><a href="#21-分支模型">2.1 分支模型</a></li>
+        <li><a href="#22-提交信息规范">2.2 提交信息规范</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-前端项目模板与脚手架">3. 前端项目模板与脚手架</a>
+      <ul>
+        <li><a href="#31-vue-项目的基础模板">3.1 Vue 项目的基础模板</a></li>
+        <li><a href="#32-常用-npm-脚本">3.2 常用 NPM 脚本</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-调试与排查问题">4. 调试与排查问题</a>
+      <ul>
+        <li><a href="#41-浏览器-devtools">4.1 浏览器 DevTools</a></li>
+        <li><a href="#42-移动端调试">4.2 移动端调试</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-一些提效小工具">5. 一些提效小工具</a>
+      <ul>
+        <li><a href="#51-命令行工具">5.1 命令行工具</a></li>
+        <li><a href="#52-在线工具">5.2 在线工具</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-笔记与知识管理">6. 笔记与知识管理</a></li>
+    <li><a href="#7-总结工具为工作流服务而不是反过来">7. 总结：工具为工作流服务，而不是反过来</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>每隔一段时间，我都会回头看一下：<strong>自己每天在用的工具和工作流，哪些真的有效，哪些只是「习惯了就一直没动」</strong>。</p>
+<p>这篇文章算是对 2019–2020 这两年自己前端工作流的一次归档，顺便给以后想重构环境的自己当个参考。</p>
+<hr>
+<h2 id="1-编辑器与基础环境">1. 编辑器与基础环境</h2>
+<h3 id="11-vs-code-为主webstorm-偶尔上场">1.1 VS Code 为主，WebStorm 偶尔上场</h3>
+<p>这两年主要是 VS Code 打主力，原因很简单：</p>
+<ul>
+<li>生态丰富（插件多）；</li>
+<li>配置灵活（<code>settings.json</code>、<code>tasks</code> 等等）；</li>
+<li>打开仓库速度相对快。</li>
+</ul>
+<p>WebStorm 的优势在于：</p>
+<ul>
+<li>更强的「开箱即用」体验（尤其是对 TS / 重构支持）；</li>
+<li>有些场景下更稳，但是资源占用也更高。</li>
+</ul>
+<p><strong>我的做法：</strong></p>
+<ul>
+<li>日常写业务、处理多个小项目 → VS Code；</li>
+<li>需要重构大型 TS 项目、或者做复杂的重命名/移动 → 偶尔打开 WebStorm。</li>
+</ul>
+<hr>
+<h3 id="12-vs-code-常驻插件">1.2 VS Code 常驻插件</h3>
+<p>只列一些我真正离不开的：</p>
+<ul>
+<li><strong>ESLint</strong>：保存自动修复格式/语法问题。</li>
+<li><strong>Prettier</strong>：统一代码风格（也可以用 ESLint 负责格式化）。</li>
+<li><strong>Vetur / Volar</strong>：Vue 项目对应的语法高亮与提示。</li>
+<li><strong>GitLens</strong>：在代码行旁边直接看到最近一次提交记录。</li>
+<li><strong>Path Intellisense</strong>：自动补全文件路径。</li>
+<li><strong>TODO Highlight</strong>：高亮 TODO / FIXME，提醒自己有坑没填。</li>
+</ul>
+<p>设置里会开：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#e6db74">&#34;editor.formatOnSave&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> <span style="color:#66d9ef">true</span><span style="color:#960050;background-color:#1e0010">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;editor.codeActionsOnSave&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;source.fixAll.eslint&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样每次保存就是一次「小型代码体检」。</p>
+<hr>
+<h2 id="2-git-工作流">2. Git 工作流</h2>
+<p>这两年基本稳定在一套很简单的 Git 流程：</p>
+<h3 id="21-分支模型">2.1 分支模型</h3>
+<ul>
+<li><code>master</code> / <code>main</code>：生产分支，只接收经过测试的代码。</li>
+<li><code>develop</code>：日常开发分支。</li>
+<li><code>feature/*</code>：功能分支，例如 <code>feature/order-list</code>。</li>
+<li><code>hotfix/*</code>：线上紧急修复。</li>
+</ul>
+<p>实际团队里可能会再加 release 分支，但我自己的 side project 通常就前三种就够了。</p>
+<hr>
+<h3 id="22-提交信息规范">2.2 提交信息规范</h3>
+<p>粗暴实用版的前缀规范：</p>
+<ul>
+<li><code>feat:</code> 新功能</li>
+<li><code>fix:</code> 修 bug</li>
+<li><code>refactor:</code> 重构（无新功能无修复）</li>
+<li><code>chore:</code> 杂项（脚本、配置、依赖升级）</li>
+<li><code>docs:</code> 文档修改</li>
+<li><code>style:</code> 格式调整（不影响逻辑）</li>
+</ul>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>feat: add order list page
+</span></span><span style="display:flex;"><span>fix: handle null customer name
+</span></span><span style="display:flex;"><span>chore: bump axios to 0.21.0
+</span></span></code></pre></div><p>配合 GitLens 或 PR 页面，可以一眼看出「这一批提交都在干嘛」。</p>
+<hr>
+<h2 id="3-前端项目模板与脚手架">3. 前端项目模板与脚手架</h2>
+<h3 id="31-vue-项目的基础模板">3.1 Vue 项目的基础模板</h3>
+<p>2019–2020 的 Vue 项目我一般会自带这些约定：</p>
+<ul>
+<li>
+<p>使用 Vue CLI / 自定义脚手架；</p>
+</li>
+<li>
+<p>内置：</p>
+<ul>
+<li>Axios 封装（请求/响应拦截器、统一错误处理）；</li>
+<li>基础布局（顶部导航 + 侧边菜单）；</li>
+<li>路由/菜单配置结构；</li>
+<li>基本权限控制（登录态校验）。</li>
+</ul>
+</li>
+</ul>
+<p>目录结构大致是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>src
+</span></span><span style="display:flex;"><span>├── api        <span style="color:#75715e"># 接口封装</span>
+</span></span><span style="display:flex;"><span>├── components <span style="color:#75715e"># 通用组件</span>
+</span></span><span style="display:flex;"><span>├── router     <span style="color:#75715e"># 路由配置</span>
+</span></span><span style="display:flex;"><span>├── store      <span style="color:#75715e"># Vuex</span>
+</span></span><span style="display:flex;"><span>├── views      <span style="color:#75715e"># 页面</span>
+</span></span><span style="display:flex;"><span>└── utils      <span style="color:#75715e"># 工具方法</span>
+</span></span></code></pre></div><p>这样的好处是：每开一个新项目，不用再从头搭这些「基建」，更快进入业务开发。</p>
+<hr>
+<h3 id="32-常用-npm-脚本">3.2 常用 NPM 脚本</h3>
+<p>在 <code>package.json</code> 里基本会有：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#e6db74">&#34;scripts&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;dev&#34;</span>: <span style="color:#e6db74">&#34;vue-cli-service serve&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;build&#34;</span>: <span style="color:#e6db74">&#34;vue-cli-service build&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;lint&#34;</span>: <span style="color:#e6db74">&#34;eslint --ext .js,.vue src&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;lint:fix&#34;</span>: <span style="color:#e6db74">&#34;eslint --ext .js,.vue src --fix&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>再配合 CI：</p>
+<ul>
+<li>提交前本地至少跑一遍 <code>lint</code>；</li>
+<li>CI 里对 PR 跑一次 <code>lint + build</code> 做基本兜底。</li>
+</ul>
+<hr>
+<h2 id="4-调试与排查问题">4. 调试与排查问题</h2>
+<h3 id="41-浏览器-devtools">4.1 浏览器 DevTools</h3>
+<p>核心几个面板：</p>
+<ul>
+<li><strong>Elements</strong>：检查 DOM / 样式，快速定位布局问题。</li>
+<li><strong>Network</strong>：看接口请求、响应时间、状态码、返回数据。</li>
+<li><strong>Sources</strong>：打断点调试，结合 SourceMap。</li>
+<li><strong>Performance</strong>：排查长任务、掉帧问题。</li>
+<li><strong>Application</strong>：本地存储、Cookie、IndexedDB。</li>
+</ul>
+<p>习惯：</p>
+<ul>
+<li>接口联调时，习惯打开 Network，看请求是否走到、参数是否正确；</li>
+<li>遇到「页面白屏」之类的问题，第一反应就是看 Console 和 Network 是否有报错。</li>
+</ul>
+<hr>
+<h3 id="42-移动端调试">4.2 移动端调试</h3>
+<p>常用几种方式：</p>
+<ol>
+<li>
+<p>Chrome 远程调试：</p>
+<ul>
+<li>手机打开页面，USB 连接电脑；</li>
+<li>Chrome 地址栏输入 <code>chrome://inspect</code>；</li>
+<li>找到对应设备，点击 inspect。</li>
+</ul>
+</li>
+<li>
+<p>使用 vConsole：</p>
+<ul>
+<li>在 H5/m 站里临时集成 vConsole；</li>
+<li>方便在非开发环境简单排查问题（不推荐长期上线）。</li>
+</ul>
+</li>
+<li>
+<p>小程序开发者工具 / 模拟器：</p>
+<ul>
+<li>直接用微信开发者工具等自带调试能力。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="5-一些提效小工具">5. 一些提效小工具</h2>
+<h3 id="51-命令行工具">5.1 命令行工具</h3>
+<ul>
+<li>
+<p><strong>npx</strong><br>
+不用全局安装脚手架，直接 <code>npx create-react-app</code> 之类。</p>
+</li>
+<li>
+<p><strong>npm-run-all / concurrently</strong><br>
+多个脚本同时跑，比如前端 dev server + mock server。</p>
+</li>
+<li>
+<p><strong>http-server / serve</strong><br>
+快速起一个静态服务，打开构建好的 <code>dist</code>。</p>
+</li>
+</ul>
+<h3 id="52-在线工具">5.2 在线工具</h3>
+<ul>
+<li>正则测试：regex101 / regulex；</li>
+<li>JSON 格式化/校验：很多在线 JSON Viewer；</li>
+<li>Diff 工具：对比两份配置/文档。</li>
+</ul>
+<p>这些不是必须，但用熟了之后会非常省时间。</p>
+<hr>
+<h2 id="6-笔记与知识管理">6. 笔记与知识管理</h2>
+<p>虽然不是严格意义上的「前端工具」，但对工作流的影响很大。</p>
+<p>2019–2020 期间，我主要是：</p>
+<ul>
+<li>用 Markdown 记笔记（VS Code + 插件或专门的笔记软件）；</li>
+<li>按「项目 / 主题」组织；</li>
+<li>把常用命令、复杂配置、踩坑记录下来。</li>
+</ul>
+<p>习惯写这些东西最大的好处是：</p>
+<blockquote>
+<p>同一个坑，通常只会踩第二次，而不会第三次。</p>
+</blockquote>
+<p>因为第二次你大概率还能翻到之前那篇记录。</p>
+<hr>
+<h2 id="7-总结工具为工作流服务而不是反过来">7. 总结：工具为工作流服务，而不是反过来</h2>
+<p>这两年的一个明显感受是：</p>
+<ul>
+<li>工具永远在变（新的编辑器、新的脚手架、新的框架）；</li>
+<li>真正有价值的是那些**「让自己写代码更顺手的习惯」**。</li>
+</ul>
+<p>比如：</p>
+<ul>
+<li>保存即格式化 + 自动修复 lint；</li>
+<li>新项目有固定的目录结构和约定；</li>
+<li>提交信息有统一规则；</li>
+<li>出问题时，第一时间打开 DevTools / 日志系统，而不是盲猜。</li>
+</ul>
+<p>这些东西一旦固化下来，未来换任何技术栈、任何新工具，你都会更快适应。</p>
+<p>这篇算是给 2019–2020 的自己留一个快照，未来如果再大改一遍工作流，可以回过头来对比一下：哪些习惯真的留了下来，哪些只是某个阶段的「偏好」。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-12-12</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/" data-title="2019–2020 我的前端工作流与常用工具清单" data-via="https://github.com/cs11b137" data-hashtags="工作流,开发工具,效率"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/" data-hashtag="工作流"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/" data-title="2019–2020 我的前端工作流与常用工具清单"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/" data-title="2019–2020 我的前端工作流与常用工具清单"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2020-12-12-workflow-and-tools-2020/" data-title="2019–2020 我的前端工作流与常用工具清单"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/">工作流</a>,&nbsp;<a href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a>,&nbsp;<a href="/tags/%E6%95%88%E7%8E%87/">效率</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2020-09-19-node-bff-intro/" class="prev" rel="prev" title="给前端加一层 BFF：Node 中间层的第一步"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>给前端加一层 BFF：Node 中间层的第一步</a>
+            <a href="/posts/2021-01-23-multi-end-code-sharing/" class="next" rel="next" title="一次代码，多端运行：H5 &#43; 小程序的复用实践">一次代码，多端运行：H5 + 小程序的复用实践<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

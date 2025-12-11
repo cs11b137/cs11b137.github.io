@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>复杂表单实战：我在项目里踩过的 Vue 坑 - Saiga</title><meta name="Description" content="记录一个复杂表单项目中，关于校验、动态字段和联动逻辑的设计与踩坑。"><meta property="og:url" content="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="复杂表单实战：我在项目里踩过的 Vue 坑">
+  <meta property="og:description" content="记录一个复杂表单项目中，关于校验、动态字段和联动逻辑的设计与踩坑。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2019-06-18T00:00:00+00:00">
+    <meta property="article:modified_time" content="2019-06-18T00:00:00+00:00">
+    <meta property="article:tag" content="Vue">
+    <meta property="article:tag" content="表单">
+    <meta property="article:tag" content="表单校验">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="复杂表单实战：我在项目里踩过的 Vue 坑">
+  <meta name="twitter:description" content="记录一个复杂表单项目中，关于校验、动态字段和联动逻辑的设计与踩坑。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" /><link rel="prev" href="http://localhost:1313/posts/2019-03-10-js-module-patterns/" /><link rel="next" href="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "复杂表单实战：我在项目里踩过的 Vue 坑",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2019-06-18-vue-form-best-practices\/"
+        },"genre": "posts","keywords": "Vue, 表单, 表单校验","wordcount":  520 ,
+        "url": "http:\/\/localhost:1313\/posts\/2019-06-18-vue-form-best-practices\/","datePublished": "2019-06-18T00:00:00+00:00","dateModified": "2019-06-18T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "记录一个复杂表单项目中，关于校验、动态字段和联动逻辑的设计与踩坑。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">复杂表单实战：我在项目里踩过的 Vue 坑</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>前端基础</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2019-06-18">2019-06-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 520 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#需求背景一个略显超标的表单">需求背景：一个略显「超标」的表单</a></li>
+    <li><a href="#核心思路拆数据结构--拆-ui--拆校验">核心思路：<strong>拆数据结构 + 拆 UI + 拆校验</strong></a>
+      <ul>
+        <li><a href="#1-数据结构要先定清楚">1. 数据结构要先定清楚</a></li>
+        <li><a href="#2-ui-组件分步拆解">2. UI 组件分步拆解</a></li>
+      </ul>
+    </li>
+    <li><a href="#动态字段不要if-写死在模板里">动态字段：不要「if 写死在模板里」</a></li>
+    <li><a href="#校验用规则系统而不是到处手写-if">校验：用规则系统，而不是到处手写 <code>if</code></a></li>
+    <li><a href="#草稿保存与回填">草稿保存与回填</a></li>
+    <li><a href="#我踩过的几个坑">我踩过的几个坑</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>表单是前端最常见、也最容易写成一坨的东西。简单表单随便放几个 <code>v-model</code> 都能跑，一旦字段多起来、存在动态联动、跨步校验，代码就开始失控。</p>
+<p>这篇文章基于我做过的一个「几十个字段 + 多步 + 条件显示」的表单项目，总结一些在 Vue 里踩过的坑和解决方案。</p>
+<hr>
+<h2 id="需求背景一个略显超标的表单">需求背景：一个略显「超标」的表单</h2>
+<p>当时的表单大概长这样：</p>
+<ul>
+<li>3 个步骤：基础信息 → 业务信息 → 确认提交</li>
+<li>每步有 8～15 个字段</li>
+<li>部分字段需要「根据上一步选择动态显示或隐藏」</li>
+<li>有跨字段校验（比如：结束日期 ≥ 开始日期）</li>
+<li>需要支持「草稿保存」+「再次打开自动回填」</li>
+</ul>
+<p>如果<strong>一股脑全写在一个组件里</strong>，大概会出现：</p>
+<ul>
+<li>data 里一个巨大的 <code>form = { ... }</code>。</li>
+<li>各种 <code>watch</code> 做联动逻辑。</li>
+<li>methods 里各种 <code>validateXXX</code>，互相依赖。</li>
+<li>维护成本爆炸。</li>
+</ul>
+<hr>
+<h2 id="核心思路拆数据结构--拆-ui--拆校验">核心思路：<strong>拆数据结构 + 拆 UI + 拆校验</strong></h2>
+<h3 id="1-数据结构要先定清楚">1. 数据结构要先定清楚</h3>
+<p>我一般会在一开始，就写出一个完整的 <code>formModel</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">defaultForm</span> <span style="color:#f92672">=</span> () =&gt; ({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">basic</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">idNo</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">phone</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">business</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">amount</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">startDate</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">endDate</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">extra</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">agree</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">comment</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>在组件里：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">data</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">form</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">defaultForm</span>(),
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样做的好处：</p>
+<ul>
+<li>字段分组一目了然（basic / business / extra）。</li>
+<li>默认值清晰，重置时只需 <code>this.form = defaultForm()</code>。</li>
+<li>后面多步拆组件的时候，很容易针对某一组传参。</li>
+</ul>
+<hr>
+<h3 id="2-ui-组件分步拆解">2. UI 组件分步拆解</h3>
+<p>与其一口气在一个页面上写所有表单，不如<strong>每一步拆成一个子组件</strong>：</p>
+<ul>
+<li><code>StepBasic.vue</code></li>
+<li><code>StepBusiness.vue</code></li>
+<li><code>StepExtra.vue</code></li>
+</ul>
+<p>每个子组件只负责「渲染 + 局部简单校验」，数据透传上层统一管理。</p>
+<p>父组件大致结构：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">StepBasic</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">v-if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;currentStep === 1&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">v-model</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form.basic&#34;</span>
+</span></span><span style="display:flex;"><span>    /&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">StepBusiness</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">v-if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;currentStep === 2&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">v-model</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form.business&#34;</span>
+</span></span><span style="display:flex;"><span>    /&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">StepExtra</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">v-if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;currentStep === 3&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">v-model</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form.extra&#34;</span>
+</span></span><span style="display:flex;"><span>    /&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!--</span> <span style="color:#a6e22e">上一步</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">下一步</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">提交按钮</span> <span style="color:#f92672">--&gt;</span>
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">template</span>&gt;
+</span></span></code></pre></div><p>子组件写法（以 StepBasic 为例）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">label</span>&gt;<span style="color:#a6e22e">姓名</span>&lt;/<span style="color:#f92672">label</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">input</span> <span style="color:#f92672">v-model</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;localValue.name&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">label</span>&gt;<span style="color:#a6e22e">证件号</span>&lt;/<span style="color:#f92672">label</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">input</span> <span style="color:#f92672">v-model</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;localValue.idNo&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;StepBasic&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">props</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> Object,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">required</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">data</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">localValue</span><span style="color:#f92672">:</span> { ...<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">value</span> },
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">watch</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">localValue</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">deep</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">handler</span>(<span style="color:#a6e22e">val</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">$emit</span>(<span style="color:#e6db74">&#39;input&#39;</span>, <span style="color:#a6e22e">val</span>);
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">deep</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">handler</span>(<span style="color:#a6e22e">val</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">localValue</span> <span style="color:#f92672">=</span> { ...<span style="color:#a6e22e">val</span> };
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><blockquote>
+<p>Vue 2 时代这种 <code>v-model</code> + <code>localValue</code> 的写法挺常见。Vue 3 里可以用 <code>v-model</code> 自定义修饰符会更优雅，这里先不展开。</p>
+</blockquote>
+<hr>
+<h2 id="动态字段不要if-写死在模板里">动态字段：不要「if 写死在模板里」</h2>
+<p>常见写法是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">v-if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form.business.type === &#39;A&#39;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">&lt;!-- 一坨字段 --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">v-if</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form.business.type === &#39;B&#39;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">&lt;!-- 另一坨字段 --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span></code></pre></div><p>这会导致模板变得非常长，而且逻辑不好复用。</p>
+<p>更推荐的是<strong>用配置驱动</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// fieldsConfig.js
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">businessFields</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;amount&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;金额&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">showWhen</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">form</span>) =&gt; <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;discountRate&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;折扣率&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">showWhen</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">form</span>) =&gt; <span style="color:#a6e22e">form</span>.<span style="color:#a6e22e">business</span>.<span style="color:#a6e22e">type</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;A&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;extraInfo&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;补充说明&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">showWhen</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">form</span>) =&gt; <span style="color:#a6e22e">form</span>.<span style="color:#a6e22e">business</span>.<span style="color:#a6e22e">type</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;B&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p>组件里：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#f92672">v-for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;field in visibleFields&#34; :key=&#34;field.prop&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">label</span>&gt;{{ <span style="color:#a6e22e">field</span>.<span style="color:#a6e22e">label</span> }}&lt;/<span style="color:#f92672">label</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">input</span> <span style="color:#f92672">v-model</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;localValue[field.prop]&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">computed</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">visibleFields</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">businessFields</span>.<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">f</span> =&gt; <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">showWhen</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">formRoot</span>)); <span style="color:#75715e">// formRoot 指向整个 form
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  },
+</span></span><span style="display:flex;"><span>},
+</span></span></code></pre></div><p>这样：</p>
+<ul>
+<li>动态显示逻辑放在配置里，想改只改 <code>showWhen</code>。</li>
+<li>也方便后面抽离出通用的「配置化表单组件」。</li>
+</ul>
+<hr>
+<h2 id="校验用规则系统而不是到处手写-if">校验：用规则系统，而不是到处手写 <code>if</code></h2>
+<p>以前我常在 <code>submit</code> 里写一堆：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">form</span>.<span style="color:#a6e22e">basic</span>.<span style="color:#a6e22e">name</span>) { <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#39;请输入姓名&#39;</span>); <span style="color:#66d9ef">return</span>; }
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">form</span>.<span style="color:#a6e22e">basic</span>.<span style="color:#a6e22e">idNo</span>) { <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#39;请输入证件号&#39;</span>); <span style="color:#66d9ef">return</span>; }
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">form</span>.<span style="color:#a6e22e">business</span>.<span style="color:#a6e22e">amount</span> <span style="color:#f92672">||</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">form</span>.<span style="color:#a6e22e">business</span>.<span style="color:#a6e22e">amount</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) { ... }
+</span></span></code></pre></div><p>后来发现，还是应该让校验<strong>也配置化</strong>。</p>
+<p>假设用的是 Element UI 的 Form：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">rules</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;basic.name&#39;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>    { <span style="color:#a6e22e">required</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>, <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;请输入姓名&#39;</span> },
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;business.amount&#39;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>    { <span style="color:#a6e22e">required</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>, <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;请输入金额&#39;</span> },
+</span></span><span style="display:flex;"><span>    { <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;number&#39;</span>, <span style="color:#a6e22e">min</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0.01</span>, <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;金额必须大于 0&#39;</span> },
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>跨字段校验可以用自定义 validator：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#39;business.endDate&#39;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">validator</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">rule</span>, <span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">callback</span>) =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">startDate</span>, <span style="color:#a6e22e">endDate</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">form</span>.<span style="color:#a6e22e">business</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">endDate</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">startDate</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">endDate</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">startDate</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">callback</span>(<span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#39;结束日期不能早于开始日期&#39;</span>));
+</span></span><span style="display:flex;"><span>      } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">callback</span>();
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">trigger</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;change&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>],
+</span></span></code></pre></div><p>总结一下：</p>
+<ul>
+<li><strong>常规规则→配置化</strong>，尽量放到 <code>rules</code> 对象里。</li>
+<li><strong>复杂逻辑→自定义 validator</strong>，用函数来组织逻辑，而不是散落在各个方法里。</li>
+</ul>
+<hr>
+<h2 id="草稿保存与回填">草稿保存与回填</h2>
+<p>草稿保存是复杂表单的常见需求：用户填了一半离开，下次回来要恢复。</p>
+<p>基本思路：</p>
+<ol>
+<li>表单提交接口之外，增加「保存草稿」接口（或 localStorage 本地存储）。</li>
+<li>草稿保存实际就是「把当前 <code>form</code> 的 JSON 存起来」。</li>
+<li>打开页面时请求草稿，如果有，就用草稿替代默认值。</li>
+</ol>
+<p>伪代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">methods</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">saveDraft</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 简单场景可以直接存 localStorage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">localStorage</span>.<span style="color:#a6e22e">setItem</span>(<span style="color:#e6db74">&#39;FORM_DRAFT&#39;</span>, <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">form</span>));
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">loadDraft</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">raw</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">localStorage</span>.<span style="color:#a6e22e">getItem</span>(<span style="color:#e6db74">&#39;FORM_DRAFT&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">raw</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">form</span> <span style="color:#f92672">=</span> Object.<span style="color:#a6e22e">assign</span>(<span style="color:#a6e22e">defaultForm</span>(), <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">raw</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>},
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">created</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">loadDraft</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>注意：</p>
+<ul>
+<li>回填时<strong>一定记得先用 <code>defaultForm()</code> 打个底</strong>，再 <code>Object.assign</code>，防止接口字段变更导致字段丢失。</li>
+<li>如果是和后端交互草稿接口，建议在后端也做一次字段兜底。</li>
+</ul>
+<hr>
+<h2 id="我踩过的几个坑">我踩过的几个坑</h2>
+<ol>
+<li>
+<p><strong>在子组件直接修改 props</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 坑
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">props</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;value&#39;</span>],
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">created</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">xxx</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;123&#39;</span>; <span style="color:#75715e">// 违反单向数据流
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>构造一个 <code>localValue</code>，通过 <code>v-model</code> 同步回父组件会更健康。</p>
+</li>
+<li>
+<p><strong>watch 里逻辑过多</strong></p>
+<p>如果你发现某个 <code>watch</code> 函数超 30 行，那大概率说明逻辑该拆了，可以抽出成普通方法、甚至独立模块。</p>
+</li>
+<li>
+<p><strong>校验时混用了多套规则</strong></p>
+<p>有些字段既写了组件库的规则，也又手写了额外的 <code>if</code> 判断，容易出现「一个地方改了校验，另一个地方忘记改」的问题。建议统一走一套规则体系。</p>
+</li>
+</ol>
+<hr>
+<h2 id="总结">总结</h2>
+<p>复杂表单本质是个<strong>状态管理 + UI 编排问题</strong>：</p>
+<ul>
+<li>先把数据结构设计好（默认值、分组）。</li>
+<li>再用组件拆分 UI（一步一个组件）。</li>
+<li>动态展示和校验尽量配置化，不要写死在模板里。</li>
+<li>共性逻辑抽出来，下一次做类似表单就会轻松很多。</li>
+</ul>
+<p>表单不会消失，但写起来可以比「大 if 地狱」舒服得多。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2019-06-18</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑" data-via="https://github.com/cs11b137" data-hashtags="Vue,表单,表单校验"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-hashtag="Vue"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/vue/">Vue</a>,&nbsp;<a href="/tags/%E8%A1%A8%E5%8D%95/">表单</a>,&nbsp;<a href="/tags/%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C/">表单校验</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2019-03-10-js-module-patterns/" class="prev" rel="prev" title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>JavaScript 模块化那些事：从 IIFE 到 ES Modules</a>
+            <a href="/posts/2019-09-05-webpack-intro-practice/" class="next" rel="next" title="从零搭一个前端构建脚手架：Webpack 入门实践">从零搭一个前端构建脚手架：Webpack 入门实践<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

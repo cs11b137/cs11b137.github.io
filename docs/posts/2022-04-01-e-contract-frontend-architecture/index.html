@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>电子合同前端架构：模版、签章与签署流程 - Saiga</title><meta name="Description" content="结合实际项目拆解电子合同前端：如何把合同模版管理、渲染引擎、签章交互和签署流程拆开设计，既满足合规留痕，又兼顾扩展性。"><meta property="og:url" content="http://localhost:1313/posts/2022-04-01-e-contract-frontend-architecture/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="电子合同前端架构：模版、签章与签署流程">
+  <meta property="og:description" content="结合实际项目拆解电子合同前端：如何把合同模版管理、渲染引擎、签章交互和签署流程拆开设计，既满足合规留痕，又兼顾扩展性。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-04-01T00:00:00+00:00">
+    <meta property="article:modified_time" content="2022-04-01T00:00:00+00:00">
+    <meta property="article:tag" content="电子合同">
+    <meta property="article:tag" content="前端架构">
+    <meta property="article:tag" content="签章">
+    <meta property="article:tag" content="模版管理">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="电子合同前端架构：模版、签章与签署流程">
+  <meta name="twitter:description" content="结合实际项目拆解电子合同前端：如何把合同模版管理、渲染引擎、签章交互和签署流程拆开设计，既满足合规留痕，又兼顾扩展性。">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2022-04-01-e-contract-frontend-architecture/" /><link rel="prev" href="http://localhost:1313/posts/2022-02-10-fintech-form-design/" /><link rel="next" href="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "电子合同前端架构：模版、签章与签署流程",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2022-04-01-e-contract-frontend-architecture\/"
+        },"genre": "posts","keywords": "电子合同, 前端架构, 签章, 模版管理","wordcount":  294 ,
+        "url": "http:\/\/localhost:1313\/posts\/2022-04-01-e-contract-frontend-architecture\/","datePublished": "2022-04-01T00:00:00+00:00","dateModified": "2022-04-01T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "结合实际项目拆解电子合同前端：如何把合同模版管理、渲染引擎、签章交互和签署流程拆开设计，既满足合规留痕，又兼顾扩展性。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">电子合同前端架构：模版、签章与签署流程</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E9%87%91%E8%9E%8D%E5%89%8D%E7%AB%AF/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>金融前端</a>&nbsp;<a href="/categories/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>架构设计</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-04-01">2022-04-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 294 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-电子合同前端要解决什么">1. 电子合同前端要解决什么？</a></li>
+    <li><a href="#2-模块切分四层结构">2. 模块切分：四层结构</a>
+      <ul>
+        <li><a href="#21-业务流程层具体业务系统">2.1 业务流程层（具体业务系统）</a></li>
+        <li><a href="#22-电子合同服务层前端-sdk">2.2 电子合同服务层（前端 SDK）</a></li>
+        <li><a href="#23-渲染--交互层">2.3 渲染 &amp; 交互层</a></li>
+        <li><a href="#24-基础组件--工具层">2.4 基础组件 &amp; 工具层</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-合同模版与变量渲染">3. 合同模版与变量渲染</a>
+      <ul>
+        <li><a href="#31-模版形式">3.1 模版形式</a></li>
+        <li><a href="#32-变量渲染接口约定">3.2 变量渲染接口约定</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-签章交互签署域手写签名与印章">4. 签章交互：签署域、手写签名与印章</a>
+      <ul>
+        <li><a href="#41-手写签名板">4.1 手写签名板</a></li>
+        <li><a href="#42-多方签署与状态同步">4.2 多方签署与状态同步</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-签署流程从打开合同到签署完成">5. 签署流程：从「打开合同」到「签署完成」</a></li>
+    <li><a href="#6-合规与可追溯前端能做什么">6. 合规与可追溯：前端能做什么？</a></li>
+    <li><a href="#7-总结">7. 总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>做电子合同相关的前端，会很快感觉到：</p>
+<ul>
+<li>这已经不只是「展示一个 PDF」；</li>
+<li>还牵扯到模版配置、变量渲染、签章交互、签署流程编排、证据留存等。</li>
+</ul>
+<p>如果一股脑儿堆在一个项目里，很快就会失控。<br>
+这篇文章试着从前端视角，把电子合同拆成几个独立模块，聊聊一套比较清晰的架构思路。</p>
+<hr>
+<h2 id="1-电子合同前端要解决什么">1. 电子合同前端要解决什么？</h2>
+<p>从用户视角看，大概是：</p>
+<ol>
+<li>看到合同预览（包含自己信息）；</li>
+<li>在指定位置签名/盖章/确认；</li>
+<li>提交后能下载已签署版本，必要时可验证真伪。</li>
+</ol>
+<p>从前端视角再拆细一点：</p>
+<ul>
+<li><strong>模版管理</strong>：合同模版如何配置 &amp; 渲染；</li>
+<li><strong>变量填充</strong>：客户姓名、证件号、金额等动态内容；</li>
+<li><strong>渲染方式</strong>：HTML 还是 PDF 预览，是否支持高缩放；</li>
+<li><strong>签章交互</strong>：点击签署区域、手写签名/用预制印章；</li>
+<li><strong>流程编排</strong>：签署顺序、多人会签/联签；</li>
+<li><strong>留痕 &amp; 防篡改</strong>：前端如何配合后端做证据链。</li>
+</ul>
+<p>这些职责千万别写在一个「超级组件」里。</p>
+<hr>
+<h2 id="2-模块切分四层结构">2. 模块切分：四层结构</h2>
+<p>我们落地时，大致划成四层：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>业务流程层  ←  电子合同服务层  ←  渲染 &amp; 交互层  ←  基础组件 &amp; 工具层
+</span></span></code></pre></div><h3 id="21-业务流程层具体业务系统">2.1 业务流程层（具体业务系统）</h3>
+<p>例如：开户流程、理财签约、风险揭示等业务系统：</p>
+<ul>
+<li>只关心「在流程某一环节触发合同签署」；</li>
+<li>不直接操心合同模版、签章细节；</li>
+<li>与电子合同前端交互的接口尽量保持简单。</li>
+</ul>
+<h3 id="22-电子合同服务层前端-sdk">2.2 电子合同服务层（前端 SDK）</h3>
+<p>可以理解成一个前端 SDK：</p>
+<ul>
+<li>提供统一方法：<code>createContract</code>, <code>previewContract</code>, <code>signContract</code>；</li>
+<li>内部负责：请求合同服务接口、拿到模版、变量、签署状态等；</li>
+<li>把渲染和交互细节屏蔽在内部。</li>
+</ul>
+<p>示例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">openContractSignDialog</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;@ecm/sdk&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">await</span> <span style="color:#a6e22e">openContractSignDialog</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">bizType</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;OPEN_ACCOUNT&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">bizId</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;xxx&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">viewer</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;customer&#39;</span>,
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h3 id="23-渲染--交互层">2.3 渲染 &amp; 交互层</h3>
+<ul>
+<li>负责把合同模版 + 变量渲染成可阅读界面；</li>
+<li>在指定签署域上挂载交互（点击弹签名板等）；</li>
+<li>处理缩放、翻页、跳转签署域等体验细节。</li>
+</ul>
+<h3 id="24-基础组件--工具层">2.4 基础组件 &amp; 工具层</h3>
+<ul>
+<li>PDF/HTML 渲染组件；</li>
+<li>手写签名板组件；</li>
+<li>坐标转换、缩放计算工具；</li>
+<li>与后端约定的签署域结构解析等。</li>
+</ul>
+<hr>
+<h2 id="3-合同模版与变量渲染">3. 合同模版与变量渲染</h2>
+<h3 id="31-模版形式">3.1 模版形式</h3>
+<p>常见两种：</p>
+<ol>
+<li>
+<p><strong>HTML 模版</strong></p>
+<ul>
+<li>后端/运营维护 HTML + 占位符（如 <code>{{customerName}}</code>）；</li>
+<li>前端拿到后直接渲染成 DOM。</li>
+</ul>
+</li>
+<li>
+<p><strong>PDF 模版 + 变量覆盖</strong></p>
+<ul>
+<li>合同是固定 PDF，变量字段由另外的结构描述位置；</li>
+<li>前端用 PDF 预览组件叠加文字层。</li>
+</ul>
+</li>
+</ol>
+<p>我们项目里两种都遇到过，因而在前端做了一个「模版适配层」。</p>
+<h3 id="32-变量渲染接口约定">3.2 变量渲染接口约定</h3>
+<p>后端一般会返回：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;templateType&#34;</span>: <span style="color:#e6db74">&#34;HTML&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;templateContent&#34;</span>: <span style="color:#e6db74">&#34;&lt;html&gt;......{{customerName}}...&lt;/html&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;data&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;customerName&#34;</span>: <span style="color:#e6db74">&#34;张三&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;idNo&#34;</span>: <span style="color:#e6db74">&#34;440***********&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>或：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;templateType&#34;</span>: <span style="color:#e6db74">&#34;PDF&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;pdfUrl&#34;</span>: <span style="color:#e6db74">&#34;https://.../template.pdf&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;textOverlays&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;key&#34;</span>: <span style="color:#e6db74">&#34;customerName&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;张三&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;page&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;x&#34;</span>: <span style="color:#ae81ff">120</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;y&#34;</span>: <span style="color:#ae81ff">230</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>前端根据 <code>templateType</code> 分发到不同渲染组件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">templateType</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;HTML&#39;</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">renderHtmlTemplate</span>(<span style="color:#a6e22e">templateContent</span>, <span style="color:#a6e22e">data</span>);
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">renderPdfTemplate</span>(<span style="color:#a6e22e">pdfUrl</span>, <span style="color:#a6e22e">textOverlays</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>HTML 情况下可以用简单的模版引擎，例如 Mustache / Handlebars 或自研替换。<br>
+PDF 情况下则在 Canvas / SVG / DOM 之上叠文字。</p>
+<hr>
+<h2 id="4-签章交互签署域手写签名与印章">4. 签章交互：签署域、手写签名与印章</h2>
+<p>关键是统一「签署域」的模型：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SignField</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">id</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">page</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">width</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">height</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">signerType</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;CUSTOMER&#39;</span> <span style="color:#f92672">|</span> <span style="color:#e6db74">&#39;ORG&#39;</span> <span style="color:#f92672">|</span> <span style="color:#e6db74">&#39;OPERATOR&#39;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">status</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;PENDING&#39;</span> <span style="color:#f92672">|</span> <span style="color:#e6db74">&#39;SIGNED&#39;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>后端在模版里事先配置好签署域，前端拿到这组数据后：</p>
+<ol>
+<li>在渲染层按坐标画出一个透明点击区域；</li>
+<li>用户点击后：
+<ul>
+<li>如果是客户手写签名：弹出签名板；</li>
+<li>如果是机构公章：走后端自动盖章流程（前端只展示结果）。</li>
+</ul>
+</li>
+</ol>
+<h3 id="41-手写签名板">4.1 手写签名板</h3>
+<ul>
+<li>Canvas 或 SVG 实现；</li>
+<li>支持清除、重签；</li>
+<li>输出为图片（PNG）或向量数据。</li>
+</ul>
+<p>前端把签名图片上传到后端，由后端负责：</p>
+<ul>
+<li>与模版合成；</li>
+<li>入库存证；</li>
+<li>生成最终文件。</li>
+</ul>
+<h3 id="42-多方签署与状态同步">4.2 多方签署与状态同步</h3>
+<p>在多人会签场景下：</p>
+<ul>
+<li>前端通过轮询 / WebSocket 获取当前合同签署状态；</li>
+<li>对不同 signer 看到的界面略有差异（只能签自己的那一块）；</li>
+<li>状态条显示「待甲方签署 / 待乙方签署 / 已完成」。</li>
+</ul>
+<hr>
+<h2 id="5-签署流程从打开合同到签署完成">5. 签署流程：从「打开合同」到「签署完成」</h2>
+<p>我们通常会把签署流程封装成一个「对话框」或「全屏页」，大致步骤：</p>
+<ol>
+<li>拉取合同详情：模版 + 变量 + 签署域 + 状态；</li>
+<li>渲染预览，标出当前用户需要签的区域；</li>
+<li>用户点击签署域 → 完成签名/确认 → 回写状态；</li>
+<li>所有需要签署的都完成后，调用「确认完成」接口；</li>
+<li>返回下载链接/查看已签署版本入口。</li>
+</ol>
+<p>期间注意：</p>
+<ul>
+<li>每次签署操作最好有「本地态」反馈（比如域上显示一个 ✓）；</li>
+<li>即便「确认完成」接口失败，也要保证已完成签名不会丢（操作具有幂等性）；</li>
+<li>对手机端/小屏场景做适配，避免签署区域太小点不中。</li>
+</ul>
+<hr>
+<h2 id="6-合规与可追溯前端能做什么">6. 合规与可追溯：前端能做什么？</h2>
+<p>合规和证据链主要还是后端/第三方存证平台负责，但前端可以配合：</p>
+<ol>
+<li>在关键操作时携带：设备信息、IP、大致地理位置（如有）、浏览器 UA；</li>
+<li>在签署过程中避免刷新/后退导致状态混乱，必要时给出明确提示；</li>
+<li>把一些风险提示、确认文案做成不可绕过的步骤，并在接口里带上「勾选记录」。</li>
+</ol>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">await</span> <span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">confirmRiskNotice</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">contractId</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">checkedAt</span>: <span style="color:#66d9ef">Date.now</span>(),
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">userAgent</span>: <span style="color:#66d9ef">navigator.userAgent</span>,
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><hr>
+<h2 id="7-总结">7. 总结</h2>
+<p>电子合同前端如果不刻意做拆分，很容易变成一个<strong>巨大而混乱的模块</strong>。<br>
+更清晰的方式是：</p>
+<ol>
+<li>用「前端 SDK」形式对业务方暴露简单接口；</li>
+<li>内部拆分：模版渲染、签章交互、流程编排几个子模块；</li>
+<li>约定好模版结构、变量渲染和签署域模型，让前后端有清晰契约；</li>
+<li>在交互层处理好缩放、点击区域、签名板体验；</li>
+<li>充分配合合规方做证据留痕。</li>
+</ol>
+<p>这样，无论以后新增多少业务场景（开户、赎回、风险揭示…），都可以复用同一套电子合同能力，而不是在每个系统里重复造轮子。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-04-01</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2022-04-01-e-contract-frontend-architecture/" data-title="电子合同前端架构：模版、签章与签署流程" data-via="https://github.com/cs11b137" data-hashtags="电子合同,前端架构,签章,模版管理"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2022-04-01-e-contract-frontend-architecture/" data-hashtag="电子合同"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2022-04-01-e-contract-frontend-architecture/" data-title="电子合同前端架构：模版、签章与签署流程"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2022-04-01-e-contract-frontend-architecture/" data-title="电子合同前端架构：模版、签章与签署流程"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2022-04-01-e-contract-frontend-architecture/" data-title="电子合同前端架构：模版、签章与签署流程"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E7%94%B5%E5%AD%90%E5%90%88%E5%90%8C/">电子合同</a>,&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/">前端架构</a>,&nbsp;<a href="/tags/%E7%AD%BE%E7%AB%A0/">签章</a>,&nbsp;<a href="/tags/%E6%A8%A1%E7%89%88%E7%AE%A1%E7%90%86/">模版管理</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2022-02-10-fintech-form-design/" class="prev" rel="prev" title="金融场景下的表单设计：KYC、合规与用户体验"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>金融场景下的表单设计：KYC、合规与用户体验</a>
+            <a href="/posts/2022-05-26-encryption-in-frontend/" class="next" rel="next" title="前端加解密实践：从「别明文传密码」开始">前端加解密实践：从「别明文传密码」开始<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

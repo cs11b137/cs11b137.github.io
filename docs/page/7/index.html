@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+	<meta name="generator" content="Hugo 0.152.2"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Saiga</title><meta name="Description" content="This is my cool site"><meta property="og:url" content="http://localhost:1313/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="Saiga">
+  <meta property="og:description" content="This is my cool site">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Saiga">
+  <meta name="twitter:description" content="This is my cool site">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/" /><link rel="alternate" href="/index.xml" type="application/rss+xml" title="Saiga">
+    <link rel="feed" href="/index.xml" type="application/rss+xml" title="Saiga"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "url": "http:\/\/localhost:1313\/","inLanguage": "zh-cn","author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": "This is my cool site","name": "Saiga"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="page home" data-home="posts"><div class="home-profile"><div class="home-avatar"><a href="/posts/" title="Posts"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="./avatar.svg"
+        data-srcset="./avatar.svg, ./avatar.svg 1.5x, ./avatar.svg 2x"
+        data-sizes="auto"
+        alt="./avatar.svg"
+        title="./avatar.svg" /></a></div><div class="home-subtitle"><div id="id-1" class="typeit"></div></div><div class="links"><a href="https://github.com/https://github.com/cs11b137" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github fa-fw" aria-hidden="true"></i></a><a href="https://facebook.com/https://github.com/cs11b137" title="facebook" target="_blank" rel="noopener noreffer me"><i class="fab fa-facebook fa-fw" aria-hidden="true"></i></a><a href="mailto:https://github.com/cs11b137" title="Email" rel="me"><i class="far fa-envelope fa-fw" aria-hidden="true"></i></a><a href="https://github.com/cs11b137" target="_blank" rel="noopener noreffer me"></a><a href="https://linkedin.com/in/https://github.com/cs11b137" title="LinkedIn" target="_blank" rel="noopener noreffer me"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://twitter.com/https://github.com/cs11b137" title="Twitter" target="_blank" rel="noopener noreffer me"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="https://www.instagram.com/https://github.com/cs11b137" title="Instagram" target="_blank" rel="noopener noreffer me"><i class="fab fa-instagram fa-fw" aria-hidden="true"></i></a><a href="https://t.me/https://github.com/cs11b137" title="Telegram" target="_blank" rel="noopener noreffer me"><i class="fab fa-telegram-plane fa-fw" aria-hidden="true"></i></a><a href="https://www.youtube.com/user/https://github.com/cs11b137" title="YouTube" target="_blank" rel="noopener noreffer me"><i class="fab fa-youtube fa-fw" aria-hidden="true"></i></a><a href="/index.xml" title="RSS" target="_blank" rel="noopener noreffer me"><i class="fas fa-rss fa-fw" aria-hidden="true"></i></a></div></div>
+<article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/posts/2020-12-12-workflow-and-tools-2020/">2019–2020 我的前端工作流与常用工具清单</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-publish">发布于 <time datetime="2020-12-12">2020-12-12</time></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%96%B9%E6%B3%95%E8%AE%BA/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>工具与方法论</a></span></div><div class="content"><p>每隔一段时间，我都会回头看一下：<strong>自己每天在用的工具和工作流，哪些真的有效，哪些只是「习惯了就一直没动」</strong>。</p>
+<p>这篇文章算是对 2019–2020 这两年自己前端工作流的一次归档，顺便给以后想重构环境的自己当个参考。</p>
+<hr>
+<h2 id="1-编辑器与基础环境">1. 编辑器与基础环境</h2>
+<h3 id="11-vs-code-为主webstorm-偶尔上场">1.1 VS Code 为主，WebStorm 偶尔上场</h3>
+<p>这两年主要是 VS Code 打主力，原因很简单：</p>
+<ul>
+<li>生态丰富（插件多）；</li>
+<li>配置灵活（<code>settings.json</code>、<code>tasks</code> 等等）；</li>
+<li>打开仓库速度相对快。</li>
+</ul>
+<p>WebStorm 的优势在于：</p>
+<ul>
+<li>更强的「开箱即用」体验（尤其是对 TS / 重构支持）；</li>
+<li>有些场景下更稳，但是资源占用也更高。</li>
+</ul>
+<p><strong>我的做法：</strong></p>
+<ul>
+<li>日常写业务、处理多个小项目 → VS Code；</li>
+<li>需要重构大型 TS 项目、或者做复杂的重命名/移动 → 偶尔打开 WebStorm。</li>
+</ul>
+<hr>
+<h3 id="12-vs-code-常驻插件">1.2 VS Code 常驻插件</h3>
+<p>只列一些我真正离不开的：</p>
+<ul>
+<li><strong>ESLint</strong>：保存自动修复格式/语法问题。</li>
+<li><strong>Prettier</strong>：统一代码风格（也可以用 ESLint 负责格式化）。</li>
+<li><strong>Vetur / Volar</strong>：Vue 项目对应的语法高亮与提示。</li>
+<li><strong>GitLens</strong>：在代码行旁边直接看到最近一次提交记录。</li>
+<li><strong>Path Intellisense</strong>：自动补全文件路径。</li>
+<li><strong>TODO Highlight</strong>：高亮 TODO / FIXME，提醒自己有坑没填。</li>
+</ul>
+<p>设置里会开：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#e6db74">&#34;editor.formatOnSave&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> <span style="color:#66d9ef">true</span><span style="color:#960050;background-color:#1e0010">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;editor.codeActionsOnSave&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;source.fixAll.eslint&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样每次保存就是一次「小型代码体检」。</p>
+<hr>
+<h2 id="2-git-工作流">2. Git 工作流</h2>
+<p>这两年基本稳定在一套很简单的 Git 流程：</p></div><div class="post-footer">
+        <a href="/posts/2020-12-12-workflow-and-tools-2020/">阅读全文</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/">工作流</a>,&nbsp;<a href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a>,&nbsp;<a href="/tags/%E6%95%88%E7%8E%87/">效率</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/posts/2020-09-19-node-bff-intro/">给前端加一层 BFF：Node 中间层的第一步</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-publish">发布于 <time datetime="2020-09-19">2020-09-19</time></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%85%A8%E6%A0%88-/-bff/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>全栈 / BFF</a></span></div><div class="content"><p>写前端写久了，你大概率遇到过这些场景：</p>
+<ul>
+<li>同一个页面要调 3～4 个后端服务，字段名都不一样。</li>
+<li>为了兼容多个客户端（H5、小程序、App），接口被搞得非常「通用」，前端要做一堆字段转换。</li>
+<li>某些数据其实可以缓存，但后端坚持不做，只能前端自己「临时记一下」。</li>
+</ul>
+<p>这个时候，很多团队会在前后端之间加一层 <strong>BFF（Backend For Frontend）</strong>。</p>
+<p>这篇文章以一个小例子来说明：什么是 BFF、为什么要用、第一步怎么做。</p>
+<hr>
+<h2 id="1-什么是-bff">1. 什么是 BFF？</h2>
+<p>一句话解释：</p>
+<blockquote>
+<p><strong>BFF 是介于前端和后端业务服务之间的一层「适配器」，为特定前端提供定制化接口。</strong></p>
+</blockquote>
+<p>传统架构：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>浏览器 / 小程序  ---&gt;  各个后端服务
+</span></span></code></pre></div><p>引入 BFF 后：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>浏览器 / 小程序  ---&gt;  BFF  ---&gt;  各个后端服务
+</span></span></code></pre></div><p>BFF 做的事情包括但不限于：</p>
+<ul>
+<li>聚合多个后端接口；</li>
+<li>做一些轻量的业务组合逻辑；</li>
+<li>做权限校验、请求限流；</li>
+<li>做缓存（比如热门数据）；</li>
+<li>为不同客户端做「视图模型」适配。</li>
+</ul>
+<p>常用技术栈：Node.js + Koa/Express/Nest 等。</p>
+<hr>
+<h2 id="2-一个具体例子用户资产概览">2. 一个具体例子：用户资产概览</h2>
+<p>假设我们有一个前端页面「用户资产总览」，需要展示：</p>
+<ul>
+<li>用户基本信息（来自 <code>user-service</code>）；</li>
+<li>用户账户列表（来自 <code>account-service</code>）；</li>
+<li>用户最近 5 笔交易（来自 <code>trade-service</code>）。</li>
+</ul>
+<h3 id="21-没有-bff-时的做法">2.1 没有 BFF 时的做法</h3>
+<p>前端直接请求多个后端服务：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">user</span><span style="color:#f92672">-</span><span style="color:#a6e22e">service</span><span style="color:#f92672">/</span><span style="color:#a6e22e">api</span><span style="color:#f92672">/</span><span style="color:#a6e22e">user</span><span style="color:#f92672">/</span><span style="color:#a6e22e">profile</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">account</span><span style="color:#f92672">-</span><span style="color:#a6e22e">service</span><span style="color:#f92672">/</span><span style="color:#a6e22e">api</span><span style="color:#f92672">/</span><span style="color:#a6e22e">account</span><span style="color:#f92672">/</span><span style="color:#a6e22e">list</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> <span style="color:#f92672">/</span><span style="color:#a6e22e">trade</span><span style="color:#f92672">-</span><span style="color:#a6e22e">service</span><span style="color:#f92672">/</span><span style="color:#a6e22e">api</span><span style="color:#f92672">/</span><span style="color:#a6e22e">trade</span><span style="color:#f92672">/</span><span style="color:#a6e22e">latest</span><span style="color:#f92672">?</span><span style="color:#a6e22e">limit</span><span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>
+</span></span></code></pre></div><p>前端需要：</p>
+<ul>
+<li>处理不同的返回格式；</li>
+<li>做错误合并处理（任何一个接口失败都要考虑）；</li>
+<li>处理多次往返延迟。</li>
+</ul>
+<hr>
+<h3 id="22-有-bff-后的做法">2.2 有 BFF 后的做法</h3>
+<p>前端只请求 BFF：</p></div><div class="post-footer">
+        <a href="/posts/2020-09-19-node-bff-intro/">阅读全文</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/node.js/">Node.js</a>,&nbsp;<a href="/tags/bff/">BFF</a>,&nbsp;<a href="/tags/%E6%8E%A5%E5%8F%A3%E8%81%9A%E5%90%88/">接口聚合</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/posts/2020-07-03-error-handling-and-logging/">别再只 console.log 了：前端错误收集与日志治理</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-publish">发布于 <time datetime="2020-07-03">2020-07-03</time></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E7%9B%91%E6%8E%A7%E4%B8%8E%E8%BF%90%E7%BB%B4/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>监控与运维</a></span></div><div class="content"><p>大部分前端开发一开始排查问题都是靠：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;看看这里是什么&#39;</span>);
+</span></span></code></pre></div><p>这没问题，但当项目变大、用户变多、场景变复杂时，只靠 <code>console.log</code> 就完全不够用了——<strong>用户出问题时你根本看不到现场。</strong></p>
+<p>这篇文章聊聊我在实际项目里做前端错误收集和日志治理的一些经验。</p>
+<hr>
+<h2 id="1-我们到底需要记录什么">1. 我们到底需要记录什么？</h2>
+<p>先看一个真实场景：</p>
+<ul>
+<li>用户反馈：<strong>「页面有时候会白屏」</strong></li>
+<li>操作步骤：「我就是正常点点点，突然就白了」</li>
+<li>浏览器：未知</li>
+<li>系统：未知</li>
+<li>URL：未知</li>
+</ul>
+<p>如果我们没有任何前端错误监控工具，这个问题几乎无从排查。</p>
+<p>所以，一套基础的前端日志/错误系统至少要能回答：</p>
+<ul>
+<li>什么时间？</li>
+<li>哪个用户？</li>
+<li>在哪个页面？</li>
+<li>用的什么浏览器/系统？</li>
+<li>做了什么操作？</li>
+<li>报了什么错（堆栈、接口信息等）？</li>
+</ul>
+<p>所以日志结构（特别是错误日志）要包含几个核心字段：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">FrontendLog</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">level</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;info&#39;</span> <span style="color:#f92672">|</span> <span style="color:#e6db74">&#39;warn&#39;</span> <span style="color:#f92672">|</span> <span style="color:#e6db74">&#39;error&#39;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">message</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">stack?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">url</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">userId?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">time</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ua</span>: <span style="color:#66d9ef">string</span>; <span style="color:#75715e">// user agent
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">extra?</span>: <span style="color:#66d9ef">Record</span>&lt;<span style="color:#f92672">string</span>, <span style="color:#a6e22e">any</span>&gt;;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="2-捕获错误的几个入口">2. 捕获错误的几个入口</h2>
+<h3 id="21-全局-js-运行时错误">2.1 全局 JS 运行时错误</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>window.<span style="color:#a6e22e">onerror</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">message</span>, <span style="color:#a6e22e">source</span>, <span style="color:#a6e22e">lineno</span>, <span style="color:#a6e22e">colno</span>, <span style="color:#a6e22e">error</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">reportError</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">message</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">stack</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">error</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">error</span>.<span style="color:#a6e22e">stack</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">href</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">extra</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">source</span>, <span style="color:#a6e22e">lineno</span>, <span style="color:#a6e22e">colno</span> },
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>注意：</p>
+<ul>
+<li>这个能捕获<strong>同步脚本错误</strong>。</li>
+<li>对跨域脚本，如果没有正确配置，会只得到 <code>Script error.</code>，需要在 script 标签上加 <code>crossorigin</code> 且服务端正确设置 CORS/SourceMap。</li>
+</ul>
+<hr>
+<h3 id="22-promise-未处理异常">2.2 Promise 未处理异常</h3>
+<p>现代前端很多逻辑是基于 Promise / async 的，<code>window.onerror</code> 捕不到，需要监听：</p></div><div class="post-footer">
+        <a href="/posts/2020-07-03-error-handling-and-logging/">阅读全文</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7/">错误监控</a>,&nbsp;<a href="/tags/%E6%97%A5%E5%BF%97/">日志</a>,&nbsp;<a href="/tags/%E5%9F%8B%E7%82%B9/">埋点</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/posts/2020-04-28-mid-platform-table-design/">中后台「表格 + 查询」通用化设计实践</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-publish">发布于 <time datetime="2020-04-28">2020-04-28</time></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E4%B8%AD%E5%90%8E%E5%8F%B0%E6%9E%B6%E6%9E%84/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>中后台架构</a></span></div><div class="content"><p>中后台系统有一个经典页面模样：</p>
+<blockquote>
+<p>上面一块查询条件，下面一张表格，再加一个分页条。</p>
+</blockquote>
+<p>做过几套之后你会发现：字段变了、接口变了、样式改改，<strong>本质都差不多</strong>。与其每个项目都重写，不如抽象出一套可复用的「查询 + 表格」方案。</p>
+<p>这篇文章记录我在中后台项目里总结的一套通用设计思路。</p>
+<hr>
+<h2 id="1-标准列表页长什么样">1. 标准「列表页」长什么样？</h2>
+<p>通常一个「标准列表页」包含：</p>
+<ol>
+<li>
+<p><strong>查询区（Search Form）</strong></p>
+<ul>
+<li>输入框、下拉、日期区间、状态选择等</li>
+<li>「查询」、「重置」按钮</li>
+</ul>
+</li>
+<li>
+<p><strong>操作区（Toolbar）</strong></p>
+<ul>
+<li>新增、批量操作、导出等</li>
+</ul>
+</li>
+<li>
+<p><strong>结果表格（Table）</strong></p>
+<ul>
+<li>列信息、操作列</li>
+<li>勾选、多选</li>
+</ul>
+</li>
+<li>
+<p><strong>分页条（Pagination）</strong></p>
+<ul>
+<li>当前页、总数、页大小</li>
+</ul>
+</li>
+</ol>
+<p>可以抽象成一个数据结构：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ListPageConfig</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">searchItems</span>: <span style="color:#66d9ef">SearchItem</span>[];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">columns</span>: <span style="color:#66d9ef">Column</span>[];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">actions</span>: <span style="color:#66d9ef">ActionItem</span>[]; <span style="color:#75715e">// 顶部操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">rowActions</span>: <span style="color:#66d9ef">ActionItem</span>[]; <span style="color:#75715e">// 行内操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>换句话说：<strong>绝大部分差异都可以通过配置表达出来。</strong></p>
+<hr>
+<h2 id="2-查询表单的配置化设计">2. 查询表单的配置化设计</h2>
+<p>先从搜索区开始。</p>
+<h3 id="21-基本配置格式">2.1 基本配置格式</h3>
+<p>我习惯用一个数组描述查询项：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">searchItems</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;keyword&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;关键词&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;input&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">placeholder</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;请输入订单号/姓名&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;status&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;状态&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;select&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">options</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;全部&#39;</span>, <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span> },
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;待处理&#39;</span>, <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;PENDING&#39;</span> },
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;已完成&#39;</span>, <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;DONE&#39;</span> },
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prop</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;dateRange&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;创建日期&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;daterange&#39;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p>再写一个通用的 <code>&lt;SearchForm /&gt;</code> 组件去渲染它：</p></div><div class="post-footer">
+        <a href="/posts/2020-04-28-mid-platform-table-design/">阅读全文</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E4%B8%AD%E5%8F%B0/">中台</a>,&nbsp;<a href="/tags/%E8%A1%A8%E6%A0%BC%E7%BB%84%E4%BB%B6/">表格组件</a>,&nbsp;<a href="/tags/%E6%9F%A5%E8%AF%A2%E8%A1%A8%E5%8D%95/">查询表单</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/posts/2020-02-15-spa-routing-thoughts/">单页应用路由设计心得：守护好你的「返回键」</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-publish">发布于 <time datetime="2020-02-15">2020-02-15</time></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>前端架构</a></span></div><div class="content"><p>单页应用（SPA）带来了更流畅的交互体验，但也制造了一个经典问题：<strong>「返回键」不好使了。</strong></p>
+<ul>
+<li>用户点浏览器返回，结果直接退回登录页，心态爆炸；</li>
+<li>或者在一个中台系统里，从列表点到详情、从详情点到编辑、再返回时，筛选条件全没了，只剩一个「空空如也」。</li>
+</ul>
+<p>这篇文章就结合我自己踩过的坑，聊聊：<strong>如何在 SPA 里设计更「靠谱」的路由结构和返回行为。</strong></p>
+<hr>
+<h2 id="1-路由不是简单的-url-映射">1. 路由不是简单的 URL 映射</h2>
+<p>很多项目的路由配置看起来像这样：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">routes</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/list&#39;</span>, <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">List</span> },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/detail/:id&#39;</span>, <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Detail</span> },
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p>能跑，但如果你问：</p>
+<ul>
+<li>列表页的筛选条件放哪？</li>
+<li>返回列表时要不要还原滚动位置？</li>
+<li>详情页打开方式是「覆盖当前」还是「新标签页」？</li>
+</ul>
+<p>这些问题路由本身没有回答。<br>
+所以对我来说，路由不仅仅是 path → component 的映射，它还应该承载一些<strong>页面行为约定</strong>。</p>
+<hr>
+<h2 id="2-基本路由结构从业务模块出发">2. 基本路由结构：从「业务模块」出发</h2>
+<p>在中后台项目里，我现在更倾向按「业务模块」来规划路由：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">routes</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/order&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Layout</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">children</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;list&#39;</span>, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;OrderList&#39;</span>, <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">OrderList</span> },
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;detail/:id&#39;</span>, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;OrderDetail&#39;</span>, <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">OrderDetail</span> },
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;edit/:id&#39;</span>, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;OrderEdit&#39;</span>, <span style="color:#a6e22e">component</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">OrderEdit</span> },
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p>几个小习惯：</p>
+<ol>
+<li><strong>路径短而语义化</strong>：<code>/order/list</code> 比 <code>/orderListPage</code> 更统一。</li>
+<li><strong>给路由起 name</strong>：后面做编程式导航、标签页缓存都会用到。</li>
+<li><strong>模块下的子路由聚在一起</strong>：方便看清一个模块的整体结构。</li>
+</ol>
+<hr>
+<h2 id="3-返回行为列表页的状态保留">3. 返回行为：列表页的「状态保留」</h2>
+<p>最常见的场景：</p>
+<ol>
+<li>在订单列表页选择了各种条件，翻到第 4 页；</li>
+<li>点进某个订单详情；</li>
+<li>返回时希望停留在「刚才那一页 + 筛选条件」。</li>
+</ol>
+<p>如果不做额外处理，很多 SPA 会出现：</p></div><div class="post-footer">
+        <a href="/posts/2020-02-15-spa-routing-thoughts/">阅读全文</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E8%B7%AF%E7%94%B1/">路由</a>,&nbsp;<a href="/tags/spa/">SPA</a>,&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E4%BD%93%E9%AA%8C/">前端体验</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/posts/2019-12-20-first-side-project-review/">第一个线上小项目复盘：从需求到上线</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-publish">发布于 <time datetime="2019-12-20">2019-12-20</time></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%9B%98/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>项目复盘</a></span></div><div class="content"><p>每个开发大概都会有那么一个「第一次自己从头到尾搞定的小项目」。不一定很大，但你会记得它第一次线上、第一次收到真实用户反馈时的感觉。</p>
+<p>这篇文章就是我对自己第一个线上小项目的一次复盘：<strong>从需求、设计、实现到上线运维，哪些地方做得还行，哪些地方踩了坑，以及如果重来一次我会怎么做。</strong></p>
+<hr>
+<h2 id="项目背景一个小而完整的业务闭环">项目背景：一个小而完整的业务闭环</h2>
+<p>项目本身不复杂，可以简化理解为：</p>
+<ul>
+<li>给内部同事用的一个「简单信息录入 + 查询」系统。</li>
+<li>功能包括：
+<ul>
+<li>登录（最初只是简单校验）</li>
+<li>信息录入表单（10 来个字段）</li>
+<li>列表查询 + 条件筛选</li>
+<li>导出 Excel</li>
+</ul>
+</li>
+<li>技术栈：Vue + 简易 Node.js API + MySQL。</li>
+</ul>
+<p>它的意义不在技术多高级，而在于：<strong>从 0 到上生产，所有环节都踩了一遍。</strong></p>
+<hr>
+<h2 id="需求阶段一开始就踩坑的地方">需求阶段：一开始就踩坑的地方</h2>
+<h3 id="1-没有边界的需求">1. 没有「边界」的需求</h3>
+<p>当时需求只有一句话：</p>
+<blockquote>
+<p>做一个给运营同事用的录入和查询系统，支持导出。</p>
+</blockquote>
+<p>看起来很简单，实际开始做的时候才发现问题：</p>
+<ul>
+<li>字段定义不清楚：哪些必填？哪些是枚举？哪些会后续扩展？</li>
+<li>查询场景不清楚：他们怎么用？按什么维度查？</li>
+<li>导出需求不清楚：导出全部？分页导出？按筛选条件导出？</li>
+</ul>
+<p>**教训：**哪怕是小项目，开工前也要把几个关键边界问清楚：</p>
+<ul>
+<li>「最小可用版本」必须具备哪些功能？</li>
+<li>哪些是后续再说的「加分项」？</li>
+<li>有没有「绝对不能错」的地方（比如某个字段一定要留存）？</li>
+</ul>
+<p>简单拉个 30 分钟的小会，白板上把字段和关键操作列出来，会省掉后面大量来回返工。</p>
+<hr>
+<h2 id="设计阶段刚开始就写死了的页面结构">设计阶段：刚开始就写死了的页面结构</h2>
+<p>第一个版本，我是怎么做的：</p>
+<ul>
+<li>一个页面写完所有功能：表单在上、表格在下。</li>
+<li>所有状态（表单值、筛选条件、列表）全塞在一个组件里。</li>
+<li>校验、提交流程、导出逻辑写在同一个 <code>methods</code> 对象。</li>
+</ul>
+<p>这样做的结果：</p>
+<ul>
+<li>代码量不大时还凑合。</li>
+<li>一旦字段一增加、逻辑一变更，维护起来就很痛苦。</li>
+</ul>
+<p>重构后的做法是：</p>
+<ul>
+<li>拆分成三个组件：
+<ul>
+<li><code>FormPanel</code>：负责录入表单。</li>
+<li><code>SearchPanel</code>：负责查询条件。</li>
+<li><code>ResultTable</code>：负责列表展示和导出按钮。</li>
+</ul>
+</li>
+<li>用一个父组件 <code>PageIndex</code> 作为「协调者」，统一管理状态。</li>
+</ul>
+<p>父组件结构大概是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vue" data-lang="vue"><span style="display:flex;"><span>&lt;<span style="color:#f92672">template</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">FormPanel</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">:value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;formData&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">@change</span><span style="color:#e6db74">=&#34;onFormChange&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">@submit</span><span style="color:#e6db74">=&#34;onFormSubmit&#34;</span>
+</span></span><span style="display:flex;"><span>    /&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">SearchPanel</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">:value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;searchParams&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">@search</span><span style="color:#e6db74">=&#34;onSearch&#34;</span>
+</span></span><span style="display:flex;"><span>    /&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">ResultTable</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">:data</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tableData&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">:loading</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tableLoading&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">@export</span><span style="color:#e6db74">=&#34;onExport&#34;</span>
+</span></span><span style="display:flex;"><span>    /&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">template</span>&gt;
+</span></span></code></pre></div><p>**收获：**即便是小项目，只要你能把「页面拆成几个清晰的区域组件」，后面改需求的时候会省很多事。</p></div><div class="post-footer">
+        <a href="/posts/2019-12-20-first-side-project-review/">阅读全文</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">项目管理</a>,&nbsp;<a href="/tags/%E5%A4%8D%E7%9B%98/">复盘</a>,&nbsp;<a href="/tags/%E4%B8%8A%E7%BA%BF%E7%BB%8F%E9%AA%8C/">上线经验</a></div></div>
+</article><ul class="pagination"><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/">1</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link" aria-hidden="true">&hellip;</span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/5/">5</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/6/">6</a>
+                    </span>
+                </li><li class="page-item active">
+                    <span class="page-link">
+                        <a href="/page/7/">7</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/8/">8</a>
+                    </span>
+                </li></ul></div></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/typeit/index.umd.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"data":{"id-1":"A quiet place to keep a record of things."},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30},"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"id-1":["id-1"]},"duration":-1,"speed":100}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
