@@ -1,5 +1,7 @@
 baseURL = "https://wuwenjunpr.site/"
 languageCode = "zh-cn"
+defaultContentLanguage = "zh-cn"
+defaultContentLanguageInSubdir = false
 title = "Saiga"
 theme = "LoveIt"
 publishDir = "docs"
