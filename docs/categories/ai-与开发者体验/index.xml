@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AI 与开发者体验 on Saiga</title>
+    <link>http://localhost:1313/categories/ai-%E4%B8%8E%E5%BC%80%E5%8F%91%E8%80%85%E4%BD%93%E9%AA%8C/</link>
+    <description>Recent content in AI 与开发者体验 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Sat, 22 Jul 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/ai-%E4%B8%8E%E5%BC%80%E5%8F%91%E8%80%85%E4%BD%93%E9%AA%8C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>给自己搭一个「AI 助理」开发流程</title>
+      <link>http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/</link>
+      <pubDate>Sat, 22 Jul 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2023-07-22-ai-assistant-for-dev/</guid>
+      <description>&lt;p&gt;2023 年对我来说有一个明显变化：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;编辑器不再是一个「孤立工具」，而是被各种 AI 助手包围。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;从简单的代码补全，到用大模型参与需求理解、方案推演、重构、写单测……&lt;br&gt;&#xA;这篇文章就讲讲我是怎么给自己搭一套「AI 助理」开发流程的。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-先想清楚希望-ai-在开发中帮我做什么&#34;&gt;1. 先想清楚：希望 AI 在开发中帮我做什么？&lt;/h2&gt;&#xA;&lt;p&gt;我给自己列了一个清单：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;样板代码生成&lt;/strong&gt;：页面骨架、接口封装、组件模板；&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;复杂逻辑解释/重构&lt;/strong&gt;：老代码梳理、新方案对比；&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;单测生成&lt;/strong&gt;：尤其是工具函数、纯逻辑模块；&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;文档和注释&lt;/strong&gt;：根据代码生成合适的注释、接口说明；&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;代码 Review 辅助&lt;/strong&gt;：帮我发现一些潜在问题或改进点。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;工具上则主要依赖：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;编辑器内的代码补全（Copilot 类）；&lt;/li&gt;&#xA;&lt;li&gt;Chat 类大模型（ChatGPT 等）；&lt;/li&gt;&#xA;&lt;li&gt;自己整理的一些 Prompt 模板。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-prompt-模板把怎么问提前想好&#34;&gt;2. Prompt 模板：把「怎么问」提前想好&lt;/h2&gt;&#xA;&lt;p&gt;很快会发现：随便问一句「帮我优化这段代码」效果参差不齐。&lt;br&gt;&#xA;于是我开始为不同场景整理&lt;strong&gt;固定 Prompt 模板&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;h3 id=&#34;21-重构模板&#34;&gt;2.1 重构模板&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;请作为资深前端工程师，帮我重构下面这段代码：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;目标是提高可读性和可维护性，而不是追求最短写法；&lt;/li&gt;&#xA;&lt;li&gt;如果有明显的边界情况，请指出并补上处理；&lt;/li&gt;&#xA;&lt;li&gt;给出重构后的代码，并用要点列出你做了哪些调整和原因。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;代码如下：&lt;br&gt;&#xA;```ts&lt;br&gt;&#xA;// code here&lt;br&gt;&#xA;```&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h3 id=&#34;22-单测生成模板&#34;&gt;2.2 单测生成模板&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;帮我为下面这个纯函数生成单元测试用例：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;使用 Jest 语法；&lt;/li&gt;&#xA;&lt;li&gt;覆盖常见正常输入和几种边界情况；&lt;/li&gt;&#xA;&lt;li&gt;简要说明每个测试用例要验证的点。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;代码如下：&lt;br&gt;&#xA;```ts&lt;br&gt;&#xA;// code here&lt;br&gt;&#xA;```&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;我会把这些模板存成 Snippet 或者存在笔记里，方便复用。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;3-编辑器内的-ai使用边界和习惯&#34;&gt;3. 编辑器内的 AI：使用边界和习惯&lt;/h2&gt;&#xA;&lt;p&gt;装上 Copilot 类插件之后，一开始很容易「啥都接」。&lt;br&gt;&#xA;用了一段时间，我给自己定了几个使用习惯：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

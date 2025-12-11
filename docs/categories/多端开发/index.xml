@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>多端开发 on Saiga</title>
+    <link>http://localhost:1313/categories/%E5%A4%9A%E7%AB%AF%E5%BC%80%E5%8F%91/</link>
+    <description>Recent content in 多端开发 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Sat, 23 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/%E5%A4%9A%E7%AB%AF%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>一次代码，多端运行：H5 &#43; 小程序的复用实践</title>
+      <link>http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/</link>
+      <pubDate>Sat, 23 Jan 2021 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2021-01-23-multi-end-code-sharing/</guid>
+      <description>&lt;p&gt;多端已经是老话题了：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;产品想要 &lt;strong&gt;H5 + 小程序 + 后面可能再来个 App&lt;/strong&gt;；&lt;/li&gt;&#xA;&lt;li&gt;但人手并不会随平台数量线性增加。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;所以问题就变成了：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;能不能尽量做到：一套业务逻辑，多端复用，只在各端做少量适配？&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;这篇文章从一个实际项目出发，聊聊我是怎么拆分层次、抽象业务核心、隔离端能力差异，让 H5 和小程序在同一套代码下运行得比较舒服。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-能复用和不能复用的先分清&#34;&gt;1. 能复用和不能复用的先分清&lt;/h2&gt;&#xA;&lt;p&gt;先别谈框架，先想清楚几件事：&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;通常可以复用的：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;业务模型：订单、用户、商品这些核心数据结构；&lt;/li&gt;&#xA;&lt;li&gt;领域逻辑：状态流转、金额计算、表单校验等纯逻辑；&lt;/li&gt;&#xA;&lt;li&gt;接口层：请求参数组装、响应数据提取、错误码处理；&lt;/li&gt;&#xA;&lt;li&gt;公共工具：日期、金额、校验、格式化等。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;通常不能直接复用的：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;UI 组件和布局（DOM vs 小程序组件）；&lt;/li&gt;&#xA;&lt;li&gt;路由与页面生命周期；&lt;/li&gt;&#xA;&lt;li&gt;存储层（&lt;code&gt;localStorage&lt;/code&gt; vs &lt;code&gt;wx.setStorage&lt;/code&gt; 等）；&lt;/li&gt;&#xA;&lt;li&gt;原生能力（扫码、相册、位置等）。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;所以设计时的目标是：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;把「业务核心」从这些平台差异里剥离出来，用一层「适配器」去对接不同端能力。&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-目录与分层core--adapters&#34;&gt;2. 目录与分层：core + adapters&lt;/h2&gt;&#xA;&lt;p&gt;我们当时的多端项目采用的是类似 Monorepo 的结构：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;project-root&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├── packages&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;│   ├── core          &lt;span style=&#34;color:#75715e&#34;&gt;# 端无关的业务核心（可被多端复用）&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;│   ├── h5            &lt;span style=&#34;color:#75715e&#34;&gt;# H5 端工程（Vue/React 等）&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;│   └── miniapp       &lt;span style=&#34;color:#75715e&#34;&gt;# 小程序端工程（uni-app / Taro / 原生）&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;└── package.json&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;21-core-里放什么&#34;&gt;2.1 &lt;code&gt;core&lt;/code&gt; 里放什么？&lt;/h3&gt;&#xA;&lt;p&gt;核心模块大致有：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;models/&lt;/code&gt; —— 订单、用户等类型定义和基础逻辑；&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;services/&lt;/code&gt; —— 业务服务，比如下单、取消订单、查询列表；&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;apis/&lt;/code&gt; —— 针对后端的 API 封装（不依赖具体请求实现）；&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;utils/&lt;/code&gt; —— 工具方法。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;关键点是：&lt;strong&gt;&lt;code&gt;core&lt;/code&gt; 不能直接用浏览器 API 或小程序 API&lt;/strong&gt;，一旦用了就失去可复用性。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
