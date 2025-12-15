@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>AI 作为前端工程助手：代码理解、变更评审与知识沉淀 - Saiga</title><meta name="Description" content="This is my cool site"><meta property="og:url" content="http://localhost:1313/posts/2025-01-20-ai-engineering-assistant-workflow/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="AI 作为前端工程助手：代码理解、变更评审与知识沉淀">
+  <meta property="og:description" content="背景 在中大型前端项目中，效率瓶颈往往不在“写代码”，而在：
+理解既有代码与历史决策 做变更评审与影响面分析 将经验沉淀为可复用的规范与模板 AI 更适合作为“工程助手”，在不改变既有流程的前提下，降低理解成本与重复劳动。
+适用场景与边界 适合让 AI 介入的事情 读代码：梳理模块关系、数据流、关键入口 查影响：对改动点做潜在影响面清单 写评审：生成 code review 的检查项与风险点 做沉淀：把零散讨论转成可检索的技术记录 不适合直接交给 AI 的事情 关键逻辑的“正确性判定” 业务规则的决策与归因 以 AI 输出作为唯一结论（必须可验证） 一套可落地的使用流程 1）代码理解：先结构化，再总结 输入给 AI 的材料建议是“可验证的事实”，例如：
+目录结构（关键模块） 入口文件（router/store/bff client） 关键类型定义与接口契约 相关提交 diff（而非整仓库） 期望 AI 输出的格式建议固定为：
+模块职责清单（What） 调用链路（How） 关键假设与隐含约束（Why） 潜在风险点（Risk） 这样更像“工程笔记”，而不是泛泛解释。
+2）变更评审：用“清单化”替代口头经验 对每个变更（PR/commit）生成一份固定结构的评审清单：
+影响页面/模块 影响数据结构/接口 兼容性（旧字段/旧接口/旧路由） 性能点（渲染、列表、长任务） 观测点（埋点、错误、关键链路） 回滚策略（开关/版本/兜底） AI 的价值在于“补盲”，而不是“替代审查”。
+3）知识沉淀：把对话变成可检索资产 建议把以下内容自动化沉淀（写入 Markdown）：
+模块说明（README） 常见问题与排查路径（FAQ） 关键决策记录（ADR：Architecture Decision Record） 发布与回滚手册（Runbook） 沉淀策略：少而精，优先覆盖高频问题与关键链路。
+工程化落地建议 统一 Prompt 模板：减少输出风格漂移 强制输出引用：引用文件路径、函数名、类型名 结果可回退：AI 不可用时流程不受影响 记录输入与输出：便于复盘与持续改进（注意脱敏） 总结 AI 在前端工程中的价值，更像“放大镜 &#43; 清单生成器”：">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-01-20T00:00:00+00:00">
+    <meta property="article:tag" content="工程效率">
+    <meta property="article:tag" content="代码评审">
+    <meta property="article:tag" content="知识管理">
+    <meta property="article:tag" content="AI 应用">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="AI 作为前端工程助手：代码理解、变更评审与知识沉淀">
+  <meta name="twitter:description" content="背景 在中大型前端项目中，效率瓶颈往往不在“写代码”，而在：
+理解既有代码与历史决策 做变更评审与影响面分析 将经验沉淀为可复用的规范与模板 AI 更适合作为“工程助手”，在不改变既有流程的前提下，降低理解成本与重复劳动。
+适用场景与边界 适合让 AI 介入的事情 读代码：梳理模块关系、数据流、关键入口 查影响：对改动点做潜在影响面清单 写评审：生成 code review 的检查项与风险点 做沉淀：把零散讨论转成可检索的技术记录 不适合直接交给 AI 的事情 关键逻辑的“正确性判定” 业务规则的决策与归因 以 AI 输出作为唯一结论（必须可验证） 一套可落地的使用流程 1）代码理解：先结构化，再总结 输入给 AI 的材料建议是“可验证的事实”，例如：
+目录结构（关键模块） 入口文件（router/store/bff client） 关键类型定义与接口契约 相关提交 diff（而非整仓库） 期望 AI 输出的格式建议固定为：
+模块职责清单（What） 调用链路（How） 关键假设与隐含约束（Why） 潜在风险点（Risk） 这样更像“工程笔记”，而不是泛泛解释。
+2）变更评审：用“清单化”替代口头经验 对每个变更（PR/commit）生成一份固定结构的评审清单：
+影响页面/模块 影响数据结构/接口 兼容性（旧字段/旧接口/旧路由） 性能点（渲染、列表、长任务） 观测点（埋点、错误、关键链路） 回滚策略（开关/版本/兜底） AI 的价值在于“补盲”，而不是“替代审查”。
+3）知识沉淀：把对话变成可检索资产 建议把以下内容自动化沉淀（写入 Markdown）：
+模块说明（README） 常见问题与排查路径（FAQ） 关键决策记录（ADR：Architecture Decision Record） 发布与回滚手册（Runbook） 沉淀策略：少而精，优先覆盖高频问题与关键链路。
+工程化落地建议 统一 Prompt 模板：减少输出风格漂移 强制输出引用：引用文件路径、函数名、类型名 结果可回退：AI 不可用时流程不受影响 记录输入与输出：便于复盘与持续改进（注意脱敏） 总结 AI 在前端工程中的价值，更像“放大镜 &#43; 清单生成器”：">
+      <meta name="twitter:site" content="@https://x.com/IswjWu">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2025-01-20-ai-engineering-assistant-workflow/" /><link rel="prev" href="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/" /><link rel="next" href="http://localhost:1313/posts/2025-03-25-fintech-frontend-permission-and-audit/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "AI 作为前端工程助手：代码理解、变更评审与知识沉淀",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2025-01-20-ai-engineering-assistant-workflow\/"
+        },"genre": "posts","keywords": "工程效率, 代码评审, 知识管理, AI 应用","wordcount":  84 ,
+        "url": "http:\/\/localhost:1313\/posts\/2025-01-20-ai-engineering-assistant-workflow\/","datePublished": "2025-01-20T00:00:00+00:00","dateModified": "2025-01-20T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">AI 作为前端工程助手：代码理解、变更评审与知识沉淀</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/ai/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI</a>&nbsp;<a href="/categories/frontend/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Frontend</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-01-20">2025-01-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 84 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#适用场景与边界">适用场景与边界</a>
+      <ul>
+        <li><a href="#适合让-ai-介入的事情">适合让 AI 介入的事情</a></li>
+        <li><a href="#不适合直接交给-ai-的事情">不适合直接交给 AI 的事情</a></li>
+      </ul>
+    </li>
+    <li><a href="#一套可落地的使用流程">一套可落地的使用流程</a>
+      <ul>
+        <li><a href="#1代码理解先结构化再总结">1）代码理解：先结构化，再总结</a></li>
+        <li><a href="#2变更评审用清单化替代口头经验">2）变更评审：用“清单化”替代口头经验</a></li>
+        <li><a href="#3知识沉淀把对话变成可检索资产">3）知识沉淀：把对话变成可检索资产</a></li>
+      </ul>
+    </li>
+    <li><a href="#工程化落地建议">工程化落地建议</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="背景">背景</h2>
+<p>在中大型前端项目中，效率瓶颈往往不在“写代码”，而在：</p>
+<ul>
+<li>理解既有代码与历史决策</li>
+<li>做变更评审与影响面分析</li>
+<li>将经验沉淀为可复用的规范与模板</li>
+</ul>
+<p>AI 更适合作为“工程助手”，在不改变既有流程的前提下，降低理解成本与重复劳动。</p>
+<hr>
+<h2 id="适用场景与边界">适用场景与边界</h2>
+<h3 id="适合让-ai-介入的事情">适合让 AI 介入的事情</h3>
+<ul>
+<li>读代码：梳理模块关系、数据流、关键入口</li>
+<li>查影响：对改动点做潜在影响面清单</li>
+<li>写评审：生成 code review 的检查项与风险点</li>
+<li>做沉淀：把零散讨论转成可检索的技术记录</li>
+</ul>
+<h3 id="不适合直接交给-ai-的事情">不适合直接交给 AI 的事情</h3>
+<ul>
+<li>关键逻辑的“正确性判定”</li>
+<li>业务规则的决策与归因</li>
+<li>以 AI 输出作为唯一结论（必须可验证）</li>
+</ul>
+<hr>
+<h2 id="一套可落地的使用流程">一套可落地的使用流程</h2>
+<h3 id="1代码理解先结构化再总结">1）代码理解：先结构化，再总结</h3>
+<p>输入给 AI 的材料建议是“可验证的事实”，例如：</p>
+<ul>
+<li>目录结构（关键模块）</li>
+<li>入口文件（router/store/bff client）</li>
+<li>关键类型定义与接口契约</li>
+<li>相关提交 diff（而非整仓库）</li>
+</ul>
+<p>期望 AI 输出的格式建议固定为：</p>
+<ul>
+<li>模块职责清单（What）</li>
+<li>调用链路（How）</li>
+<li>关键假设与隐含约束（Why）</li>
+<li>潜在风险点（Risk）</li>
+</ul>
+<p>这样更像“工程笔记”，而不是泛泛解释。</p>
+<hr>
+<h3 id="2变更评审用清单化替代口头经验">2）变更评审：用“清单化”替代口头经验</h3>
+<p>对每个变更（PR/commit）生成一份固定结构的评审清单：</p>
+<ul>
+<li>影响页面/模块</li>
+<li>影响数据结构/接口</li>
+<li>兼容性（旧字段/旧接口/旧路由）</li>
+<li>性能点（渲染、列表、长任务）</li>
+<li>观测点（埋点、错误、关键链路）</li>
+<li>回滚策略（开关/版本/兜底）</li>
+</ul>
+<p>AI 的价值在于“补盲”，而不是“替代审查”。</p>
+<hr>
+<h3 id="3知识沉淀把对话变成可检索资产">3）知识沉淀：把对话变成可检索资产</h3>
+<p>建议把以下内容自动化沉淀（写入 Markdown）：</p>
+<ul>
+<li>模块说明（README）</li>
+<li>常见问题与排查路径（FAQ）</li>
+<li>关键决策记录（ADR：Architecture Decision Record）</li>
+<li>发布与回滚手册（Runbook）</li>
+</ul>
+<p>沉淀策略：少而精，优先覆盖高频问题与关键链路。</p>
+<hr>
+<h2 id="工程化落地建议">工程化落地建议</h2>
+<ul>
+<li>统一 Prompt 模板：减少输出风格漂移</li>
+<li>强制输出引用：引用文件路径、函数名、类型名</li>
+<li>结果可回退：AI 不可用时流程不受影响</li>
+<li>记录输入与输出：便于复盘与持续改进（注意脱敏）</li>
+</ul>
+<hr>
+<h2 id="总结">总结</h2>
+<p>AI 在前端工程中的价值，更像“放大镜 + 清单生成器”：</p>
+<ul>
+<li>放大代码理解能力</li>
+<li>生成可执行的评审清单</li>
+<li>把经验沉淀成结构化文档</li>
+</ul>
+<p>当 AI 被放在“可验证、可替换”的位置，才能长期稳定地产生收益。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-01-20</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2025-01-20-ai-engineering-assistant-workflow/" data-title="AI 作为前端工程助手：代码理解、变更评审与知识沉淀" data-via="https://x.com/IswjWu" data-hashtags="工程效率,代码评审,知识管理,AI 应用"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2025-01-20-ai-engineering-assistant-workflow/" data-hashtag="工程效率"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2025-01-20-ai-engineering-assistant-workflow/" data-title="AI 作为前端工程助手：代码理解、变更评审与知识沉淀"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2025-01-20-ai-engineering-assistant-workflow/" data-title="AI 作为前端工程助手：代码理解、变更评审与知识沉淀"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2025-01-20-ai-engineering-assistant-workflow/" data-title="AI 作为前端工程助手：代码理解、变更评审与知识沉淀"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%B7%A5%E7%A8%8B%E6%95%88%E7%8E%87/">工程效率</a>,&nbsp;<a href="/tags/%E4%BB%A3%E7%A0%81%E8%AF%84%E5%AE%A1/">代码评审</a>,&nbsp;<a href="/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/">知识管理</a>,&nbsp;<a href="/tags/ai-%E5%BA%94%E7%94%A8/">AI 应用</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2024-12-18-2024-ai-frontier-summary/" class="prev" rel="prev" title="2024 年前端与 AI 融合方向的实践观察"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>2024 年前端与 AI 融合方向的实践观察</a>
+            <a href="/posts/2025-03-25-fintech-frontend-permission-and-audit/" class="next" rel="next" title="金融业务系统的前端权限与操作可追溯：设计要点与落地方式">金融业务系统的前端权限与操作可追溯：设计要点与落地方式<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

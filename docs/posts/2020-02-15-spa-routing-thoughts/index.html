@@ -20,7 +20,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="单页应用路由设计心得：守护好你的「返回键」">
   <meta name="twitter:description" content="从实际项目出发讨论路由结构、面包屑、标签页和返回行为的设计和实践。">
-      <meta name="twitter:site" content="@https://github.com/cs11b137">
+      <meta name="twitter:site" content="@https://x.com/IswjWu">
 <meta name="application-name" content="Saiga">
 <meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" /><link rel="prev" href="http://localhost:1313/posts/2019-12-20-first-side-project-review/" /><link rel="next" href="http://localhost:1313/posts/2020-04-28-mid-platform-table-design/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -50,7 +50,7 @@
             <a href="/" title="Saiga">Saiga</a>
         </div>
         <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
                         <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
                         <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
                             <i class="fas fa-search fa-fw" aria-hidden="true"></i>
@@ -92,7 +92,7 @@
                     <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
                         取消
                     </a>
-                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
                 <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
             </a></div>
     </div>
@@ -348,7 +348,7 @@
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-title="单页应用路由设计心得：守护好你的「返回键」" data-via="https://github.com/cs11b137" data-hashtags="路由,SPA,前端体验"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-hashtag="路由"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-title="单页应用路由设计心得：守护好你的「返回键」"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-title="单页应用路由设计心得：守护好你的「返回键」"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-title="单页应用路由设计心得：守护好你的「返回键」"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-title="单页应用路由设计心得：守护好你的「返回键」" data-via="https://x.com/IswjWu" data-hashtags="路由,SPA,前端体验"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-hashtag="路由"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-title="单页应用路由设计心得：守护好你的「返回键」"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-title="单页应用路由设计心得：守护好你的「返回键」"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2020-02-15-spa-routing-thoughts/" data-title="单页应用路由设计心得：守护好你的「返回键」"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -360,7 +360,7 @@
         </section>
     </div>
 
-    <div class="post-nav"><a href="/posts/2019-12-20-first-side-project-review/" class="prev" rel="prev" title="第一个线上小项目复盘：从需求到上线"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>第一个线上小项目复盘：从需求到上线</a>
+    <div class="post-nav"><a href="/posts/2019-12-20-first-side-project-review/" class="prev" rel="prev" title="从 jQuery 到模块化：一次前端工程意识的转变"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>从 jQuery 到模块化：一次前端工程意识的转变</a>
             <a href="/posts/2020-04-28-mid-platform-table-design/" class="next" rel="next" title="中后台「表格 &#43; 查询」通用化设计实践">中后台「表格 + 查询」通用化设计实践<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></div>

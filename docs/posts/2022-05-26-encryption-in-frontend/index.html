@@ -22,9 +22,9 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="前端加解密实践：从「别明文传密码」开始">
   <meta name="twitter:description" content="从实战视角聊聊前端加解密：在已经有 HTTPS 的前提下，为什么有时还要多加一层？对称/非对称加密怎么用？会踩哪些坑？">
-      <meta name="twitter:site" content="@https://github.com/cs11b137">
+      <meta name="twitter:site" content="@https://x.com/IswjWu">
 <meta name="application-name" content="Saiga">
-<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" /><link rel="prev" href="http://localhost:1313/posts/2022-04-01-e-contract-frontend-architecture/" /><link rel="next" href="http://localhost:1313/posts/2022-07-14-performance-optimization-case/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" /><link rel="prev" href="http://localhost:1313/posts/2022-02-10-fintech-form-design/" /><link rel="next" href="http://localhost:1313/posts/2022-07-14-performance-optimization-case/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
@@ -52,7 +52,7 @@
             <a href="/" title="Saiga">Saiga</a>
         </div>
         <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
                         <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
                         <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
                             <i class="fas fa-search fa-fw" aria-hidden="true"></i>
@@ -94,7 +94,7 @@
                     <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
                         取消
                     </a>
-                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
                 <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
             </a></div>
     </div>
@@ -342,7 +342,7 @@
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始" data-via="https://github.com/cs11b137" data-hashtags="前端安全,加密,HTTPS,对称加密,非对称加密"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-hashtag="前端安全"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始" data-via="https://x.com/IswjWu" data-hashtags="前端安全,加密,HTTPS,对称加密,非对称加密"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-hashtag="前端安全"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2022-05-26-encryption-in-frontend/" data-title="前端加解密实践：从「别明文传密码」开始"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -354,7 +354,7 @@
         </section>
     </div>
 
-    <div class="post-nav"><a href="/posts/2022-04-01-e-contract-frontend-architecture/" class="prev" rel="prev" title="电子合同前端架构：模版、签章与签署流程"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>电子合同前端架构：模版、签章与签署流程</a>
+    <div class="post-nav"><a href="/posts/2022-02-10-fintech-form-design/" class="prev" rel="prev" title="复杂业务场景下的表单设计与交互实践"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>复杂业务场景下的表单设计与交互实践</a>
             <a href="/posts/2022-07-14-performance-optimization-case/" class="next" rel="next" title="一次性能优化实战：从 5s 到 1.5s 的页面加载">一次性能优化实战：从 5s 到 1.5s 的页面加载<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></div>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>金融业务系统中的表单与流程设计实践 - Saiga</title><meta name="Description" content="This is my cool site"><meta property="og:url" content="http://localhost:1313/posts/2025-04-10-financial-form-and-process-design/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="金融业务系统中的表单与流程设计实践">
+  <meta property="og:description" content="背景 金融业务系统常见的页面形态是“表单 &#43; 流程”组合：
+字段密度高（基础信息、声明项、选择项、上传项） 校验复杂（联动校验、条件必填、格式校验） 流程严格（多步骤、可回退、需留痕） 如果设计与实现不当，会出现：
+填写成本高、错误率高 频繁中断后难以恢复 需求迭代带来大量返工 本文总结一套偏工程视角、可复用的表单与流程实践方法。
+1. 信息结构：先把“业务阶段”拆清楚 长表单往往不是“字段太多”，而是“阶段混在一起”。推荐按阶段拆分：
+基本信息（身份、联系、所属信息） 规则声明（勾选确认、阅读提示） 证明材料（上传、有效期、补充说明） 结果确认（回显、确认提交） 拆分标准：
+每一步只解决一类问题 每一步的“完成条件”可清晰定义 shows/hides 的动态联动尽量在步骤内完成 2. 多步骤流程：用状态机思维做“可恢复” 对流程页面，最核心的能力是：中断后可恢复。
+推荐的最小状态模型 type FlowState = { step: number; // 当前步骤 completedSteps: number[]; // 已完成步骤 draft: Record&lt;string, any&gt;; // 草稿数据 lastSavedAt?: number; // 最近保存时间 } 保存策略 本地草稿（localStorage/IndexedDB）：快速、无需网络 服务端草稿（可选）：换设备继续、可做留痕 建议组合使用：
+输入时本地节流保存（例如 1–2 秒） 步骤完成/离开页面时触发服务端保存（可选） 3. 校验策略：把“校验”当成一个独立系统 常见错误是：校验逻辑散落在各个组件里，最终变成难以维护的条件判断。
+推荐做法是：
+校验规则集中管理（按字段或按步骤） UI 只负责展示校验结果 支持三种校验时机 三种校验时机 即时校验：输入完成后触发（格式类最适合） 离焦校验：失焦触发（减少打断） 提交校验：步骤提交时触发（联动/条件必填） 示例（伪代码）：
+const rules = { phone: [ { when: &#34;blur&#34;, test: isPhone, message: &#34;手机号格式不正确&#34; } ], address: [ { when: &#34;submit&#34;, test: required, message: &#34;联系地址不能为空&#34; } ] } 4. 动态联动：让“条件必填”可解释 金融表单常见“条件必填”：">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-04-10T00:00:00+00:00">
+    <meta property="article:tag" content="金融系统">
+    <meta property="article:tag" content="表单设计">
+    <meta property="article:tag" content="多步骤流程">
+    <meta property="article:tag" content="状态管理">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="金融业务系统中的表单与流程设计实践">
+  <meta name="twitter:description" content="背景 金融业务系统常见的页面形态是“表单 &#43; 流程”组合：
+字段密度高（基础信息、声明项、选择项、上传项） 校验复杂（联动校验、条件必填、格式校验） 流程严格（多步骤、可回退、需留痕） 如果设计与实现不当，会出现：
+填写成本高、错误率高 频繁中断后难以恢复 需求迭代带来大量返工 本文总结一套偏工程视角、可复用的表单与流程实践方法。
+1. 信息结构：先把“业务阶段”拆清楚 长表单往往不是“字段太多”，而是“阶段混在一起”。推荐按阶段拆分：
+基本信息（身份、联系、所属信息） 规则声明（勾选确认、阅读提示） 证明材料（上传、有效期、补充说明） 结果确认（回显、确认提交） 拆分标准：
+每一步只解决一类问题 每一步的“完成条件”可清晰定义 shows/hides 的动态联动尽量在步骤内完成 2. 多步骤流程：用状态机思维做“可恢复” 对流程页面，最核心的能力是：中断后可恢复。
+推荐的最小状态模型 type FlowState = { step: number; // 当前步骤 completedSteps: number[]; // 已完成步骤 draft: Record&lt;string, any&gt;; // 草稿数据 lastSavedAt?: number; // 最近保存时间 } 保存策略 本地草稿（localStorage/IndexedDB）：快速、无需网络 服务端草稿（可选）：换设备继续、可做留痕 建议组合使用：
+输入时本地节流保存（例如 1–2 秒） 步骤完成/离开页面时触发服务端保存（可选） 3. 校验策略：把“校验”当成一个独立系统 常见错误是：校验逻辑散落在各个组件里，最终变成难以维护的条件判断。
+推荐做法是：
+校验规则集中管理（按字段或按步骤） UI 只负责展示校验结果 支持三种校验时机 三种校验时机 即时校验：输入完成后触发（格式类最适合） 离焦校验：失焦触发（减少打断） 提交校验：步骤提交时触发（联动/条件必填） 示例（伪代码）：
+const rules = { phone: [ { when: &#34;blur&#34;, test: isPhone, message: &#34;手机号格式不正确&#34; } ], address: [ { when: &#34;submit&#34;, test: required, message: &#34;联系地址不能为空&#34; } ] } 4. 动态联动：让“条件必填”可解释 金融表单常见“条件必填”：">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2025-04-10-financial-form-and-process-design/" /><link rel="prev" href="http://localhost:1313/posts/2025-03-05-ai-assisted-risk-hint-system/" /><link rel="next" href="http://localhost:1313/posts/2025-05-20-ai-assisted-compliance-content/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "金融业务系统中的表单与流程设计实践",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2025-04-10-financial-form-and-process-design\/"
+        },"genre": "posts","keywords": "金融系统, 表单设计, 多步骤流程, 状态管理","wordcount":  174 ,
+        "url": "http:\/\/localhost:1313\/posts\/2025-04-10-financial-form-and-process-design\/","datePublished": "2025-04-10T00:00:00+00:00","dateModified": "2025-04-10T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">金融业务系统中的表单与流程设计实践</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/frontend/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Frontend</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-10">2025-04-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 174 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#1-信息结构先把业务阶段拆清楚">1. 信息结构：先把“业务阶段”拆清楚</a></li>
+    <li><a href="#2-多步骤流程用状态机思维做可恢复">2. 多步骤流程：用状态机思维做“可恢复”</a>
+      <ul>
+        <li><a href="#推荐的最小状态模型">推荐的最小状态模型</a></li>
+        <li><a href="#保存策略">保存策略</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-校验策略把校验当成一个独立系统">3. 校验策略：把“校验”当成一个独立系统</a>
+      <ul>
+        <li><a href="#三种校验时机">三种校验时机</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-动态联动让条件必填可解释">4. 动态联动：让“条件必填”可解释</a></li>
+    <li><a href="#5-错误提示减少集中爆炸">5. 错误提示：减少“集中爆炸”</a></li>
+    <li><a href="#6-组件化把表单能力做成可复用模块">6. 组件化：把表单能力做成可复用模块</a></li>
+    <li><a href="#7-性能与稳定性避免表单卡顿">7. 性能与稳定性：避免“表单卡顿”</a></li>
+    <li><a href="#8-安全与隐私把敏感信息当成默认约束">8. 安全与隐私：把敏感信息当成默认约束</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="背景">背景</h2>
+<p>金融业务系统常见的页面形态是“表单 + 流程”组合：</p>
+<ul>
+<li>字段密度高（基础信息、声明项、选择项、上传项）</li>
+<li>校验复杂（联动校验、条件必填、格式校验）</li>
+<li>流程严格（多步骤、可回退、需留痕）</li>
+</ul>
+<p>如果设计与实现不当，会出现：</p>
+<ul>
+<li>填写成本高、错误率高</li>
+<li>频繁中断后难以恢复</li>
+<li>需求迭代带来大量返工</li>
+</ul>
+<p>本文总结一套偏工程视角、可复用的表单与流程实践方法。</p>
+<hr>
+<h2 id="1-信息结构先把业务阶段拆清楚">1. 信息结构：先把“业务阶段”拆清楚</h2>
+<p>长表单往往不是“字段太多”，而是“阶段混在一起”。推荐按阶段拆分：</p>
+<ul>
+<li>基本信息（身份、联系、所属信息）</li>
+<li>规则声明（勾选确认、阅读提示）</li>
+<li>证明材料（上传、有效期、补充说明）</li>
+<li>结果确认（回显、确认提交）</li>
+</ul>
+<p>拆分标准：</p>
+<ul>
+<li>每一步只解决一类问题</li>
+<li>每一步的“完成条件”可清晰定义</li>
+<li>shows/hides 的动态联动尽量在步骤内完成</li>
+</ul>
+<hr>
+<h2 id="2-多步骤流程用状态机思维做可恢复">2. 多步骤流程：用状态机思维做“可恢复”</h2>
+<p>对流程页面，最核心的能力是：<strong>中断后可恢复</strong>。</p>
+<h3 id="推荐的最小状态模型">推荐的最小状态模型</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">FlowState</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">step</span>: <span style="color:#66d9ef">number</span>;               <span style="color:#75715e">// 当前步骤
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">completedSteps</span>: <span style="color:#66d9ef">number</span>[];   <span style="color:#75715e">// 已完成步骤
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">draft</span>: <span style="color:#66d9ef">Record</span>&lt;<span style="color:#f92672">string</span>, <span style="color:#a6e22e">any</span>&gt;; <span style="color:#75715e">// 草稿数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">lastSavedAt?</span>: <span style="color:#66d9ef">number</span>;       <span style="color:#75715e">// 最近保存时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h3 id="保存策略">保存策略</h3>
+<ul>
+<li>本地草稿（localStorage/IndexedDB）：快速、无需网络</li>
+<li>服务端草稿（可选）：换设备继续、可做留痕</li>
+</ul>
+<p>建议组合使用：</p>
+<ul>
+<li>输入时本地节流保存（例如 1–2 秒）</li>
+<li>步骤完成/离开页面时触发服务端保存（可选）</li>
+</ul>
+<hr>
+<h2 id="3-校验策略把校验当成一个独立系统">3. 校验策略：把“校验”当成一个独立系统</h2>
+<p>常见错误是：校验逻辑散落在各个组件里，最终变成难以维护的条件判断。</p>
+<p>推荐做法是：</p>
+<ul>
+<li>校验规则集中管理（按字段或按步骤）</li>
+<li>UI 只负责展示校验结果</li>
+<li>支持三种校验时机</li>
+</ul>
+<h3 id="三种校验时机">三种校验时机</h3>
+<ol>
+<li><strong>即时校验</strong>：输入完成后触发（格式类最适合）</li>
+<li><strong>离焦校验</strong>：失焦触发（减少打断）</li>
+<li><strong>提交校验</strong>：步骤提交时触发（联动/条件必填）</li>
+</ol>
+<p>示例（伪代码）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">rules</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">phone</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>    { <span style="color:#a6e22e">when</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;blur&#34;</span>, <span style="color:#a6e22e">test</span>: <span style="color:#66d9ef">isPhone</span>, <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;手机号格式不正确&#34;</span> }
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">address</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>    { <span style="color:#a6e22e">when</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;submit&#34;</span>, <span style="color:#a6e22e">test</span>: <span style="color:#66d9ef">required</span>, <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;联系地址不能为空&#34;</span> }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="4-动态联动让条件必填可解释">4. 动态联动：让“条件必填”可解释</h2>
+<p>金融表单常见“条件必填”：</p>
+<ul>
+<li>选择 A -&gt; 需要补充字段 X</li>
+<li>勾选声明 -&gt; 才能进入下一步</li>
+<li>上传材料 -&gt; 需要填写有效期</li>
+</ul>
+<p>工程建议：</p>
+<ul>
+<li>联动规则放在“领域层”而不是组件内</li>
+<li>UI 展示联动原因（为什么这个字段出现/变成必填）</li>
+</ul>
+<p>例如在字段旁增加一句辅助说明：</p>
+<blockquote>
+<p>选择“邮寄”后，需要补充收件地址</p>
+</blockquote>
+<hr>
+<h2 id="5-错误提示减少集中爆炸">5. 错误提示：减少“集中爆炸”</h2>
+<p>用户体验层面，“一提交弹出 10 个错误”通常体验很差。建议：</p>
+<ul>
+<li>步骤提交时只聚焦第一个错误，并滚动定位</li>
+<li>同时在顶部给出错误概览（列表）</li>
+<li>字段级错误提示保持简短、可执行</li>
+</ul>
+<p>错误文案建议用“动作 + 原因”结构：</p>
+<ul>
+<li>✅ “请补全联系地址”</li>
+<li>❌ “联系地址错误”</li>
+</ul>
+<hr>
+<h2 id="6-组件化把表单能力做成可复用模块">6. 组件化：把表单能力做成可复用模块</h2>
+<p>推荐拆成三层：</p>
+<ul>
+<li><strong>字段层</strong>：Input/Select/Date/Upload 等</li>
+<li><strong>表单层</strong>：FormContainer（布局、校验、错误聚合）</li>
+<li><strong>流程层</strong>：FlowContainer（步骤管理、草稿、恢复、提交）</li>
+</ul>
+<p>这样做的好处：</p>
+<ul>
+<li>字段层专注交互与可访问性</li>
+<li>表单层专注校验与展示一致性</li>
+<li>流程层专注状态流转与恢复</li>
+</ul>
+<hr>
+<h2 id="7-性能与稳定性避免表单卡顿">7. 性能与稳定性：避免“表单卡顿”</h2>
+<p>高字段密度页面容易卡顿，常见原因：</p>
+<ul>
+<li>全表单状态放一个大对象，频繁 setState</li>
+<li>每次输入触发大量联动渲染</li>
+<li>上传组件与预览渲染过重</li>
+</ul>
+<p>建议：</p>
+<ul>
+<li>以字段为粒度做局部更新（或使用表单库的订阅机制）</li>
+<li>联动计算做 memo/节流</li>
+<li>上传预览使用懒加载与压缩策略</li>
+</ul>
+<hr>
+<h2 id="8-安全与隐私把敏感信息当成默认约束">8. 安全与隐私：把敏感信息当成默认约束</h2>
+<p>金融系统常见敏感信息（身份证号、联系方式等）。工程注意点：</p>
+<ul>
+<li>页面日志与埋点避免上报原始敏感字段</li>
+<li>前端缓存草稿需要做过期策略</li>
+<li>截图/复制等能力（若有）需要按场景控制</li>
+</ul>
+<hr>
+<h2 id="总结">总结</h2>
+<p>金融业务系统的表单与流程，难点在于“高约束 + 高复杂度 + 可恢复”。落地时建议优先保障：</p>
+<ul>
+<li>信息结构清晰（按阶段拆分）</li>
+<li>状态可恢复（草稿与步骤状态）</li>
+<li>校验可维护（规则集中、UI 解耦）</li>
+<li>联动可解释（减少不透明的必填变化）</li>
+</ul>
+<p>当这些基础能力稳定后，流程的新增、调整与复用都会明显更可控。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-04-10</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2025-04-10-financial-form-and-process-design/" data-title="金融业务系统中的表单与流程设计实践" data-via="https://github.com/cs11b137" data-hashtags="金融系统,表单设计,多步骤流程,状态管理"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2025-04-10-financial-form-and-process-design/" data-hashtag="金融系统"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2025-04-10-financial-form-and-process-design/" data-title="金融业务系统中的表单与流程设计实践"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2025-04-10-financial-form-and-process-design/" data-title="金融业务系统中的表单与流程设计实践"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2025-04-10-financial-form-and-process-design/" data-title="金融业务系统中的表单与流程设计实践"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E9%87%91%E8%9E%8D%E7%B3%BB%E7%BB%9F/">金融系统</a>,&nbsp;<a href="/tags/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A1/">表单设计</a>,&nbsp;<a href="/tags/%E5%A4%9A%E6%AD%A5%E9%AA%A4%E6%B5%81%E7%A8%8B/">多步骤流程</a>,&nbsp;<a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2025-03-05-ai-assisted-risk-hint-system/" class="prev" rel="prev" title="金融系统中的智能提示设计：规则 &#43; AI 的组合方式"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>金融系统中的智能提示设计：规则 + AI 的组合方式</a>
+            <a href="/posts/2025-05-20-ai-assisted-compliance-content/" class="next" rel="next" title="AI 在金融系统内容生成中的可控使用方式">AI 在金融系统内容生成中的可控使用方式<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

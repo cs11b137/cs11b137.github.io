@@ -20,7 +20,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="JavaScript 模块化那些事：从 IIFE 到 ES Modules">
   <meta name="twitter:description" content="回顾从 jQuery 时代到 ES Modules 的模块化演变，以及现在更推荐的写法。">
-      <meta name="twitter:site" content="@https://github.com/cs11b137">
+      <meta name="twitter:site" content="@https://x.com/IswjWu">
 <meta name="application-name" content="Saiga">
 <meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2019-03-10-js-module-patterns/" /><link rel="next" href="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -50,7 +50,7 @@
             <a href="/" title="Saiga">Saiga</a>
         </div>
         <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
                         <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
                         <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
                             <i class="fas fa-search fa-fw" aria-hidden="true"></i>
@@ -92,7 +92,7 @@
                     <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
                         取消
                     </a>
-                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
                 <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
             </a></div>
     </div>
@@ -132,7 +132,7 @@
     <li><a href="#总结现在怎么写比较稳妥">总结：现在怎么写比较稳妥？</a></li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><p>最早写前端的时候，经常是一个 <code>index.html</code> 里塞一大坨 <code>&lt;script&gt;</code>，变量到处飞，函数名一改项目全崩。后来慢慢开始接触各种「模块化方案」，从 IIFE、AMD、CommonJS 一路走到 ES Modules，心态也经历了从「凑合能用」到「必须有规范」。</p>
+            </div><div class="content" id="content"><p>最早写前端的时候，经常是一个 <code>index.html</code> 里塞一大坨 <code>&lt;script&gt;</code>，变量到处飞，函数名一改项目全崩。后来慢慢开始接触各种模块化方案，从 IIFE、AMD、CommonJS 一路走到 ES Modules，心态也经历了从凑合能用到必须有规范。</p>
 <p>这篇就当是给自己的一个小总结：<strong>为什么需要模块化、几种常见写法的区别、现在应该怎么写。</strong></p>
 <hr>
 <h2 id="为什么要模块化">为什么要模块化？</h2>
@@ -348,7 +348,7 @@
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules" data-via="https://github.com/cs11b137" data-hashtags="JavaScript,模块化,ESModules"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-hashtag="JavaScript"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules" data-via="https://x.com/IswjWu" data-hashtags="JavaScript,模块化,ESModules"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-hashtag="JavaScript"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2019-03-10-js-module-patterns/" data-title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>

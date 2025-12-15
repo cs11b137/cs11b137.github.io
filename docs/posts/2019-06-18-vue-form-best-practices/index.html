@@ -20,7 +20,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="复杂表单实战：我在项目里踩过的 Vue 坑">
   <meta name="twitter:description" content="记录一个复杂表单项目中，关于校验、动态字段和联动逻辑的设计与踩坑。">
-      <meta name="twitter:site" content="@https://github.com/cs11b137">
+      <meta name="twitter:site" content="@https://x.com/IswjWu">
 <meta name="application-name" content="Saiga">
 <meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" /><link rel="prev" href="http://localhost:1313/posts/2019-03-10-js-module-patterns/" /><link rel="next" href="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -50,7 +50,7 @@
             <a href="/" title="Saiga">Saiga</a>
         </div>
         <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
                         <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
                         <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
                             <i class="fas fa-search fa-fw" aria-hidden="true"></i>
@@ -92,7 +92,7 @@
                     <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
                         取消
                     </a>
-                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
                 <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
             </a></div>
     </div>
@@ -131,7 +131,7 @@
   </ul>
 </nav></div>
             </div><div class="content" id="content"><p>表单是前端最常见、也最容易写成一坨的东西。简单表单随便放几个 <code>v-model</code> 都能跑，一旦字段多起来、存在动态联动、跨步校验，代码就开始失控。</p>
-<p>这篇文章基于我做过的一个「几十个字段 + 多步 + 条件显示」的表单项目，总结一些在 Vue 里踩过的坑和解决方案。</p>
+<p>这篇文章基于我做过的一个&quot;几十个字段 + 多步 + 条件显示&quot;的表单项目，总结一些在 Vue 里踩过的坑和解决方案。</p>
 <hr>
 <h2 id="需求背景一个略显超标的表单">需求背景：一个略显「超标」的表单</h2>
 <p>当时的表单大概长这样：</p>
@@ -404,7 +404,7 @@
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑" data-via="https://github.com/cs11b137" data-hashtags="Vue,表单,表单校验"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-hashtag="Vue"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑" data-via="https://x.com/IswjWu" data-hashtags="Vue,表单,表单校验"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-hashtag="Vue"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" data-title="复杂表单实战：我在项目里踩过的 Vue 坑"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -417,7 +417,7 @@
     </div>
 
     <div class="post-nav"><a href="/posts/2019-03-10-js-module-patterns/" class="prev" rel="prev" title="JavaScript 模块化那些事：从 IIFE 到 ES Modules"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>JavaScript 模块化那些事：从 IIFE 到 ES Modules</a>
-            <a href="/posts/2019-09-05-webpack-intro-practice/" class="next" rel="next" title="从零搭一个前端构建脚手架：Webpack 入门实践">从零搭一个前端构建脚手架：Webpack 入门实践<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+            <a href="/posts/2019-09-05-webpack-intro-practice/" class="next" rel="next" title="从零搭一个前端构建脚手架：Webpack 实践">从零搭一个前端构建脚手架：Webpack 实践<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">

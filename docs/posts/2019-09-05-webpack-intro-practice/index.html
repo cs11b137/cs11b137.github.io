@@ -4,9 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>从零搭一个前端构建脚手架：Webpack 入门实践 - Saiga</title><meta name="Description" content="用一个小项目讲清楚 entry/output/loaders/plugins 等构建基础概念。"><meta property="og:url" content="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/">
+        <title>从零搭一个前端构建脚手架：Webpack 实践 - Saiga</title><meta name="Description" content="用一个小项目讲清楚 entry/output/loaders/plugins 等构建基础概念。"><meta property="og:url" content="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/">
   <meta property="og:site_name" content="Saiga">
-  <meta property="og:title" content="从零搭一个前端构建脚手架：Webpack 入门实践">
+  <meta property="og:title" content="从零搭一个前端构建脚手架：Webpack 实践">
   <meta property="og:description" content="用一个小项目讲清楚 entry/output/loaders/plugins 等构建基础概念。">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
@@ -18,9 +18,9 @@
     <meta property="article:tag" content="脚手架">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="从零搭一个前端构建脚手架：Webpack 入门实践">
+  <meta name="twitter:title" content="从零搭一个前端构建脚手架：Webpack 实践">
   <meta name="twitter:description" content="用一个小项目讲清楚 entry/output/loaders/plugins 等构建基础概念。">
-      <meta name="twitter:site" content="@https://github.com/cs11b137">
+      <meta name="twitter:site" content="@https://x.com/IswjWu">
 <meta name="application-name" content="Saiga">
 <meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" /><link rel="prev" href="http://localhost:1313/posts/2019-06-18-vue-form-best-practices/" /><link rel="next" href="http://localhost:1313/posts/2019-12-20-first-side-project-review/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -28,7 +28,7 @@
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "从零搭一个前端构建脚手架：Webpack 入门实践",
+        "headline": "从零搭一个前端构建脚手架：Webpack 实践",
         "inLanguage": "zh-cn",
         "mainEntityOfPage": {
             "@type": "WebPage",
@@ -50,7 +50,7 @@
             <a href="/" title="Saiga">Saiga</a>
         </div>
         <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
                         <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
                         <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
                             <i class="fas fa-search fa-fw" aria-hidden="true"></i>
@@ -92,7 +92,7 @@
                     <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
                         取消
                     </a>
-                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
                 <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
             </a></div>
     </div>
@@ -105,7 +105,7 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">目录</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">从零搭一个前端构建脚手架：Webpack 入门实践</h1><div class="post-meta">
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">从零搭一个前端构建脚手架：Webpack 实践</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>前端工程化</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2019-09-05">2019-09-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 431 字&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
@@ -348,7 +348,7 @@
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-title="从零搭一个前端构建脚手架：Webpack 入门实践" data-via="https://github.com/cs11b137" data-hashtags="Webpack,构建工具,脚手架"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-hashtag="Webpack"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-title="从零搭一个前端构建脚手架：Webpack 入门实践"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-title="从零搭一个前端构建脚手架：Webpack 入门实践"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-title="从零搭一个前端构建脚手架：Webpack 入门实践"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-title="从零搭一个前端构建脚手架：Webpack 实践" data-via="https://x.com/IswjWu" data-hashtags="Webpack,构建工具,脚手架"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-hashtag="Webpack"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-title="从零搭一个前端构建脚手架：Webpack 实践"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-title="从零搭一个前端构建脚手架：Webpack 实践"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2019-09-05-webpack-intro-practice/" data-title="从零搭一个前端构建脚手架：Webpack 实践"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -361,7 +361,7 @@
     </div>
 
     <div class="post-nav"><a href="/posts/2019-06-18-vue-form-best-practices/" class="prev" rel="prev" title="复杂表单实战：我在项目里踩过的 Vue 坑"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>复杂表单实战：我在项目里踩过的 Vue 坑</a>
-            <a href="/posts/2019-12-20-first-side-project-review/" class="next" rel="next" title="第一个线上小项目复盘：从需求到上线">第一个线上小项目复盘：从需求到上线<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+            <a href="/posts/2019-12-20-first-side-project-review/" class="next" rel="next" title="从 jQuery 到模块化：一次前端工程意识的转变">从 jQuery 到模块化：一次前端工程意识的转变<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">

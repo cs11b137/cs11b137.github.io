@@ -4,24 +4,45 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>在金融前端里用 AI 做风险提示与文案生成 - Saiga</title><meta name="Description" content="在金融业务前端里尝试用 AI 辅助风险提示和文案生成时，需要注意的边界、流程与实践经验。"><meta property="og:url" content="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/">
+        <title>在前端系统中引入 AI 辅助提示与文案生成 - Saiga</title><meta name="Description" content="This is my cool site"><meta property="og:url" content="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/">
   <meta property="og:site_name" content="Saiga">
-  <meta property="og:title" content="在金融前端里用 AI 做风险提示与文案生成">
-  <meta property="og:description" content="在金融业务前端里尝试用 AI 辅助风险提示和文案生成时，需要注意的边界、流程与实践经验。">
+  <meta property="og:title" content="在前端系统中引入 AI 辅助提示与文案生成">
+  <meta property="og:description" content="背景 随着大模型能力逐步成熟，AI 不再只用于对话场景，也开始进入实际业务系统，承担提示生成、文案辅助与信息补全等角色。
+在前端系统中合理引入 AI，可以在不改变原有业务流程的前提下，提升信息表达效率与一致性。
+常见应用场景 1. 提示文案辅助生成 在配置类或操作型页面中，常见需求包括：
+自动生成操作说明 根据上下文补充提示文案 统一不同页面的表达风格 AI 更适合充当“草稿生成器”，而非最终决策者。
+2. 动态提示内容补全 基于页面状态或用户输入，生成更具体的提示信息：
+根据选择结果生成说明 针对异常情况给出补充建议 避免模板化、重复性文案 3. 复杂规则的自然语言转译 当系统内部规则较为复杂时，可以通过 AI 将结构化信息转化为更易理解的描述：
+配置结果解释 条件判断结果说明 操作后果提示 引入 AI 时的设计原则 1. 明确 AI 的角色边界 在前端系统中，AI 更适合承担：
+文案辅助 表达优化 信息重组 而不适合直接参与业务判断或规则决策。
+2. 保持可控的输出范围 为避免不可预期的输出，应当：
+提供明确的上下文与输入约束 使用固定模板 &#43; AI 补全的方式 对输出结果进行二次校验或人工确认 3. 输出结果可回退、可替换 AI 生成内容应具备以下特性：
+不影响主流程运行 支持一键替换为默认文案 不作为唯一信息来源 前端实现思路 1. 以“增强能力”形式接入 在实现层面，通常将 AI 能力视为可选增强：
+不影响原有逻辑 异常时自动降级 与核心业务解耦 2. 统一封装调用接口 通过统一的 AI 服务封装：">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2024-06-22T00:00:00+00:00">
     <meta property="article:modified_time" content="2024-06-22T00:00:00+00:00">
-    <meta property="article:tag" content="风险提示">
-    <meta property="article:tag" content="合规">
-    <meta property="article:tag" content="金融文案">
-    <meta property="article:tag" content="大模型">
+    <meta property="article:tag" content="AI 应用">
+    <meta property="article:tag" content="文案生成">
+    <meta property="article:tag" content="前端实践">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="在金融前端里用 AI 做风险提示与文案生成">
-  <meta name="twitter:description" content="在金融业务前端里尝试用 AI 辅助风险提示和文案生成时，需要注意的边界、流程与实践经验。">
-      <meta name="twitter:site" content="@https://github.com/cs11b137">
+  <meta name="twitter:title" content="在前端系统中引入 AI 辅助提示与文案生成">
+  <meta name="twitter:description" content="背景 随着大模型能力逐步成熟，AI 不再只用于对话场景，也开始进入实际业务系统，承担提示生成、文案辅助与信息补全等角色。
+在前端系统中合理引入 AI，可以在不改变原有业务流程的前提下，提升信息表达效率与一致性。
+常见应用场景 1. 提示文案辅助生成 在配置类或操作型页面中，常见需求包括：
+自动生成操作说明 根据上下文补充提示文案 统一不同页面的表达风格 AI 更适合充当“草稿生成器”，而非最终决策者。
+2. 动态提示内容补全 基于页面状态或用户输入，生成更具体的提示信息：
+根据选择结果生成说明 针对异常情况给出补充建议 避免模板化、重复性文案 3. 复杂规则的自然语言转译 当系统内部规则较为复杂时，可以通过 AI 将结构化信息转化为更易理解的描述：
+配置结果解释 条件判断结果说明 操作后果提示 引入 AI 时的设计原则 1. 明确 AI 的角色边界 在前端系统中，AI 更适合承担：
+文案辅助 表达优化 信息重组 而不适合直接参与业务判断或规则决策。
+2. 保持可控的输出范围 为避免不可预期的输出，应当：
+提供明确的上下文与输入约束 使用固定模板 &#43; AI 补全的方式 对输出结果进行二次校验或人工确认 3. 输出结果可回退、可替换 AI 生成内容应具备以下特性：
+不影响主流程运行 支持一键替换为默认文案 不作为唯一信息来源 前端实现思路 1. 以“增强能力”形式接入 在实现层面，通常将 AI 能力视为可选增强：
+不影响原有逻辑 异常时自动降级 与核心业务解耦 2. 统一封装调用接口 通过统一的 AI 服务封装：">
+      <meta name="twitter:site" content="@https://x.com/IswjWu">
 <meta name="application-name" content="Saiga">
 <meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" /><link rel="prev" href="http://localhost:1313/posts/2024-05-01-ai-performance-analyzer/" /><link rel="next" href="http://localhost:1313/posts/2024-08-10-personal-knowledge-base-with-ai/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -29,18 +50,18 @@
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "在金融前端里用 AI 做风险提示与文案生成",
+        "headline": "在前端系统中引入 AI 辅助提示与文案生成",
         "inLanguage": "zh-cn",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "http:\/\/localhost:1313\/posts\/2024-06-22-ai-for-fintech-risk-hints\/"
-        },"genre": "posts","keywords": "风险提示, 合规, 金融文案, 大模型","wordcount":  155 ,
+        },"genre": "posts","keywords": "AI 应用, 文案生成, 前端实践","wordcount":  91 ,
         "url": "http:\/\/localhost:1313\/posts\/2024-06-22-ai-for-fintech-risk-hints\/","datePublished": "2024-06-22T00:00:00+00:00","dateModified": "2024-06-22T00:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
                 "name": "wuwj"
-            },"description": "在金融业务前端里尝试用 AI 辅助风险提示和文案生成时，需要注意的边界、流程与实践经验。"
+            },"description": ""
     }
     </script></head>
     <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
@@ -51,7 +72,7 @@
             <a href="/" title="Saiga">Saiga</a>
         </div>
         <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
                         <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
                         <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
                             <i class="fas fa-search fa-fw" aria-hidden="true"></i>
@@ -93,7 +114,7 @@
                     <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
                         取消
                     </a>
-                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
                 <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
             </a></div>
     </div>
@@ -106,9 +127,9 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">目录</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">在金融前端里用 AI 做风险提示与文案生成</h1><div class="post-meta">
-            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E9%87%91%E8%9E%8D%E5%9C%BA%E6%99%AF/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>金融场景</a>&nbsp;<a href="/categories/ai-%E5%BA%94%E7%94%A8/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI 应用</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-06-22">2024-06-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 155 字&nbsp;
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">在前端系统中引入 AI 辅助提示与文案生成</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/ai/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI</a>&nbsp;<a href="/categories/frontend/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Frontend</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-06-22">2024-06-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 91 字&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
@@ -117,176 +138,116 @@
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#1-先定边界ai-能做什么不能做什么">1. 先定边界：AI 能做什么，不能做什么？</a></li>
-    <li><a href="#2-文案来源让-ai-基于权威文本工作">2. 文案来源：让 AI 基于「权威文本」工作</a></li>
-    <li><a href="#3-用法一长条款--短提示的组合">3. 用法一：长条款 + 短提示的组合</a></li>
-    <li><a href="#4-用法二针对用户画像生成不同风格的提示">4. 用法二：针对用户画像生成不同风格的提示</a></li>
-    <li><a href="#5-用法三给内部人员用的条款解释助手">5. 用法三：给内部人员用的「条款解释助手」</a></li>
-    <li><a href="#6-技术侧的安全阀别只靠流程">6. 技术侧的安全阀：别只靠流程</a></li>
-    <li><a href="#7-实际体验哪里最有价值">7. 实际体验：哪里最有价值？</a></li>
-    <li><a href="#8-小结">8. 小结</a></li>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#常见应用场景">常见应用场景</a>
+      <ul>
+        <li><a href="#1-提示文案辅助生成">1. 提示文案辅助生成</a></li>
+        <li><a href="#2-动态提示内容补全">2. 动态提示内容补全</a></li>
+        <li><a href="#3-复杂规则的自然语言转译">3. 复杂规则的自然语言转译</a></li>
+      </ul>
+    </li>
+    <li><a href="#引入-ai-时的设计原则">引入 AI 时的设计原则</a>
+      <ul>
+        <li><a href="#1-明确-ai-的角色边界">1. 明确 AI 的角色边界</a></li>
+        <li><a href="#2-保持可控的输出范围">2. 保持可控的输出范围</a></li>
+        <li><a href="#3-输出结果可回退可替换">3. 输出结果可回退、可替换</a></li>
+      </ul>
+    </li>
+    <li><a href="#前端实现思路">前端实现思路</a>
+      <ul>
+        <li><a href="#1-以增强能力形式接入">1. 以“增强能力”形式接入</a></li>
+        <li><a href="#2-统一封装调用接口">2. 统一封装调用接口</a></li>
+        <li><a href="#3-明确交互反馈">3. 明确交互反馈</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><p>金融业务的前端开发，有一块很「非技术」但非常重要的内容：</p>
-<blockquote>
-<p>各种风险提示、重要说明、免责声明。</p>
-</blockquote>
-<p>这些文案往往：</p>
-<ul>
-<li>又长又硬，措辞要非常谨慎</li>
-<li>改一两个字都要走产品 / 合规 / 法务流程</li>
-<li>但监管、业务又在不断变化</li>
-</ul>
-<p>于是就有一个自然的想法：</p>
-<blockquote>
-<p>能不能让 AI 帮我们「起草」这些文案，让人只负责最后确认？</p>
-</blockquote>
-<p>这篇文章就记录一下在金融前端场景中，用 AI 做风险提示与文案生成的一些实践。</p>
+            </div><div class="content" id="content"><h2 id="背景">背景</h2>
+<p>随着大模型能力逐步成熟，AI 不再只用于对话场景，也开始进入实际业务系统，承担<strong>提示生成、文案辅助与信息补全</strong>等角色。</p>
+<p>在前端系统中合理引入 AI，可以在不改变原有业务流程的前提下，提升信息表达效率与一致性。</p>
 <hr>
-<h2 id="1-先定边界ai-能做什么不能做什么">1. 先定边界：AI 能做什么，不能做什么？</h2>
-<p>一句话：<strong>AI 只负责辅助，不负责最终结论。</strong></p>
-<p>可以做的事情：</p>
+<h2 id="常见应用场景">常见应用场景</h2>
+<h3 id="1-提示文案辅助生成">1. 提示文案辅助生成</h3>
+<p>在配置类或操作型页面中，常见需求包括：</p>
 <ul>
-<li>根据已有条款，生成更易懂的「短版说明」</li>
-<li>针对不同用户类型，调整语气和强调点</li>
-<li>帮工程师/产品解释复杂条款的含义</li>
+<li>自动生成操作说明</li>
+<li>根据上下文补充提示文案</li>
+<li>统一不同页面的表达风格</li>
 </ul>
-<p>绝对不能做的事情：</p>
-<ul>
-<li>修改风险等级、收益描述等关键事实</li>
-<li>给出任何「收益承诺」「投资建议」</li>
-<li>跳过合规流程，直接把生成文案上到生产页面</li>
-</ul>
-<p>最终对外展示的内容，责任仍然在产品 / 合规，而不是模型。</p>
+<p>AI 更适合充当“草稿生成器”，而非最终决策者。</p>
 <hr>
-<h2 id="2-文案来源让-ai-基于权威文本工作">2. 文案来源：让 AI 基于「权威文本」工作</h2>
-<p>为了避免 AI 瞎编，我们没有让它凭空创作，而是：</p>
-<ol>
-<li>收集已经过审的文案与条款</li>
-<li>做成一个小型「文案知识库」（或者直接附在 Prompt/上下文里）</li>
-<li>要求 AI 在此基础上做改写、摘要，而不是凭空编造</li>
-</ol>
-<p>示例 Prompt：</p>
-<blockquote>
-<p>下面是一段已经过合规审核的风险提示，请你在不改变关键信息的前提下，用更易懂的中文生成一段 80～120 字的短说明，给普通投资人阅读。<br>
-不允许添加任何「保证收益」「稳赚不赔」等内容。</p>
-</blockquote>
-<p>这样 AI 更像「翻译器」而不是「文案创作人」。</p>
+<h3 id="2-动态提示内容补全">2. 动态提示内容补全</h3>
+<p>基于页面状态或用户输入，生成更具体的提示信息：</p>
+<ul>
+<li>根据选择结果生成说明</li>
+<li>针对异常情况给出补充建议</li>
+<li>避免模板化、重复性文案</li>
+</ul>
 <hr>
-<h2 id="3-用法一长条款--短提示的组合">3. 用法一：长条款 + 短提示的组合</h2>
-<p>实际页面里经常这样设计：</p>
+<h3 id="3-复杂规则的自然语言转译">3. 复杂规则的自然语言转译</h3>
+<p>当系统内部规则较为复杂时，可以通过 AI 将结构化信息转化为更易理解的描述：</p>
 <ul>
-<li>显示一段简短提示（1～2 行文案）</li>
-<li>下面有「展开阅读完整风险揭示」链接</li>
-<li>点击后查看长条款</li>
+<li>配置结果解释</li>
+<li>条件判断结果说明</li>
+<li>操作后果提示</li>
 </ul>
-<p>这里可以让 AI 帮忙生成简短提示部分：</p>
-<ol>
-<li>输入：完整条款 + 目标长度 + 目标受众</li>
-<li>输出：1 段短文案草稿</li>
-<li>经过产品 / 合规审阅后，挂在页面上使用</li>
-</ol>
-<p>完整条款仍然保持原文，不做模型改写。</p>
 <hr>
-<h2 id="4-用法二针对用户画像生成不同风格的提示">4. 用法二：针对用户画像生成不同风格的提示</h2>
-<p>比如适当性里有不同风险等级：保守型、稳健型、积极型……<br>
-我们希望提示能更「对人说话」一点：</p>
+<h2 id="引入-ai-时的设计原则">引入 AI 时的设计原则</h2>
+<h3 id="1-明确-ai-的角色边界">1. 明确 AI 的角色边界</h3>
+<p>在前端系统中，AI 更适合承担：</p>
 <ul>
-<li>对保守型投资人，多强调本金可能亏损、波动风险</li>
-<li>对积极型投资人，多提醒高收益伴随高风险</li>
+<li>文案辅助</li>
+<li>表达优化</li>
+<li>信息重组</li>
 </ul>
-<p>做法：</p>
-<ol>
-<li>提供基准风险提示条款</li>
-<li>传入用户风险等级、部分画像信息（如年龄段、投资经验）</li>
-<li>让 AI 在语气和重点上做轻微调整，但不得改实质含义</li>
-</ol>
-<p>示例 Prompt：</p>
-<blockquote>
-<p>请基于下面的标准风险提示条款，为“风险承受能力 = 保守型”的投资人生成一段更易理解的风险提示，强调可能发生本金亏损和净值波动。不得弱化任何风险或加入额外的收益承诺。</p>
-</blockquote>
-<p>输出仍要走人工审核，这一点不会省略。</p>
+<p>而不适合直接参与业务判断或规则决策。</p>
 <hr>
-<h2 id="5-用法三给内部人员用的条款解释助手">5. 用法三：给内部人员用的「条款解释助手」</h2>
-<p>这其实是我个人感觉最有价值的部分：</p>
+<h3 id="2-保持可控的输出范围">2. 保持可控的输出范围</h3>
+<p>为避免不可预期的输出，应当：</p>
 <ul>
-<li>工程师、产品经常要读长条款，用以设计流程和交互</li>
-<li>但法律/监管语言很难读，容易理解偏差</li>
+<li>提供明确的上下文与输入约束</li>
+<li>使用固定模板 + AI 补全的方式</li>
+<li>对输出结果进行二次校验或人工确认</li>
 </ul>
-<p>这里可以大胆一些：</p>
-<ol>
-<li>把条款原文 + 业务背景喂给 AI</li>
-<li>让它用白话解释「这条款在说什么」</li>
-<li>再要求它提炼出「前端实现要注意的点」</li>
-</ol>
-<p>示例结果可能是：</p>
-<ul>
-<li>需要额外增加一个勾选框，提示「您的风险等级低于产品风险等级」</li>
-<li>未勾选则不允许继续购买</li>
-<li>需要记录确认时间和确认渠道</li>
-</ul>
-<p>这些内容只用在内部沟通和设计文档里，不直接给 C 端用户看。</p>
 <hr>
-<h2 id="6-技术侧的安全阀别只靠流程">6. 技术侧的安全阀：别只靠流程</h2>
-<p>除了流程和规范，还可以在技术上加几道保险：</p>
-<ol>
-<li>
-<p><strong>敏感词过滤</strong></p>
+<h3 id="3-输出结果可回退可替换">3. 输出结果可回退、可替换</h3>
+<p>AI 生成内容应具备以下特性：</p>
 <ul>
-<li>对生成结果做文本扫描</li>
-<li>出现「保证」「承诺」「稳健收益」等敏感词直接判为不合格</li>
+<li>不影响主流程运行</li>
+<li>支持一键替换为默认文案</li>
+<li>不作为唯一信息来源</li>
 </ul>
-</li>
-<li>
-<p><strong>审计日志</strong></p>
-<ul>
-<li>记录每次生成的输入和输出</li>
-<li>问题追溯时有据可查</li>
-</ul>
-</li>
-<li>
-<p><strong>权限限制</strong></p>
-<ul>
-<li>文案生成工具只开放给特定角色</li>
-<li>生成结果默认只保存在「草稿区」，不能直接发布到生产环境</li>
-</ul>
-</li>
-</ol>
 <hr>
-<h2 id="7-实际体验哪里最有价值">7. 实际体验：哪里最有价值？</h2>
-<p>做下来之后有两个明显的收益：</p>
-<ol>
-<li>
-<p><strong>写文案从「从 0 开始」变成「改草稿」</strong></p>
+<h2 id="前端实现思路">前端实现思路</h2>
+<h3 id="1-以增强能力形式接入">1. 以“增强能力”形式接入</h3>
+<p>在实现层面，通常将 AI 能力视为可选增强：</p>
 <ul>
-<li>原来产品/前端要自己写初稿，再交给合规挑词</li>
-<li>现在可以让 AI 基于标准条款先生成几版草稿</li>
-<li>合规在这几版里挑一个修改，效率会高很多</li>
+<li>不影响原有逻辑</li>
+<li>异常时自动降级</li>
+<li>与核心业务解耦</li>
 </ul>
-</li>
-<li>
-<p><strong>工程师读条款不那么痛苦了</strong></p>
-<ul>
-<li>复杂条款先喂给 AI，总结出「对前端实现的关键点」</li>
-<li>写需求文档和接口设计时脑子更清晰</li>
-</ul>
-</li>
-</ol>
 <hr>
-<h2 id="8-小结">8. 小结</h2>
-<p>在金融前端里引入 AI 做风险提示与文案生成，最重要的是三件事：</p>
-<ol>
-<li><strong>边界画清楚：辅助，不替代</strong></li>
-<li><strong>基于权威文本，不凭空创作</strong></li>
-<li><strong>所有对外文案仍走合规审核</strong></li>
-</ol>
-<p>只要底线稳住，它就是一个很好用的加速器：</p>
+<h3 id="2-统一封装调用接口">2. 统一封装调用接口</h3>
+<p>通过统一的 AI 服务封装：</p>
 <ul>
-<li>帮产品/合规节省时间</li>
-<li>帮工程师更快理解条款</li>
-<li>让前端页面上的提示更友好、更易懂</li>
+<li>隐藏具体模型实现</li>
+<li>便于后续替换或升级</li>
+<li>控制调用频率与成本</li>
 </ul>
-<p>但无论怎么用，有一条不会变：<strong>最终对用户负责的，永远是人，而不是模型。</strong></p>
+<hr>
+<h3 id="3-明确交互反馈">3. 明确交互反馈</h3>
+<p>在 UI 层面，应清晰告知用户：</p>
+<ul>
+<li>当前内容由 AI 辅助生成</li>
+<li>结果仅供参考</li>
+<li>支持手动修改</li>
+</ul>
+<hr>
+<h2 id="总结">总结</h2>
+<p>在前端系统中引入 AI，更重要的不是“是否使用”，而是<strong>如何使用</strong>。</p>
+<p>将 AI 定位为辅助工具，而非核心决策组件，可以在保证系统稳定性的前提下，逐步释放其在信息表达与效率提升方面的价值。</p>
+<p>这种渐进式的引入方式，更适合真实业务系统的长期演进。</p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
@@ -296,20 +257,20 @@
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在金融前端里用 AI 做风险提示与文案生成" data-via="https://github.com/cs11b137" data-hashtags="风险提示,合规,金融文案,大模型"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-hashtag="风险提示"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在金融前端里用 AI 做风险提示与文案生成"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在金融前端里用 AI 做风险提示与文案生成"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在金融前端里用 AI 做风险提示与文案生成"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在前端系统中引入 AI 辅助提示与文案生成" data-via="https://x.com/IswjWu" data-hashtags="AI 应用,文案生成,前端实践"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-hashtag="AI 应用"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在前端系统中引入 AI 辅助提示与文案生成"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在前端系统中引入 AI 辅助提示与文案生成"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2024-06-22-ai-for-fintech-risk-hints/" data-title="在前端系统中引入 AI 辅助提示与文案生成"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
 
     <div class="post-info-more">
-        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E9%A3%8E%E9%99%A9%E6%8F%90%E7%A4%BA/">风险提示</a>,&nbsp;<a href="/tags/%E5%90%88%E8%A7%84/">合规</a>,&nbsp;<a href="/tags/%E9%87%91%E8%9E%8D%E6%96%87%E6%A1%88/">金融文案</a>,&nbsp;<a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a></section>
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/ai-%E5%BA%94%E7%94%A8/">AI 应用</a>,&nbsp;<a href="/tags/%E6%96%87%E6%A1%88%E7%94%9F%E6%88%90/">文案生成</a>,&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E5%AE%9E%E8%B7%B5/">前端实践</a></section>
         <section>
             <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
         </section>
     </div>
 
     <div class="post-nav"><a href="/posts/2024-05-01-ai-performance-analyzer/" class="prev" rel="prev" title="让 AI 帮我做前端性能分析报告"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>让 AI 帮我做前端性能分析报告</a>
-            <a href="/posts/2024-08-10-personal-knowledge-base-with-ai/" class="next" rel="next" title="用 Hugo &#43; 向量库搭一个个人知识库 &#43; AI 搜索">用 Hugo + 向量库搭一个个人知识库 + AI 搜索<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+            <a href="/posts/2024-08-10-personal-knowledge-base-with-ai/" class="next" rel="next" title="使用 AI 辅助整理与检索个人内容的方法">使用 AI 辅助整理与检索个人内容的方法<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">

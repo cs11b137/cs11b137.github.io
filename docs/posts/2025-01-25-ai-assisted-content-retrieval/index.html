@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>在内容型系统中引入 AI 辅助检索的工程实践 - Saiga</title><meta name="Description" content="This is my cool site"><meta property="og:url" content="http://localhost:1313/posts/2025-01-25-ai-assisted-content-retrieval/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="在内容型系统中引入 AI 辅助检索的工程实践">
+  <meta property="og:description" content="背景与目标 内容型系统（博客、知识库、产品文档、内部规范等）在体量增大后，会出现一种典型现象：内容本身在增长，但“可被找到”的比例在下降。
+传统关键词检索（如全文搜索）在以下场景容易失效：
+同义表达：用户搜“组件库发布”，文档写的是“包发布/发版” 语序差异：用户提问式输入，文档是标题式表达 信息被拆散：答案分散在多段落/多篇文章里 结果噪声大：命中很多，但很难一眼找到“最相关那条” 引入 AI 的核心目标不是“替代搜索”，而是让检索具备三种增强能力：
+语义理解：理解问题意图，而不是只匹配字面 结果聚合：将分散信息聚合成可读的答案线索 体验兜底：在不破坏现有系统的前提下渐进式接入，并可降级 定位：AI 作为“入口增强层” 在工程架构上，推荐将 AI 放在“入口层”，而不是“数据层/事实层”。
+数据层：原始文档、Markdown、数据库、对象存储 检索层：全文索引（BM25/倒排）、语义索引（向量） 入口增强层（AI）：问题理解、重写、重排、摘要、引用组织 展示层：搜索结果页、问答卡片、引用定位 这样设计的好处：
+AI 不可用时可快速降级为传统搜索 结果可追溯：答案必须带引用（指向原文） 风险可控：AI 不直接“编造事实”，只组织与总结已有内容 一套可落地的架构流程 下面是一条常见、成本可控的流程（偏通用，不绑定具体厂商与框架）。
+1) 内容摄取与规范化 建议先把“内容输入”做稳定：
+Markdown/HTML 统一解析为纯文本 &#43; 元信息（标题、日期、标签、URL） 去除导航、页脚等噪声 保留结构：段落、标题层级、代码块（可单独处理） 元信息示例：
+{ &#34;id&#34;: &#34;post-2025-01-25&#34;, &#34;title&#34;: &#34;在内容型系统中引入 AI 辅助检索的工程实践&#34;, &#34;url&#34;: &#34;/posts/ai-assisted-content-retrieval/&#34;, &#34;tags&#34;: [&#34;内容检索&#34;, &#34;RAG&#34;], &#34;updated_at&#34;: &#34;2025-01-25&#34; } 2) Chunk 切分策略（决定检索质量上限） 语义检索通常需要将文档切成片段（chunk）。切分不当会导致：
+chunk 太大：召回慢、噪声多、摘要不精确 chunk 太小：语境不足，答案断裂 推荐的切分原则：
+按结构切：以二级/三级标题为边界 控制长度：常见做法是 300–800 中文字符为一段（仅经验范围） 带上下文：每段保留“所在章节路径”，例如 架构流程 &gt; Chunk 切分策略 chunk 元数据建议包含：">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-25T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-01-25T00:00:00+00:00">
+    <meta property="article:tag" content="内容检索">
+    <meta property="article:tag" content="语义检索">
+    <meta property="article:tag" content="RAG">
+    <meta property="article:tag" content="工程实践">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="在内容型系统中引入 AI 辅助检索的工程实践">
+  <meta name="twitter:description" content="背景与目标 内容型系统（博客、知识库、产品文档、内部规范等）在体量增大后，会出现一种典型现象：内容本身在增长，但“可被找到”的比例在下降。
+传统关键词检索（如全文搜索）在以下场景容易失效：
+同义表达：用户搜“组件库发布”，文档写的是“包发布/发版” 语序差异：用户提问式输入，文档是标题式表达 信息被拆散：答案分散在多段落/多篇文章里 结果噪声大：命中很多，但很难一眼找到“最相关那条” 引入 AI 的核心目标不是“替代搜索”，而是让检索具备三种增强能力：
+语义理解：理解问题意图，而不是只匹配字面 结果聚合：将分散信息聚合成可读的答案线索 体验兜底：在不破坏现有系统的前提下渐进式接入，并可降级 定位：AI 作为“入口增强层” 在工程架构上，推荐将 AI 放在“入口层”，而不是“数据层/事实层”。
+数据层：原始文档、Markdown、数据库、对象存储 检索层：全文索引（BM25/倒排）、语义索引（向量） 入口增强层（AI）：问题理解、重写、重排、摘要、引用组织 展示层：搜索结果页、问答卡片、引用定位 这样设计的好处：
+AI 不可用时可快速降级为传统搜索 结果可追溯：答案必须带引用（指向原文） 风险可控：AI 不直接“编造事实”，只组织与总结已有内容 一套可落地的架构流程 下面是一条常见、成本可控的流程（偏通用，不绑定具体厂商与框架）。
+1) 内容摄取与规范化 建议先把“内容输入”做稳定：
+Markdown/HTML 统一解析为纯文本 &#43; 元信息（标题、日期、标签、URL） 去除导航、页脚等噪声 保留结构：段落、标题层级、代码块（可单独处理） 元信息示例：
+{ &#34;id&#34;: &#34;post-2025-01-25&#34;, &#34;title&#34;: &#34;在内容型系统中引入 AI 辅助检索的工程实践&#34;, &#34;url&#34;: &#34;/posts/ai-assisted-content-retrieval/&#34;, &#34;tags&#34;: [&#34;内容检索&#34;, &#34;RAG&#34;], &#34;updated_at&#34;: &#34;2025-01-25&#34; } 2) Chunk 切分策略（决定检索质量上限） 语义检索通常需要将文档切成片段（chunk）。切分不当会导致：
+chunk 太大：召回慢、噪声多、摘要不精确 chunk 太小：语境不足，答案断裂 推荐的切分原则：
+按结构切：以二级/三级标题为边界 控制长度：常见做法是 300–800 中文字符为一段（仅经验范围） 带上下文：每段保留“所在章节路径”，例如 架构流程 &gt; Chunk 切分策略 chunk 元数据建议包含：">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2025-01-25-ai-assisted-content-retrieval/" /><link rel="prev" href="http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/" /><link rel="next" href="http://localhost:1313/posts/2025-03-05-ai-assisted-risk-hint-system/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "在内容型系统中引入 AI 辅助检索的工程实践",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2025-01-25-ai-assisted-content-retrieval\/"
+        },"genre": "posts","keywords": "内容检索, 语义检索, RAG, 工程实践","wordcount":  214 ,
+        "url": "http:\/\/localhost:1313\/posts\/2025-01-25-ai-assisted-content-retrieval\/","datePublished": "2025-01-25T00:00:00+00:00","dateModified": "2025-01-25T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">在内容型系统中引入 AI 辅助检索的工程实践</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/ai/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>AI</a>&nbsp;<a href="/categories/frontend/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Frontend</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-01-25">2025-01-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 214 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景与目标">背景与目标</a></li>
+    <li><a href="#定位ai-作为入口增强层">定位：AI 作为“入口增强层”</a></li>
+    <li><a href="#一套可落地的架构流程">一套可落地的架构流程</a>
+      <ul>
+        <li><a href="#1-内容摄取与规范化">1) 内容摄取与规范化</a></li>
+        <li><a href="#2-chunk-切分策略决定检索质量上限">2) Chunk 切分策略（决定检索质量上限）</a></li>
+        <li><a href="#3-双索引全文--语义hybrid-search">3) 双索引：全文 + 语义（Hybrid Search）</a></li>
+        <li><a href="#4-查询增强问题重写--意图拆解">4) 查询增强：问题重写 + 意图拆解</a></li>
+        <li><a href="#5-重排把相关变成最相关">5) 重排：把“相关”变成“最相关”</a></li>
+        <li><a href="#6-答案生成以引用为中心rag">6) 答案生成：以引用为中心（RAG）</a></li>
+      </ul>
+    </li>
+    <li><a href="#前端交互设计让检索变得可用">前端交互设计：让检索变得可用</a></li>
+    <li><a href="#质量评估别只看感觉好用">质量评估：别只看“感觉好用”</a></li>
+    <li><a href="#成本与稳定性可控比聪明更重要">成本与稳定性：可控比聪明更重要</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="背景与目标">背景与目标</h2>
+<p>内容型系统（博客、知识库、产品文档、内部规范等）在体量增大后，会出现一种典型现象：<strong>内容本身在增长，但“可被找到”的比例在下降</strong>。</p>
+<p>传统关键词检索（如全文搜索）在以下场景容易失效：</p>
+<ul>
+<li>同义表达：用户搜“组件库发布”，文档写的是“包发布/发版”</li>
+<li>语序差异：用户提问式输入，文档是标题式表达</li>
+<li>信息被拆散：答案分散在多段落/多篇文章里</li>
+<li>结果噪声大：命中很多，但很难一眼找到“最相关那条”</li>
+</ul>
+<p>引入 AI 的核心目标不是“替代搜索”，而是让检索具备三种增强能力：</p>
+<ol>
+<li><strong>语义理解</strong>：理解问题意图，而不是只匹配字面</li>
+<li><strong>结果聚合</strong>：将分散信息聚合成可读的答案线索</li>
+<li><strong>体验兜底</strong>：在不破坏现有系统的前提下渐进式接入，并可降级</li>
+</ol>
+<hr>
+<h2 id="定位ai-作为入口增强层">定位：AI 作为“入口增强层”</h2>
+<p>在工程架构上，推荐将 AI 放在“入口层”，而不是“数据层/事实层”。</p>
+<ul>
+<li>数据层：原始文档、Markdown、数据库、对象存储</li>
+<li>检索层：全文索引（BM25/倒排）、语义索引（向量）</li>
+<li><strong>入口增强层（AI）</strong>：问题理解、重写、重排、摘要、引用组织</li>
+<li>展示层：搜索结果页、问答卡片、引用定位</li>
+</ul>
+<p>这样设计的好处：</p>
+<ul>
+<li>AI 不可用时可快速降级为传统搜索</li>
+<li>结果可追溯：答案必须带引用（指向原文）</li>
+<li>风险可控：AI 不直接“编造事实”，只组织与总结已有内容</li>
+</ul>
+<hr>
+<h2 id="一套可落地的架构流程">一套可落地的架构流程</h2>
+<p>下面是一条常见、成本可控的流程（偏通用，不绑定具体厂商与框架）。</p>
+<h3 id="1-内容摄取与规范化">1) 内容摄取与规范化</h3>
+<p>建议先把“内容输入”做稳定：</p>
+<ul>
+<li>Markdown/HTML 统一解析为纯文本 + 元信息（标题、日期、标签、URL）</li>
+<li>去除导航、页脚等噪声</li>
+<li>保留结构：段落、标题层级、代码块（可单独处理）</li>
+</ul>
+<p>元信息示例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;post-2025-01-25&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;在内容型系统中引入 AI 辅助检索的工程实践&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;url&#34;</span>: <span style="color:#e6db74">&#34;/posts/ai-assisted-content-retrieval/&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;tags&#34;</span>: [<span style="color:#e6db74">&#34;内容检索&#34;</span>, <span style="color:#e6db74">&#34;RAG&#34;</span>],
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;updated_at&#34;</span>: <span style="color:#e6db74">&#34;2025-01-25&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="2-chunk-切分策略决定检索质量上限">2) Chunk 切分策略（决定检索质量上限）</h3>
+<p>语义检索通常需要将文档切成片段（chunk）。切分不当会导致：</p>
+<ul>
+<li>chunk 太大：召回慢、噪声多、摘要不精确</li>
+<li>chunk 太小：语境不足，答案断裂</li>
+</ul>
+<p>推荐的切分原则：</p>
+<ul>
+<li><strong>按结构切</strong>：以二级/三级标题为边界</li>
+<li><strong>控制长度</strong>：常见做法是 300–800 中文字符为一段（仅经验范围）</li>
+<li><strong>带上下文</strong>：每段保留“所在章节路径”，例如 <code>架构流程 &gt; Chunk 切分策略</code></li>
+</ul>
+<p>chunk 元数据建议包含：</p>
+<ul>
+<li>文档 id、URL</li>
+<li>标题路径（用于展示与引用）</li>
+<li>段落序号（用于定位与高亮）</li>
+</ul>
+<h3 id="3-双索引全文--语义hybrid-search">3) 双索引：全文 + 语义（Hybrid Search）</h3>
+<p>不要一上来只做向量检索，推荐使用 <strong>Hybrid</strong>：</p>
+<ul>
+<li>全文（BM25/倒排）擅长：专有名词、代码片段、精准关键词</li>
+<li>语义（向量）擅长：同义表达、提问式输入、意图匹配</li>
+</ul>
+<p>常见策略：</p>
+<ul>
+<li>先分别召回 TopK（例如 30 + 30）</li>
+<li>合并去重</li>
+<li>进入重排（可规则重排或 AI 重排）</li>
+</ul>
+<h3 id="4-查询增强问题重写--意图拆解">4) 查询增强：问题重写 + 意图拆解</h3>
+<p>用户输入往往很短或很口语，例如：</p>
+<blockquote>
+<p>“表单校验怎么做更稳？”</p>
+</blockquote>
+<p>可用 AI 做两件事：</p>
+<ul>
+<li><strong>重写</strong>：补全术语与上下文（生成 2–4 个候选查询）</li>
+<li><strong>拆解</strong>：拆成子问题（校验时机、错误提示、状态管理、性能）</li>
+</ul>
+<p>输出必须是结构化的（JSON），便于工程侧控制：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;queries&#34;</span>: [<span style="color:#e6db74">&#34;表单校验策略 即时校验 提交校验&#34;</span>, <span style="color:#e6db74">&#34;前端表单错误提示设计&#34;</span>, <span style="color:#e6db74">&#34;表单状态管理 校验规则解耦&#34;</span>],
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;intents&#34;</span>: [<span style="color:#e6db74">&#34;best_practice&#34;</span>, <span style="color:#e6db74">&#34;ux&#34;</span>, <span style="color:#e6db74">&#34;architecture&#34;</span>]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="5-重排把相关变成最相关">5) 重排：把“相关”变成“最相关”</h3>
+<p>召回解决“找到”，重排解决“排在前面”。</p>
+<p>重排可选方案：</p>
+<ul>
+<li>规则重排：标题命中 + 权重、更新时间衰减、tag 权重</li>
+<li>轻量模型重排：跨编码器（成本更高）</li>
+<li>AI 重排：将候选摘要与问题一起输入，输出排序（需控成本）</li>
+</ul>
+<p>建议从规则开始，后续再引入 AI 重排。</p>
+<h3 id="6-答案生成以引用为中心rag">6) 答案生成：以引用为中心（RAG）</h3>
+<p>答案生成的关键是：<strong>答案必须基于候选片段，并输出引用</strong>。</p>
+<p>推荐输出格式：</p>
+<ul>
+<li>先给 3–6 条“可点击引用”</li>
+<li>再给“摘要回答”（不超过 8–12 行）</li>
+<li>最后给“延伸阅读”（相关文档）</li>
+</ul>
+<p>示例结构：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>回答（摘要）
+</span></span><span style="display:flex;"><span>- ...
+</span></span><span style="display:flex;"><span>引用
+</span></span><span style="display:flex;"><span>1) 《xxx》/ 章节：yyy
+</span></span><span style="display:flex;"><span>2) 《zzz》/ 章节：aaa
+</span></span></code></pre></div><p>工程约束：</p>
+<ul>
+<li>若候选片段不足，宁可输出“未找到确切内容” + 推荐检索词</li>
+<li>禁止无引用输出（避免“看起来像真的”但无法验证）</li>
+</ul>
+<hr>
+<h2 id="前端交互设计让检索变得可用">前端交互设计：让检索变得可用</h2>
+<p>很多系统做到“能搜”，但体验仍然差，原因在于展示层没跟上。</p>
+<p>推荐的 UI 设计点：</p>
+<ul>
+<li><strong>结果解释</strong>：每条结果显示“命中原因”（标题命中/语义相似/标签相关）</li>
+<li><strong>定位能力</strong>：点击后定位到段落并高亮关键句</li>
+<li><strong>可编辑提问</strong>：一键复用 AI 重写后的查询</li>
+<li><strong>置信度提示</strong>：低置信度时优先展示引用列表而不是长答案</li>
+</ul>
+<hr>
+<h2 id="质量评估别只看感觉好用">质量评估：别只看“感觉好用”</h2>
+<p>建议为检索建立最小评测集（20–50 条即可起步）：</p>
+<ul>
+<li>高频问题：团队/自己最常搜的</li>
+<li>易混淆问题：同义词、缩写</li>
+<li>长尾问题：提问式输入</li>
+</ul>
+<p>指标建议从简单开始：</p>
+<ul>
+<li>Recall@K：目标内容是否在 TopK 中</li>
+<li>MRR：目标内容首次出现的位置</li>
+<li>人工满意度：1–5 分，记录原因（噪声/缺少引用/不够具体）</li>
+</ul>
+<hr>
+<h2 id="成本与稳定性可控比聪明更重要">成本与稳定性：可控比聪明更重要</h2>
+<ul>
+<li>缓存：对“问题重写”“重排结果”做短期缓存</li>
+<li>限流：按 IP/用户/Token 预算限流</li>
+<li>降级：AI 超时 -&gt; 直接展示 Hybrid 检索结果</li>
+<li>日志：记录输入、候选片段 id、输出引用（便于追溯）</li>
+</ul>
+<hr>
+<h2 id="总结">总结</h2>
+<p>AI 辅助检索的落地关键不在“向量库是否先进”，而在于：</p>
+<ul>
+<li>入口层增强（可降级、可追溯）</li>
+<li>Chunk 与元信息（决定召回质量）</li>
+<li>Hybrid + 重排（把相关变成最相关）</li>
+<li>引用驱动的答案（降低幻觉风险）</li>
+</ul>
+<p>当这些基础打稳后，后续无论升级模型还是更换基础设施，都不会推翻重来。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-01-25</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2025-01-25-ai-assisted-content-retrieval/" data-title="在内容型系统中引入 AI 辅助检索的工程实践" data-via="https://github.com/cs11b137" data-hashtags="内容检索,语义检索,RAG,工程实践"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2025-01-25-ai-assisted-content-retrieval/" data-hashtag="内容检索"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2025-01-25-ai-assisted-content-retrieval/" data-title="在内容型系统中引入 AI 辅助检索的工程实践"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2025-01-25-ai-assisted-content-retrieval/" data-title="在内容型系统中引入 AI 辅助检索的工程实践"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2025-01-25-ai-assisted-content-retrieval/" data-title="在内容型系统中引入 AI 辅助检索的工程实践"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%86%85%E5%AE%B9%E6%A3%80%E7%B4%A2/">内容检索</a>,&nbsp;<a href="/tags/%E8%AF%AD%E4%B9%89%E6%A3%80%E7%B4%A2/">语义检索</a>,&nbsp;<a href="/tags/rag/">RAG</a>,&nbsp;<a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">工程实践</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2024-12-18-2024-ai-frontier-summary/" class="prev" rel="prev" title="2024 年前端与 AI 融合方向的实践观察"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>2024 年前端与 AI 融合方向的实践观察</a>
+            <a href="/posts/2025-03-05-ai-assisted-risk-hint-system/" class="next" rel="next" title="金融系统中的智能提示设计：规则 &#43; AI 的组合方式">金融系统中的智能提示设计：规则 + AI 的组合方式<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

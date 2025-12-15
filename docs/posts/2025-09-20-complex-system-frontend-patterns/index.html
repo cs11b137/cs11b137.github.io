@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>复杂业务系统前端的通用设计模式 - Saiga</title><meta name="Description" content="This is my cool site"><meta property="og:url" content="http://localhost:1313/posts/2025-09-20-complex-system-frontend-patterns/">
+  <meta property="og:site_name" content="Saiga">
+  <meta property="og:title" content="复杂业务系统前端的通用设计模式">
+  <meta property="og:description" content="背景 复杂业务系统的前端常见特征：
+页面多、模块多、角色多 流程长、状态复杂、联动规则多 需求迭代频繁，历史包袱逐步累积 这类系统的前端设计，核心目标是：用结构化手段降低不确定性。下面总结一组可迁移的通用模式。
+模式 1：流程驱动页面结构（Flow-Driven UI） 当页面属于“多步骤流程”时，建议将流程当成第一等公民：
+流程配置（步骤定义、进入条件、完成条件） 步骤模块（每步独立校验与提交） 流程控制器（负责跳转、恢复、草稿、回退） 结构示意：
+flow/ config.ts controller.ts steps/ stepA.tsx stepB.tsx 收益：
+步骤增删更可控 单步问题定位更快 流程可复用（不同业务只换配置/步骤） 模式 2：状态集中 &#43; 边界清晰（State Boundary） 状态混乱通常来自“该共享的不共享、不该共享的全局化”。
+建议将状态分层：
+全局：会话、权限、字典、全局配置 模块：业务模块内共享状态（列表筛选、分页、缓存） 页面：页面局部状态（输入、展开、临时选中） 并明确“谁拥有数据的真相”（Single Source of Truth），减少多处重复维护。
+模式 3：规则外置（Rules as Data） 复杂系统最怕“规则散落在 UI 代码里”。推荐将规则外置成数据：
+条件必填 展示/隐藏 权限控制 校验提示 示例（伪代码）：
+{ &#34;field&#34;: &#34;address&#34;, &#34;requiredWhen&#34;: &#34;deliveryMode == &#39;mail&#39;&#34;, &#34;message&#34;: &#34;选择邮寄后需要填写收件地址&#34; } 收益：
+规则可审查（code review 更容易） 规则可复用（多页面共享） UI 更干净（减少 if/else 地狱） 模式 4：公共能力组件化（Capability Components） 复杂系统中常见的“公共能力”包括：">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-09-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-09-20T00:00:00+00:00">
+    <meta property="article:tag" content="复杂系统">
+    <meta property="article:tag" content="前端模式">
+    <meta property="article:tag" content="状态管理">
+    <meta property="article:tag" content="可维护性">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="复杂业务系统前端的通用设计模式">
+  <meta name="twitter:description" content="背景 复杂业务系统的前端常见特征：
+页面多、模块多、角色多 流程长、状态复杂、联动规则多 需求迭代频繁，历史包袱逐步累积 这类系统的前端设计，核心目标是：用结构化手段降低不确定性。下面总结一组可迁移的通用模式。
+模式 1：流程驱动页面结构（Flow-Driven UI） 当页面属于“多步骤流程”时，建议将流程当成第一等公民：
+流程配置（步骤定义、进入条件、完成条件） 步骤模块（每步独立校验与提交） 流程控制器（负责跳转、恢复、草稿、回退） 结构示意：
+flow/ config.ts controller.ts steps/ stepA.tsx stepB.tsx 收益：
+步骤增删更可控 单步问题定位更快 流程可复用（不同业务只换配置/步骤） 模式 2：状态集中 &#43; 边界清晰（State Boundary） 状态混乱通常来自“该共享的不共享、不该共享的全局化”。
+建议将状态分层：
+全局：会话、权限、字典、全局配置 模块：业务模块内共享状态（列表筛选、分页、缓存） 页面：页面局部状态（输入、展开、临时选中） 并明确“谁拥有数据的真相”（Single Source of Truth），减少多处重复维护。
+模式 3：规则外置（Rules as Data） 复杂系统最怕“规则散落在 UI 代码里”。推荐将规则外置成数据：
+条件必填 展示/隐藏 权限控制 校验提示 示例（伪代码）：
+{ &#34;field&#34;: &#34;address&#34;, &#34;requiredWhen&#34;: &#34;deliveryMode == &#39;mail&#39;&#34;, &#34;message&#34;: &#34;选择邮寄后需要填写收件地址&#34; } 收益：
+规则可审查（code review 更容易） 规则可复用（多页面共享） UI 更干净（减少 if/else 地狱） 模式 4：公共能力组件化（Capability Components） 复杂系统中常见的“公共能力”包括：">
+      <meta name="twitter:site" content="@https://github.com/cs11b137">
+<meta name="application-name" content="Saiga">
+<meta name="apple-mobile-web-app-title" content="Saiga"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/logo.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/posts/2025-09-20-complex-system-frontend-patterns/" /><link rel="prev" href="http://localhost:1313/posts/2025-08-10-ai-in-financial-systems-boundaries/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "复杂业务系统前端的通用设计模式",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/2025-09-20-complex-system-frontend-patterns\/"
+        },"genre": "posts","keywords": "复杂系统, 前端模式, 状态管理, 可维护性","wordcount":  113 ,
+        "url": "http:\/\/localhost:1313\/posts\/2025-09-20-complex-system-frontend-patterns\/","datePublished": "2025-09-20T00:00:00+00:00","dateModified": "2025-09-20T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "wuwj"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Saiga">Saiga</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Saiga">Saiga</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">复杂业务系统前端的通用设计模式</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>wuwj</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/frontend/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Frontend</a>&nbsp;<a href="/categories/architecture/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Architecture</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-09-20">2025-09-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 113 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#模式-1流程驱动页面结构flow-driven-ui">模式 1：流程驱动页面结构（Flow-Driven UI）</a></li>
+    <li><a href="#模式-2状态集中--边界清晰state-boundary">模式 2：状态集中 + 边界清晰（State Boundary）</a></li>
+    <li><a href="#模式-3规则外置rules-as-data">模式 3：规则外置（Rules as Data）</a></li>
+    <li><a href="#模式-4公共能力组件化capability-components">模式 4：公共能力组件化（Capability Components）</a></li>
+    <li><a href="#模式-5可观测性内建observability-by-default">模式 5：可观测性内建（Observability by Default）</a></li>
+    <li><a href="#模式-6发布治理feature-flag--灰度">模式 6：发布治理（Feature Flag + 灰度）</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="背景">背景</h2>
+<p>复杂业务系统的前端常见特征：</p>
+<ul>
+<li>页面多、模块多、角色多</li>
+<li>流程长、状态复杂、联动规则多</li>
+<li>需求迭代频繁，历史包袱逐步累积</li>
+</ul>
+<p>这类系统的前端设计，核心目标是：<strong>用结构化手段降低不确定性</strong>。下面总结一组可迁移的通用模式。</p>
+<hr>
+<h2 id="模式-1流程驱动页面结构flow-driven-ui">模式 1：流程驱动页面结构（Flow-Driven UI）</h2>
+<p>当页面属于“多步骤流程”时，建议将流程当成第一等公民：</p>
+<ul>
+<li>流程配置（步骤定义、进入条件、完成条件）</li>
+<li>步骤模块（每步独立校验与提交）</li>
+<li>流程控制器（负责跳转、恢复、草稿、回退）</li>
+</ul>
+<p>结构示意：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>flow/
+</span></span><span style="display:flex;"><span>  config.ts
+</span></span><span style="display:flex;"><span>  controller.ts
+</span></span><span style="display:flex;"><span>  steps/
+</span></span><span style="display:flex;"><span>    stepA.tsx
+</span></span><span style="display:flex;"><span>    stepB.tsx
+</span></span></code></pre></div><p>收益：</p>
+<ul>
+<li>步骤增删更可控</li>
+<li>单步问题定位更快</li>
+<li>流程可复用（不同业务只换配置/步骤）</li>
+</ul>
+<hr>
+<h2 id="模式-2状态集中--边界清晰state-boundary">模式 2：状态集中 + 边界清晰（State Boundary）</h2>
+<p>状态混乱通常来自“该共享的不共享、不该共享的全局化”。</p>
+<p>建议将状态分层：</p>
+<ul>
+<li>全局：会话、权限、字典、全局配置</li>
+<li>模块：业务模块内共享状态（列表筛选、分页、缓存）</li>
+<li>页面：页面局部状态（输入、展开、临时选中）</li>
+</ul>
+<p>并明确“谁拥有数据的真相”（Single Source of Truth），减少多处重复维护。</p>
+<hr>
+<h2 id="模式-3规则外置rules-as-data">模式 3：规则外置（Rules as Data）</h2>
+<p>复杂系统最怕“规则散落在 UI 代码里”。推荐将规则外置成数据：</p>
+<ul>
+<li>条件必填</li>
+<li>展示/隐藏</li>
+<li>权限控制</li>
+<li>校验提示</li>
+</ul>
+<p>示例（伪代码）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;address&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;requiredWhen&#34;</span>: <span style="color:#e6db74">&#34;deliveryMode == &#39;mail&#39;&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;选择邮寄后需要填写收件地址&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>收益：</p>
+<ul>
+<li>规则可审查（code review 更容易）</li>
+<li>规则可复用（多页面共享）</li>
+<li>UI 更干净（减少 if/else 地狱）</li>
+</ul>
+<hr>
+<h2 id="模式-4公共能力组件化capability-components">模式 4：公共能力组件化（Capability Components）</h2>
+<p>复杂系统中常见的“公共能力”包括：</p>
+<ul>
+<li>查询面板（筛选、重置、保存条件）</li>
+<li>表格（分页、排序、列配置、导出）</li>
+<li>表单（校验、错误聚合、联动）</li>
+<li>弹窗（确认、危险操作二次确认）</li>
+</ul>
+<p>建议以“能力”为中心抽象组件，而不是以“页面”为中心复制粘贴。</p>
+<p>收益：</p>
+<ul>
+<li>一致性提升</li>
+<li>维护成本下降</li>
+<li>新页面交付速度更稳定</li>
+</ul>
+<hr>
+<h2 id="模式-5可观测性内建observability-by-default">模式 5：可观测性内建（Observability by Default）</h2>
+<p>复杂系统的问题定位成本很高，应把观测能力作为默认能力：</p>
+<ul>
+<li>错误：异常、资源失败、接口失败</li>
+<li>性能：首屏、切换、长任务</li>
+<li>业务：关键流程成功率、失败原因分布</li>
+</ul>
+<p>关键原则：</p>
+<ul>
+<li>日志脱敏（默认不记录敏感字段）</li>
+<li>链路可追踪（traceId 打通前后端）</li>
+<li>聚合去重（避免噪声告警）</li>
+</ul>
+<hr>
+<h2 id="模式-6发布治理feature-flag--灰度">模式 6：发布治理（Feature Flag + 灰度）</h2>
+<p>复杂系统常常需要“边迭代边运行”。发布治理建议具备：</p>
+<ul>
+<li>功能开关：按角色/比例开启</li>
+<li>灰度：先小范围验证指标再扩大</li>
+<li>回滚：资源与配置可回退</li>
+<li>兼容：新旧接口/新旧字段并存一段时间</li>
+</ul>
+<hr>
+<h2 id="总结">总结</h2>
+<p>复杂业务系统前端的竞争力，往往不在“写得快”，而在“长期可维护、可演进”：</p>
+<ul>
+<li>流程驱动结构</li>
+<li>状态边界清晰</li>
+<li>规则外置</li>
+<li>公共能力组件化</li>
+<li>可观测性与发布治理内建</li>
+</ul>
+<p>这些模式与具体框架无关，适用于多数中大型业务系统的长期演进。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-09-20</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/2025-09-20-complex-system-frontend-patterns/" data-title="复杂业务系统前端的通用设计模式" data-via="https://github.com/cs11b137" data-hashtags="复杂系统,前端模式,状态管理,可维护性"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://localhost:1313/posts/2025-09-20-complex-system-frontend-patterns/" data-hashtag="复杂系统"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/posts/2025-09-20-complex-system-frontend-patterns/" data-title="复杂业务系统前端的通用设计模式"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://localhost:1313/posts/2025-09-20-complex-system-frontend-patterns/" data-title="复杂业务系统前端的通用设计模式"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/2025-09-20-complex-system-frontend-patterns/" data-title="复杂业务系统前端的通用设计模式"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%A4%8D%E6%9D%82%E7%B3%BB%E7%BB%9F/">复杂系统</a>,&nbsp;<a href="/tags/%E5%89%8D%E7%AB%AF%E6%A8%A1%E5%BC%8F/">前端模式</a>,&nbsp;<a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>,&nbsp;<a href="/tags/%E5%8F%AF%E7%BB%B4%E6%8A%A4%E6%80%A7/">可维护性</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/2025-08-10-ai-in-financial-systems-boundaries/" class="prev" rel="prev" title="AI 能力在金融系统中的边界与治理"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>AI 能力在金融系统中的边界与治理</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2019 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">wuwj</a></span>&nbsp;|&nbsp;<span class="license">CC BY-NC 4.0</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
