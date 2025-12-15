@@ -123,28 +123,28 @@ publishDir = "docs"
   # posts
   [[menu.main]]
     identifier = "posts"
-    name = "Posts"        # 或 "文章"
+    name = "文章"        # 或 "文章"
     url = "/posts/"
     weight = 1
 
   # tags
   [[menu.main]]
     identifier = "tags"
-    name = "Tags"         # 或 "标签"
+    name = "标签"         # 或 "标签"
     url = "/tags/"
     weight = 2
 
   # categories
   [[menu.main]]
     identifier = "categories"
-    name = "Categories"   # 或 "分类"
+    name = "分类"   # 或 "分类"
     url = "/categories/"
     weight = 3
 
   # about
   [[menu.main]]
     identifier = "about"
-    name = "About"        # 或 "关于"
+    name = "关于"        # 或 "关于"
     url = "/about/"
     weight = 4
 
@@ -190,15 +190,14 @@ publishDir = "docs"
   # 主页的社交信息设置
   [params.social]
     GitHub = "https://github.com/cs11b137"
-    Linkedin = "https://github.com/cs11b137"
-    Twitter = "https://github.com/cs11b137"
-    Instagram = "https://github.com/cs11b137"
-    Facebook = "https://github.com/cs11b137"
-    Telegram = "https://github.com/cs11b137"
+    Linkedin = "https://www.linkedin.com/in/wuwj/"
+    Twitter = "https://x.com/IswjWu"
+    Instagram = ""
+    Telegram = ""
     Medium = ""
     Gitlab = ""
-    Youtubelegacy = "https://github.com/cs11b137"
-		HuggingFace = "https://github.com/cs11b137"
+    Youtubelegacy = "hhttps://www.youtube.com/@wjwuwuwj"
+		HuggingFace = "https://huggingface.co/wuwj7056"
     Youtubecustom = ""
     Youtubechannel = ""
     Tumblr = ""
@@ -266,6 +265,6 @@ publishDir = "docs"
     TikTok = ""
     TryHackMe = ""
     Codeberg = ""
-    Email = "https://github.com/cs11b137"
+    Email = "wuwenzen@outlook.com"
     Phone = ""
-    RSS = "https://github.com/cs11b137"
+    RSS = "https://wuwenjunpr.site/index.xml"

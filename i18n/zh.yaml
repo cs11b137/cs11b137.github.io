@@ -1,0 +1,11 @@
+- id: posts
+  translation: 文章
+
+- id: tags
+  translation: 标签
+
+- id: categories
+  translation: 分类
+
+- id: about
+  translation: 关于

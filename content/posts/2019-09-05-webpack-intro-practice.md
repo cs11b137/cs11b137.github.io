@@ -1,5 +1,5 @@
 +++
-title = "从零搭一个前端构建脚手架：Webpack 入门实践"
+title = "从零搭一个前端构建脚手架：Webpack 实践"
 date = 2019-09-05
 draft = false
 categories = ["前端工程化"]

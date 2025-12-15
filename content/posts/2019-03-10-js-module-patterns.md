@@ -7,7 +7,7 @@ tags = ["JavaScript", "模块化", "ESModules"]
 description = "回顾从 jQuery 时代到 ES Modules 的模块化演变，以及现在更推荐的写法。"
 +++
 
-最早写前端的时候，经常是一个 `index.html` 里塞一大坨 `<script>`，变量到处飞，函数名一改项目全崩。后来慢慢开始接触各种「模块化方案」，从 IIFE、AMD、CommonJS 一路走到 ES Modules，心态也经历了从「凑合能用」到「必须有规范」。
+最早写前端的时候，经常是一个 `index.html` 里塞一大坨 `<script>`，变量到处飞，函数名一改项目全崩。后来慢慢开始接触各种模块化方案，从 IIFE、AMD、CommonJS 一路走到 ES Modules，心态也经历了从凑合能用到必须有规范。
 
 这篇就当是给自己的一个小总结：**为什么需要模块化、几种常见写法的区别、现在应该怎么写。**
 
