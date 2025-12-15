@@ -8,195 +8,153 @@
     <language>zh-cn</language>
     <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
     <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
-    <lastBuildDate>Wed, 05 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 10 Nov 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>AI 时代</title>
-      <link>http://localhost:1313/tags/ai-%E6%97%B6%E4%BB%A3/</link>
-      <pubDate>Wed, 05 Nov 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/ai-%E6%97%B6%E4%BB%A3/</guid>
+      <title>AI 治理</title>
+      <link>http://localhost:1313/tags/ai-%E6%B2%BB%E7%90%86/</link>
+      <pubDate>Mon, 10 Nov 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/ai-%E6%B2%BB%E7%90%86/</guid>
       <description></description>
     </item>
     <item>
-      <title>前端工程师</title>
-      <link>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%88/</link>
-      <pubDate>Wed, 05 Nov 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%88/</guid>
+      <title>成本控制</title>
+      <link>http://localhost:1313/tags/%E6%88%90%E6%9C%AC%E6%8E%A7%E5%88%B6/</link>
+      <pubDate>Mon, 10 Nov 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E6%88%90%E6%9C%AC%E6%8E%A7%E5%88%B6/</guid>
       <description></description>
     </item>
     <item>
-      <title>职业规划</title>
-      <link>http://localhost:1313/tags/%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/</link>
-      <pubDate>Wed, 05 Nov 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/</guid>
+      <title>工程规范</title>
+      <link>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E8%A7%84%E8%8C%83/</link>
+      <pubDate>Mon, 10 Nov 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E8%A7%84%E8%8C%83/</guid>
       <description></description>
     </item>
     <item>
-      <title>工程实践</title>
-      <link>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/</link>
-      <pubDate>Sat, 20 Sep 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/</guid>
+      <title>可回退</title>
+      <link>http://localhost:1313/tags/%E5%8F%AF%E5%9B%9E%E9%80%80/</link>
+      <pubDate>Mon, 10 Nov 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%8F%AF%E5%9B%9E%E9%80%80/</guid>
       <description></description>
     </item>
     <item>
-      <title>架构方法论</title>
-      <link>http://localhost:1313/tags/%E6%9E%B6%E6%9E%84%E6%96%B9%E6%B3%95%E8%AE%BA/</link>
-      <pubDate>Sat, 20 Sep 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E6%9E%B6%E6%9E%84%E6%96%B9%E6%B3%95%E8%AE%BA/</guid>
+      <title>断点恢复</title>
+      <link>http://localhost:1313/tags/%E6%96%AD%E7%82%B9%E6%81%A2%E5%A4%8D/</link>
+      <pubDate>Fri, 05 Sep 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E6%96%AD%E7%82%B9%E6%81%A2%E5%A4%8D/</guid>
       <description></description>
     </item>
     <item>
-      <title>中台</title>
-      <link>http://localhost:1313/tags/%E4%B8%AD%E5%8F%B0/</link>
-      <pubDate>Sat, 20 Sep 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E4%B8%AD%E5%8F%B0/</guid>
+      <title>多步骤流程</title>
+      <link>http://localhost:1313/tags/%E5%A4%9A%E6%AD%A5%E9%AA%A4%E6%B5%81%E7%A8%8B/</link>
+      <pubDate>Fri, 05 Sep 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%A4%9A%E6%AD%A5%E9%AA%A4%E6%B5%81%E7%A8%8B/</guid>
       <description></description>
     </item>
     <item>
-      <title>产品思考</title>
-      <link>http://localhost:1313/tags/%E4%BA%A7%E5%93%81%E6%80%9D%E8%80%83/</link>
-      <pubDate>Sun, 03 Aug 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E4%BA%A7%E5%93%81%E6%80%9D%E8%80%83/</guid>
+      <title>金融系统</title>
+      <link>http://localhost:1313/tags/%E9%87%91%E8%9E%8D%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Fri, 05 Sep 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E9%87%91%E8%9E%8D%E7%B3%BB%E7%BB%9F/</guid>
       <description></description>
     </item>
     <item>
-      <title>复盘</title>
-      <link>http://localhost:1313/tags/%E5%A4%8D%E7%9B%98/</link>
-      <pubDate>Sun, 03 Aug 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%A4%8D%E7%9B%98/</guid>
+      <title>幂等</title>
+      <link>http://localhost:1313/tags/%E5%B9%82%E7%AD%89/</link>
+      <pubDate>Fri, 05 Sep 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%B9%82%E7%AD%89/</guid>
       <description></description>
     </item>
     <item>
-      <title>个人项目</title>
-      <link>http://localhost:1313/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</link>
-      <pubDate>Sun, 03 Aug 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</guid>
+      <title>规则系统</title>
+      <link>http://localhost:1313/tags/%E8%A7%84%E5%88%99%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Sun, 15 Jun 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E8%A7%84%E5%88%99%E7%B3%BB%E7%BB%9F/</guid>
       <description></description>
     </item>
     <item>
-      <title>架构设计</title>
-      <link>http://localhost:1313/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</link>
-      <pubDate>Tue, 10 Jun 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</guid>
+      <title>可控生成</title>
+      <link>http://localhost:1313/tags/%E5%8F%AF%E6%8E%A7%E7%94%9F%E6%88%90/</link>
+      <pubDate>Sun, 15 Jun 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%8F%AF%E6%8E%A7%E7%94%9F%E6%88%90/</guid>
       <description></description>
     </item>
     <item>
-      <title>爬虫</title>
-      <link>http://localhost:1313/tags/%E7%88%AC%E8%99%AB/</link>
-      <pubDate>Tue, 10 Jun 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E7%88%AC%E8%99%AB/</guid>
+      <title>文案治理</title>
+      <link>http://localhost:1313/tags/%E6%96%87%E6%A1%88%E6%B2%BB%E7%90%86/</link>
+      <pubDate>Sun, 15 Jun 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E6%96%87%E6%A1%88%E6%B2%BB%E7%90%86/</guid>
       <description></description>
     </item>
     <item>
-      <title>推荐系统</title>
-      <link>http://localhost:1313/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/</link>
-      <pubDate>Tue, 10 Jun 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/</guid>
+      <title>安全</title>
+      <link>http://localhost:1313/tags/%E5%AE%89%E5%85%A8/</link>
+      <pubDate>Tue, 25 Mar 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%AE%89%E5%85%A8/</guid>
       <description></description>
     </item>
     <item>
-      <title>销售漏斗</title>
-      <link>http://localhost:1313/tags/%E9%94%80%E5%94%AE%E6%BC%8F%E6%96%97/</link>
-      <pubDate>Tue, 10 Jun 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E9%94%80%E5%94%AE%E6%BC%8F%E6%96%97/</guid>
+      <title>操作审计</title>
+      <link>http://localhost:1313/tags/%E6%93%8D%E4%BD%9C%E5%AE%A1%E8%AE%A1/</link>
+      <pubDate>Tue, 25 Mar 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E6%93%8D%E4%BD%9C%E5%AE%A1%E8%AE%A1/</guid>
       <description></description>
     </item>
     <item>
-      <title>大模型</title>
-      <link>http://localhost:1313/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</link>
-      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>技术博客</title>
-      <link>http://localhost:1313/tags/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/</link>
-      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>效率</title>
-      <link>http://localhost:1313/tags/%E6%95%88%E7%8E%87/</link>
-      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E6%95%88%E7%8E%87/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>写作流程</title>
-      <link>http://localhost:1313/tags/%E5%86%99%E4%BD%9C%E6%B5%81%E7%A8%8B/</link>
-      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%86%99%E4%BD%9C%E6%B5%81%E7%A8%8B/</guid>
+      <title>权限控制</title>
+      <link>http://localhost:1313/tags/%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/</link>
+      <pubDate>Tue, 25 Mar 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/</guid>
       <description></description>
     </item>
     <item>
       <title>AI 应用</title>
       <link>http://localhost:1313/tags/ai-%E5%BA%94%E7%94%A8/</link>
-      <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <pubDate>Mon, 20 Jan 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
       <guid>http://localhost:1313/tags/ai-%E5%BA%94%E7%94%A8/</guid>
       <description></description>
     </item>
     <item>
-      <title>Embedding</title>
-      <link>http://localhost:1313/tags/embedding/</link>
-      <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/embedding/</guid>
+      <title>代码评审</title>
+      <link>http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E8%AF%84%E5%AE%A1/</link>
+      <pubDate>Mon, 20 Jan 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E8%AF%84%E5%AE%A1/</guid>
       <description></description>
     </item>
     <item>
-      <title>博客</title>
-      <link>http://localhost:1313/tags/%E5%8D%9A%E5%AE%A2/</link>
-      <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%8D%9A%E5%AE%A2/</guid>
+      <title>工程效率</title>
+      <link>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E6%95%88%E7%8E%87/</link>
+      <pubDate>Mon, 20 Jan 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E6%95%88%E7%8E%87/</guid>
       <description></description>
     </item>
     <item>
-      <title>推荐算法</title>
-      <link>http://localhost:1313/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</link>
-      <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</guid>
+      <title>知识管理</title>
+      <link>http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</link>
+      <pubDate>Mon, 20 Jan 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</guid>
       <description></description>
     </item>
     <item>
-      <title>RAG</title>
-      <link>http://localhost:1313/tags/rag/</link>
-      <pubDate>Sat, 25 Jan 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/rag/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>搜索</title>
-      <link>http://localhost:1313/tags/%E6%90%9C%E7%B4%A2/</link>
-      <pubDate>Sat, 25 Jan 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E6%90%9C%E7%B4%A2/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>向量检索</title>
-      <link>http://localhost:1313/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/</link>
-      <pubDate>Sat, 25 Jan 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>开发体验</title>
-      <link>http://localhost:1313/tags/%E5%BC%80%E5%8F%91%E4%BD%93%E9%AA%8C/</link>
+      <title>工程实践</title>
+      <link>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/</link>
       <pubDate>Wed, 18 Dec 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%BC%80%E5%8F%91%E4%BD%93%E9%AA%8C/</guid>
+      <guid>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/</guid>
       <description></description>
     </item>
     <item>
-      <title>年度总结</title>
-      <link>http://localhost:1313/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</link>
+      <title>前端趋势</title>
+      <link>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF/</link>
       <pubDate>Wed, 18 Dec 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</guid>
+      <guid>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF/</guid>
       <description></description>
     </item>
     <item>
-      <title>前端工程化</title>
-      <link>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/</link>
-      <pubDate>Wed, 18 Dec 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/</guid>
+      <title>工程治理</title>
+      <link>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E6%B2%BB%E7%90%86/</link>
+      <pubDate>Tue, 05 Nov 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E6%B2%BB%E7%90%86/</guid>
       <description></description>
     </item>
     <item>
@@ -207,24 +165,10 @@
       <description></description>
     </item>
     <item>
-      <title>金融系统</title>
-      <link>http://localhost:1313/tags/%E9%87%91%E8%9E%8D%E7%B3%BB%E7%BB%9F/</link>
+      <title>系统维护</title>
+      <link>http://localhost:1313/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/</link>
       <pubDate>Tue, 05 Nov 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E9%87%91%E8%9E%8D%E7%B3%BB%E7%BB%9F/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>稳定性</title>
-      <link>http://localhost:1313/tags/%E7%A8%B3%E5%AE%9A%E6%80%A7/</link>
-      <pubDate>Tue, 05 Nov 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E7%A8%B3%E5%AE%9A%E6%80%A7/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>系统治理</title>
-      <link>http://localhost:1313/tags/%E7%B3%BB%E7%BB%9F%E6%B2%BB%E7%90%86/</link>
-      <pubDate>Tue, 05 Nov 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E7%B3%BB%E7%BB%9F%E6%B2%BB%E7%90%86/</guid>
+      <guid>http://localhost:1313/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/</guid>
       <description></description>
     </item>
     <item>
@@ -256,38 +200,24 @@
       <description></description>
     </item>
     <item>
-      <title>Hugo</title>
-      <link>http://localhost:1313/tags/hugo/</link>
+      <title>内容整理</title>
+      <link>http://localhost:1313/tags/%E5%86%85%E5%AE%B9%E6%95%B4%E7%90%86/</link>
       <pubDate>Sat, 10 Aug 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/hugo/</guid>
+      <guid>http://localhost:1313/tags/%E5%86%85%E5%AE%B9%E6%95%B4%E7%90%86/</guid>
       <description></description>
     </item>
     <item>
-      <title>知识库</title>
-      <link>http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/</link>
-      <pubDate>Sat, 10 Aug 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>风险提示</title>
-      <link>http://localhost:1313/tags/%E9%A3%8E%E9%99%A9%E6%8F%90%E7%A4%BA/</link>
+      <title>前端实践</title>
+      <link>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E5%AE%9E%E8%B7%B5/</link>
       <pubDate>Sat, 22 Jun 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E9%A3%8E%E9%99%A9%E6%8F%90%E7%A4%BA/</guid>
+      <guid>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E5%AE%9E%E8%B7%B5/</guid>
       <description></description>
     </item>
     <item>
-      <title>合规</title>
-      <link>http://localhost:1313/tags/%E5%90%88%E8%A7%84/</link>
+      <title>文案生成</title>
+      <link>http://localhost:1313/tags/%E6%96%87%E6%A1%88%E7%94%9F%E6%88%90/</link>
       <pubDate>Sat, 22 Jun 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%90%88%E8%A7%84/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>金融文案</title>
-      <link>http://localhost:1313/tags/%E9%87%91%E8%9E%8D%E6%96%87%E6%A1%88/</link>
-      <pubDate>Sat, 22 Jun 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E9%87%91%E8%9E%8D%E6%96%87%E6%A1%88/</guid>
+      <guid>http://localhost:1313/tags/%E6%96%87%E6%A1%88%E7%94%9F%E6%88%90/</guid>
       <description></description>
     </item>
     <item>
@@ -295,6 +225,13 @@
       <link>http://localhost:1313/tags/lighthouse/</link>
       <pubDate>Wed, 01 May 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
       <guid>http://localhost:1313/tags/lighthouse/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>大模型</title>
+      <link>http://localhost:1313/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</link>
+      <pubDate>Wed, 01 May 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</guid>
       <description></description>
     </item>
     <item>
@@ -361,6 +298,20 @@
       <description></description>
     </item>
     <item>
+      <title>年度总结</title>
+      <link>http://localhost:1313/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Wed, 20 Dec 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>前端工程化</title>
+      <link>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/</link>
+      <pubDate>Wed, 20 Dec 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>内部系统</title>
       <link>http://localhost:1313/tags/%E5%86%85%E9%83%A8%E7%B3%BB%E7%BB%9F/</link>
       <pubDate>Wed, 01 Nov 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
@@ -389,10 +340,31 @@
       <description></description>
     </item>
     <item>
+      <title>RAG</title>
+      <link>http://localhost:1313/tags/rag/</link>
+      <pubDate>Sun, 10 Sep 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/rag/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>向量检索</title>
+      <link>http://localhost:1313/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/</link>
+      <pubDate>Sun, 10 Sep 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>项目文档</title>
       <link>http://localhost:1313/tags/%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3/</link>
       <pubDate>Sun, 10 Sep 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
       <guid>http://localhost:1313/tags/%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>知识库</title>
+      <link>http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/</link>
+      <pubDate>Sun, 10 Sep 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/</guid>
       <description></description>
     </item>
     <item>
@@ -414,13 +386,6 @@
       <link>http://localhost:1313/tags/%E6%B5%8B%E8%AF%95%E4%B8%8E-lint/</link>
       <pubDate>Sat, 22 Jul 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
       <guid>http://localhost:1313/tags/%E6%B5%8B%E8%AF%95%E4%B8%8E-lint/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>安全</title>
-      <link>http://localhost:1313/tags/%E5%AE%89%E5%85%A8/</link>
-      <pubDate>Mon, 05 Jun 2023 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E5%AE%89%E5%85%A8/</guid>
       <description></description>
     </item>
     <item>
@@ -676,34 +641,6 @@
       <description></description>
     </item>
     <item>
-      <title>电子合同</title>
-      <link>http://localhost:1313/tags/%E7%94%B5%E5%AD%90%E5%90%88%E5%90%8C/</link>
-      <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E7%94%B5%E5%AD%90%E5%90%88%E5%90%8C/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>模版管理</title>
-      <link>http://localhost:1313/tags/%E6%A8%A1%E7%89%88%E7%AE%A1%E7%90%86/</link>
-      <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E6%A8%A1%E7%89%88%E7%AE%A1%E7%90%86/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>签章</title>
-      <link>http://localhost:1313/tags/%E7%AD%BE%E7%AB%A0/</link>
-      <pubDate>Fri, 01 Apr 2022 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E7%AD%BE%E7%AB%A0/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>KYC</title>
-      <link>http://localhost:1313/tags/kyc/</link>
-      <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/kyc/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>表单设计</title>
       <link>http://localhost:1313/tags/%E8%A1%A8%E5%8D%95%E8%AE%BE%E8%AE%A1/</link>
       <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
@@ -858,6 +795,13 @@
       <description></description>
     </item>
     <item>
+      <title>效率</title>
+      <link>http://localhost:1313/tags/%E6%95%88%E7%8E%87/</link>
+      <pubDate>Sat, 12 Dec 2020 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E6%95%88%E7%8E%87/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>BFF</title>
       <link>http://localhost:1313/tags/bff/</link>
       <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
@@ -900,6 +844,13 @@
       <description></description>
     </item>
     <item>
+      <title>中台</title>
+      <link>http://localhost:1313/tags/%E4%B8%AD%E5%8F%B0/</link>
+      <pubDate>Tue, 28 Apr 2020 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/tags/%E4%B8%AD%E5%8F%B0/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>SPA</title>
       <link>http://localhost:1313/tags/spa/</link>
       <pubDate>Sat, 15 Feb 2020 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
@@ -921,17 +872,17 @@
       <description></description>
     </item>
     <item>
-      <title>上线经验</title>
-      <link>http://localhost:1313/tags/%E4%B8%8A%E7%BA%BF%E7%BB%8F%E9%AA%8C/</link>
+      <title>JavaScript</title>
+      <link>http://localhost:1313/tags/javascript/</link>
       <pubDate>Fri, 20 Dec 2019 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E4%B8%8A%E7%BA%BF%E7%BB%8F%E9%AA%8C/</guid>
+      <guid>http://localhost:1313/tags/javascript/</guid>
       <description></description>
     </item>
     <item>
-      <title>项目管理</title>
-      <link>http://localhost:1313/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</link>
+      <title>代码规范</title>
+      <link>http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/</link>
       <pubDate>Fri, 20 Dec 2019 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</guid>
+      <guid>http://localhost:1313/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/</guid>
       <description></description>
     </item>
     <item>
@@ -967,13 +918,6 @@
       <link>http://localhost:1313/tags/esmodules/</link>
       <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
       <guid>http://localhost:1313/tags/esmodules/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>JavaScript</title>
-      <link>http://localhost:1313/tags/javascript/</link>
-      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/tags/javascript/</guid>
       <description></description>
     </item>
     <item>

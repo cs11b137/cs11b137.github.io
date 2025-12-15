@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>断点恢复 on Saiga</title>
+    <link>http://localhost:1313/tags/%E6%96%AD%E7%82%B9%E6%81%A2%E5%A4%8D/</link>
+    <description>Recent content in 断点恢复 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Fri, 05 Sep 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%96%AD%E7%82%B9%E6%81%A2%E5%A4%8D/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>金融级流程页面的稳定性设计：草稿、断点恢复与幂等提交</title>
+      <link>http://localhost:1313/posts/2025-09-05-fintech-flow-draft-recovery-idempotency/</link>
+      <pubDate>Fri, 05 Sep 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2025-09-05-fintech-flow-draft-recovery-idempotency/</guid>
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;&#xA;&lt;p&gt;金融业务系统中的流程页面常见特点：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;多步骤（信息填写、声明确认、材料上传、结果确认）&lt;/li&gt;&#xA;&lt;li&gt;强状态依赖（前置条件与联动校验）&lt;/li&gt;&#xA;&lt;li&gt;允许中断（网络、切换页面、超时、权限刷新）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;流程页一旦不稳定，会直接带来：重复提交、数据丢失、用户放弃率上升。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-草稿体系让中断变成常态能力&#34;&gt;1. 草稿体系：让中断变成常态能力&lt;/h2&gt;&#xA;&lt;h3 id=&#34;本地草稿默认&#34;&gt;本地草稿（默认）&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;保存频率：输入节流 1–2 秒&lt;/li&gt;&#xA;&lt;li&gt;存储：localStorage/IndexedDB（按体量选择）&lt;/li&gt;&#xA;&lt;li&gt;过期：按时间或版本号过期，避免脏数据长期存在&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;服务端草稿可选&#34;&gt;服务端草稿（可选）&lt;/h3&gt;&#xA;&lt;p&gt;适用于：换设备继续、跨端协作、需要留痕的场景。&lt;/p&gt;&#xA;&lt;p&gt;建议组合策略：本地即时保存 + 步骤完成时服务端持久化。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-断点恢复最小可用状态模型&#34;&gt;2. 断点恢复：最小可用状态模型&lt;/h2&gt;&#xA;&lt;p&gt;建议状态模型包含：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;当前步骤 step&lt;/li&gt;&#xA;&lt;li&gt;已完成步骤 completedSteps&lt;/li&gt;&#xA;&lt;li&gt;草稿数据 draft&lt;/li&gt;&#xA;&lt;li&gt;最近保存时间 lastSavedAt&lt;/li&gt;&#xA;&lt;li&gt;版本号 schemaVersion（字段变更时用于迁移）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;页面进入时：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;检测草稿是否存在&lt;/li&gt;&#xA;&lt;li&gt;校验版本号，必要时做迁移/清理&lt;/li&gt;&#xA;&lt;li&gt;恢复到上次步骤并回显数据&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;3-幂等提交避免重复提交与脏数据&#34;&gt;3. 幂等提交：避免重复提交与脏数据&lt;/h2&gt;&#xA;&lt;p&gt;幂等通常需要前后端配合，但前端可以先做三件事：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;提交按钮防抖与禁用（loading 状态）&lt;/li&gt;&#xA;&lt;li&gt;为关键请求生成 &lt;code&gt;idempotencyKey&lt;/code&gt;（一次提交一次 key）&lt;/li&gt;&#xA;&lt;li&gt;请求失败时明确失败原因与可重试策略&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;幂等 key 的建议组成：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;用户标识（脱敏）&lt;/li&gt;&#xA;&lt;li&gt;业务对象 id（如流程实例 id）&lt;/li&gt;&#xA;&lt;li&gt;时间窗口（例如分钟级）&lt;/li&gt;&#xA;&lt;li&gt;随机盐&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;4-校验与提示让用户知道为什么不能继续&#34;&gt;4. 校验与提示：让用户知道“为什么不能继续”&lt;/h2&gt;&#xA;&lt;p&gt;建议将校验分为：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;字段级（即时/离焦）&lt;/li&gt;&#xA;&lt;li&gt;步骤级（提交前聚合）&lt;/li&gt;&#xA;&lt;li&gt;流程级（前置条件、状态校验）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;错误展示策略：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;顶部给错误概览&lt;/li&gt;&#xA;&lt;li&gt;定位第一个错误并滚动到字段&lt;/li&gt;&#xA;&lt;li&gt;提示文案采用“动作 + 原因”结构（可执行）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;5-可观测性关键链路必须可追踪&#34;&gt;5. 可观测性：关键链路必须可追踪&lt;/h2&gt;&#xA;&lt;p&gt;流程页建议至少埋三类指标：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;成功率：每步通过率、最终提交成功率&lt;/li&gt;&#xA;&lt;li&gt;失败分布：失败原因码、接口错误码&lt;/li&gt;&#xA;&lt;li&gt;中断点：用户在哪一步退出/超时/刷新&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;并用 traceId 串联前后端日志，方便排查“为什么卡在某一步”。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

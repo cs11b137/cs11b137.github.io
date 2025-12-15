@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>工程效率 on Saiga</title>
+    <link>http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E6%95%88%E7%8E%87/</link>
+    <description>Recent content in 工程效率 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Mon, 20 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E5%B7%A5%E7%A8%8B%E6%95%88%E7%8E%87/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI 作为前端工程助手：代码理解、变更评审与知识沉淀</title>
+      <link>http://localhost:1313/posts/2025-01-20-ai-engineering-assistant-workflow/</link>
+      <pubDate>Mon, 20 Jan 2025 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2025-01-20-ai-engineering-assistant-workflow/</guid>
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;&#xA;&lt;p&gt;在中大型前端项目中，效率瓶颈往往不在“写代码”，而在：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;理解既有代码与历史决策&lt;/li&gt;&#xA;&lt;li&gt;做变更评审与影响面分析&lt;/li&gt;&#xA;&lt;li&gt;将经验沉淀为可复用的规范与模板&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;AI 更适合作为“工程助手”，在不改变既有流程的前提下，降低理解成本与重复劳动。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;适用场景与边界&#34;&gt;适用场景与边界&lt;/h2&gt;&#xA;&lt;h3 id=&#34;适合让-ai-介入的事情&#34;&gt;适合让 AI 介入的事情&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;读代码：梳理模块关系、数据流、关键入口&lt;/li&gt;&#xA;&lt;li&gt;查影响：对改动点做潜在影响面清单&lt;/li&gt;&#xA;&lt;li&gt;写评审：生成 code review 的检查项与风险点&lt;/li&gt;&#xA;&lt;li&gt;做沉淀：把零散讨论转成可检索的技术记录&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;不适合直接交给-ai-的事情&#34;&gt;不适合直接交给 AI 的事情&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;关键逻辑的“正确性判定”&lt;/li&gt;&#xA;&lt;li&gt;业务规则的决策与归因&lt;/li&gt;&#xA;&lt;li&gt;以 AI 输出作为唯一结论（必须可验证）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;一套可落地的使用流程&#34;&gt;一套可落地的使用流程&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1代码理解先结构化再总结&#34;&gt;1）代码理解：先结构化，再总结&lt;/h3&gt;&#xA;&lt;p&gt;输入给 AI 的材料建议是“可验证的事实”，例如：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;目录结构（关键模块）&lt;/li&gt;&#xA;&lt;li&gt;入口文件（router/store/bff client）&lt;/li&gt;&#xA;&lt;li&gt;关键类型定义与接口契约&lt;/li&gt;&#xA;&lt;li&gt;相关提交 diff（而非整仓库）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;期望 AI 输出的格式建议固定为：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;模块职责清单（What）&lt;/li&gt;&#xA;&lt;li&gt;调用链路（How）&lt;/li&gt;&#xA;&lt;li&gt;关键假设与隐含约束（Why）&lt;/li&gt;&#xA;&lt;li&gt;潜在风险点（Risk）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这样更像“工程笔记”，而不是泛泛解释。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;2变更评审用清单化替代口头经验&#34;&gt;2）变更评审：用“清单化”替代口头经验&lt;/h3&gt;&#xA;&lt;p&gt;对每个变更（PR/commit）生成一份固定结构的评审清单：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;影响页面/模块&lt;/li&gt;&#xA;&lt;li&gt;影响数据结构/接口&lt;/li&gt;&#xA;&lt;li&gt;兼容性（旧字段/旧接口/旧路由）&lt;/li&gt;&#xA;&lt;li&gt;性能点（渲染、列表、长任务）&lt;/li&gt;&#xA;&lt;li&gt;观测点（埋点、错误、关键链路）&lt;/li&gt;&#xA;&lt;li&gt;回滚策略（开关/版本/兜底）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;AI 的价值在于“补盲”，而不是“替代审查”。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;3知识沉淀把对话变成可检索资产&#34;&gt;3）知识沉淀：把对话变成可检索资产&lt;/h3&gt;&#xA;&lt;p&gt;建议把以下内容自动化沉淀（写入 Markdown）：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;模块说明（README）&lt;/li&gt;&#xA;&lt;li&gt;常见问题与排查路径（FAQ）&lt;/li&gt;&#xA;&lt;li&gt;关键决策记录（ADR：Architecture Decision Record）&lt;/li&gt;&#xA;&lt;li&gt;发布与回滚手册（Runbook）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;沉淀策略：少而精，优先覆盖高频问题与关键链路。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;工程化落地建议&#34;&gt;工程化落地建议&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;统一 Prompt 模板：减少输出风格漂移&lt;/li&gt;&#xA;&lt;li&gt;强制输出引用：引用文件路径、函数名、类型名&lt;/li&gt;&#xA;&lt;li&gt;结果可回退：AI 不可用时流程不受影响&lt;/li&gt;&#xA;&lt;li&gt;记录输入与输出：便于复盘与持续改进（注意脱敏）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;&#xA;&lt;p&gt;AI 在前端工程中的价值，更像“放大镜 + 清单生成器”：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

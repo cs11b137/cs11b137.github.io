@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>系统维护 on Saiga</title>
+    <link>http://localhost:1313/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/</link>
+    <description>Recent content in 系统维护 on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Tue, 05 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>长期维护复杂系统的工程治理实践</title>
+      <link>http://localhost:1313/posts/2024-11-05-financial-system-governance/</link>
+      <pubDate>Tue, 05 Nov 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2024-11-05-financial-system-governance/</guid>
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;&#xA;&lt;p&gt;当系统进入长期运行阶段后，开发重心往往不再是功能堆叠，而是&lt;strong&gt;如何稳定地演进&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;p&gt;在多成员参与、需求持续迭代的情况下，如果缺乏清晰的工程治理策略，系统复杂度会随着时间快速累积，最终影响交付效率与稳定性。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;常见治理问题&#34;&gt;常见治理问题&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-技术债持续累积&#34;&gt;1. 技术债持续累积&lt;/h3&gt;&#xA;&lt;p&gt;常见表现包括：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;临时方案长期存在&lt;/li&gt;&#xA;&lt;li&gt;过期代码无人清理&lt;/li&gt;&#xA;&lt;li&gt;模块边界逐渐模糊&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;技术债并非一次性问题，而是长期决策叠加的结果。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;2-修改成本不可预期&#34;&gt;2. 修改成本不可预期&lt;/h3&gt;&#xA;&lt;p&gt;在缺乏约束的系统中：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;小改动引发连锁问题&lt;/li&gt;&#xA;&lt;li&gt;回归测试成本上升&lt;/li&gt;&#xA;&lt;li&gt;开发人员对改动范围缺乏信心&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;3-责任边界不清晰&#34;&gt;3. 责任边界不清晰&lt;/h3&gt;&#xA;&lt;p&gt;随着人员流动和系统扩展：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;模块负责人缺失&lt;/li&gt;&#xA;&lt;li&gt;历史决策难以追溯&lt;/li&gt;&#xA;&lt;li&gt;问题定位依赖经验而非结构&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;工程治理的核心思路&#34;&gt;工程治理的核心思路&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-明确系统边界与模块职责&#34;&gt;1. 明确系统边界与模块职责&lt;/h3&gt;&#xA;&lt;p&gt;通过清晰的模块划分：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;限制复杂度扩散&lt;/li&gt;&#xA;&lt;li&gt;明确代码归属&lt;/li&gt;&#xA;&lt;li&gt;为后续重构提供基础&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;边界清晰比局部优化更重要。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;2-将技术债显性化&#34;&gt;2. 将技术债显性化&lt;/h3&gt;&#xA;&lt;p&gt;有效的做法包括：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;记录技术债产生背景&lt;/li&gt;&#xA;&lt;li&gt;标注影响范围与优先级&lt;/li&gt;&#xA;&lt;li&gt;纳入迭代计划而非搁置&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;可被管理的技术债，才不会失控。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;3-建立可持续的改进节奏&#34;&gt;3. 建立可持续的改进节奏&lt;/h3&gt;&#xA;&lt;p&gt;治理并非一次性重构，而是持续过程：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;小步调整&lt;/li&gt;&#xA;&lt;li&gt;控制风险&lt;/li&gt;&#xA;&lt;li&gt;在业务推进中逐步改善结构&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;工程层面的实践方式&#34;&gt;工程层面的实践方式&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-保持核心路径稳定&#34;&gt;1. 保持核心路径稳定&lt;/h3&gt;&#xA;&lt;p&gt;优先保障：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;高频使用功能&lt;/li&gt;&#xA;&lt;li&gt;核心业务流程&lt;/li&gt;&#xA;&lt;li&gt;对外依赖接口&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;非核心区域允许逐步演进。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;2-为关键模块补充保护措施&#34;&gt;2. 为关键模块补充保护措施&lt;/h3&gt;&#xA;&lt;p&gt;包括但不限于：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;基础测试覆盖&lt;/li&gt;&#xA;&lt;li&gt;明确的接口约束&lt;/li&gt;&#xA;&lt;li&gt;必要的文档说明&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这些投入可以显著降低后续修改风险。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;3-定期进行结构性回顾&#34;&gt;3. 定期进行结构性回顾&lt;/h3&gt;&#xA;&lt;p&gt;通过阶段性回顾：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;评估现有结构是否仍然合理&lt;/li&gt;&#xA;&lt;li&gt;识别复杂度增长点&lt;/li&gt;&#xA;&lt;li&gt;为下一阶段调整提供依据&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;工程治理的长期价值&#34;&gt;工程治理的长期价值&lt;/h2&gt;&#xA;&lt;p&gt;良好的治理并不会立刻提升开发速度，但可以：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;降低长期维护成本&lt;/li&gt;&#xA;&lt;li&gt;提升系统可预测性&lt;/li&gt;&#xA;&lt;li&gt;减少团队对系统的心理负担&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这类收益通常在系统运行一段时间后逐步显现。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
