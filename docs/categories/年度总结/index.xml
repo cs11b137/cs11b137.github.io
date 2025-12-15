@@ -8,15 +8,8 @@
     <language>zh-cn</language>
     <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
     <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
-    <lastBuildDate>Wed, 18 Dec 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 20 Dec 2023 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>2024 年 AI &#43; 前端实践复盘</title>
-      <link>http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/</link>
-      <pubDate>Wed, 18 Dec 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
-      <guid>http://localhost:1313/posts/2024-12-18-2024-ai-frontier-summary/</guid>
-      <description>&lt;p&gt;对我来说，2024 年有一个很明显的主题：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;不再只是「尝试 AI」，而是认真把 AI 当成日常工程工具。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;这一年在 AI + 前端方向上做了几件事：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;表单配置助手&lt;/li&gt;&#xA;&lt;li&gt;AI 参与 Code Review&lt;/li&gt;&#xA;&lt;li&gt;AI 性能分析报告&lt;/li&gt;&#xA;&lt;li&gt;金融前端里的风险提示与文案生成&lt;/li&gt;&#xA;&lt;li&gt;Hugo + 向量库的个人知识库 + AI 搜索&lt;/li&gt;&#xA;&lt;li&gt;一些配套的 CLI / 脚手架工具&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这篇文章算是对这一年的一个小复盘。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-表单配置助手从工程抽象走向业务可用&#34;&gt;1. 表单配置助手：从「工程抽象」走向「业务可用」&lt;/h2&gt;&#xA;&lt;p&gt;之前做配置化表单，主要是为了让前端自己少写表单代码。&lt;br&gt;&#xA;今年把它接上大模型之后，价值有点变味了：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;运营/产品可以用自然语言描述表单需求&lt;/li&gt;&#xA;&lt;li&gt;大模型生成表单配置草稿&lt;/li&gt;&#xA;&lt;li&gt;前端做最后的结构调整和交互优化&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这件事让我意识到：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;以前很多工程抽象，只在前端团队内部复用；接上 AI 之后，它们可以被更多角色用起来。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;抽象层从「给自己省事」，变成了「把前端能力开放给整个团队」。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-ai-参与-code-review放大镜而不是裁判&#34;&gt;2. AI 参与 Code Review：放大镜，而不是裁判&lt;/h2&gt;&#xA;&lt;p&gt;今年的另一块重点是 AI Review。&lt;/p&gt;&#xA;&lt;p&gt;最后比较满意的状态是：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;人类 Reviewer：关注业务逻辑、架构、长期演进&lt;/li&gt;&#xA;&lt;li&gt;AI Reviewer：关注边界情况、异常处理、潜在 bug&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;如果用一个比喻：&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;人类在画设计蓝图，AI 在拿放大镜看有没漏掉螺丝。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;前提是要在 Prompt 和流程上画清边界——AI 不能决定 PR 是否通过，只能给建议。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;3-ai-性能分析报告减少翻译工作&#34;&gt;3. AI 性能分析报告：减少「翻译工作」&lt;/h2&gt;&#xA;&lt;p&gt;性能优化里最花时间的一件事，是把那些指标和图表翻译成所有人都看得懂的报告。&lt;/p&gt;&#xA;&lt;p&gt;今年做的 AI 性能报告本质上就是：&lt;/p&gt;</description>
-    </item>
     <item>
       <title>2023 年技术小结：从前端工程到 AI 应用</title>
       <link>http://localhost:1313/posts/2023-12-20-2023-summary/</link>

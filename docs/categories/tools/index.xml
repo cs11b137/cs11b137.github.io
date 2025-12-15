@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tools on Saiga</title>
+    <link>http://localhost:1313/categories/tools/</link>
+    <description>Recent content in Tools on Saiga</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <managingEditor>wuwenzen@outlook.com (wuwj)</managingEditor>
+    <webMaster>wuwenzen@outlook.com (wuwj)</webMaster>
+    <lastBuildDate>Sat, 10 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 AI 辅助整理与检索个人内容的方法</title>
+      <link>http://localhost:1313/posts/2024-08-10-personal-knowledge-base-with-ai/</link>
+      <pubDate>Sat, 10 Aug 2024 00:00:00 +0000</pubDate><author>wuwenzen@outlook.com (wuwj)</author>
+      <guid>http://localhost:1313/posts/2024-08-10-personal-knowledge-base-with-ai/</guid>
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;&#xA;&lt;p&gt;随着个人技术积累逐渐增多，内容往往分散在博客、笔记工具、项目文档等不同位置。&lt;br&gt;&#xA;当内容规模扩大后，单纯依赖目录结构或标签分类，已经难以快速定位所需信息。&lt;/p&gt;&#xA;&lt;p&gt;在这种情况下，引入 AI 作为&lt;strong&gt;辅助整理与检索工具&lt;/strong&gt;，是一种成本较低、可逐步演进的方案。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;常见内容管理痛点&#34;&gt;常见内容管理痛点&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-内容分散检索成本高&#34;&gt;1. 内容分散，检索成本高&lt;/h3&gt;&#xA;&lt;p&gt;常见情况包括：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;同一主题存在多份记录&lt;/li&gt;&#xA;&lt;li&gt;不同工具之间缺乏统一入口&lt;/li&gt;&#xA;&lt;li&gt;只能依赖全文搜索，结果噪声较多&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;2-标签与分类难以长期维护&#34;&gt;2. 标签与分类难以长期维护&lt;/h3&gt;&#xA;&lt;p&gt;人工维护分类体系容易出现：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;标签粒度不一致&lt;/li&gt;&#xA;&lt;li&gt;分类不断膨胀&lt;/li&gt;&#xA;&lt;li&gt;新内容难以快速归类&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;3-内容写完即沉没&#34;&gt;3. 内容“写完即沉没”&lt;/h3&gt;&#xA;&lt;p&gt;很多内容在完成记录后：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;很少被再次查阅&lt;/li&gt;&#xA;&lt;li&gt;难以形成复用价值&lt;/li&gt;&#xA;&lt;li&gt;无法支撑长期积累&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;ai-在内容整理中的角色&#34;&gt;AI 在内容整理中的角色&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-辅助理解与归纳&#34;&gt;1. 辅助理解与归纳&lt;/h3&gt;&#xA;&lt;p&gt;AI 更适合承担以下工作：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;对已有内容进行摘要&lt;/li&gt;&#xA;&lt;li&gt;提炼核心观点&lt;/li&gt;&#xA;&lt;li&gt;生成结构化要点&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;而不是替代原始内容本身。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;2-提供语义层面的检索能力&#34;&gt;2. 提供语义层面的检索能力&lt;/h3&gt;&#xA;&lt;p&gt;相比关键词匹配，语义检索可以：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;容忍表达差异&lt;/li&gt;&#xA;&lt;li&gt;根据问题意图返回结果&lt;/li&gt;&#xA;&lt;li&gt;提高命中相关内容的概率&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;在个人内容规模增长后，这种能力尤为重要。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;3-作为入口层而非数据源&#34;&gt;3. 作为“入口层”而非数据源&lt;/h3&gt;&#xA;&lt;p&gt;AI 更适合作为统一入口：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;帮助定位已有内容&lt;/li&gt;&#xA;&lt;li&gt;提供参考链接&lt;/li&gt;&#xA;&lt;li&gt;指向原始记录位置&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;而不是成为新的内容存储层。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;实现思路概览&#34;&gt;实现思路概览&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-保持原有内容结构稳定&#34;&gt;1. 保持原有内容结构稳定&lt;/h3&gt;&#xA;&lt;p&gt;在引入 AI 之前，应确保：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;内容来源清晰&lt;/li&gt;&#xA;&lt;li&gt;原始文件可长期维护&lt;/li&gt;&#xA;&lt;li&gt;不依赖单一工具或平台&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这是后续扩展的基础。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;2-构建轻量级索引层&#34;&gt;2. 构建轻量级索引层&lt;/h3&gt;&#xA;&lt;p&gt;可以通过以下方式降低成本：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;对已有内容生成摘要或关键描述&lt;/li&gt;&#xA;&lt;li&gt;将元信息集中管理&lt;/li&gt;&#xA;&lt;li&gt;避免过早引入复杂基础设施&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;3-ai-查询作为增强能力&#34;&gt;3. AI 查询作为增强能力&lt;/h3&gt;&#xA;&lt;p&gt;在查询阶段引入 AI：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
